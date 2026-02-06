@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDitors | Pricing</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/Styles/reset.css">
+    <link rel="stylesheet" href="/Styles/variables.css">
+    <link rel="stylesheet" href="/Styles/layout.css">
+    <link rel="stylesheet" href="/Styles/components.css">
+    <link rel="stylesheet" href="/Styles/phantom-sections.css">
+</head>
+<body class="dark-theme">
+    <a href="/index.html" class="back-home-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="nav-container glass-panel">
+            <div class="container nav-wrapper">
+                <a href="/index.html" class="nav-logo">REDitors</a>
+                <div class="nav-right">
+                    <a href="/Auth.html" class="nav-link">Sign In</a>
+                    <a href="/Auth.html" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <main style="padding-top: 100px;">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                    <span class="section-tag">PLANS & PRICING</span>
+                    <h1 class="section-title">Choose Your Weapon</h1>
+                    <p class="section-description">Flexible plans for creators of all levels.</p>
+                </div>
+
+                <!-- Pricing Cards (Reusing Phantom Styles) -->
+                <div class="pricing-grid">
+                    <!-- Starter -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Starter</h3>
+                            <div class="price">$0<span>/mo</span></div>
+                            <p>For hobbyists and students.</p>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check"></i> 720p Export</li>
+                            <li><i data-lucide="check"></i> 2 Tracks</li>
+                            <li><i data-lucide="check"></i> Basic Filters</li>
+                        </ul>
+                        <a href="/Auth.html" class="pricing-btn">Start Free</a>
+                    </div>
+
+                    <!-- Pro -->
+                    <div class="pricing-card popular">
+                        <div class="popular-tag">MOST POPULAR</div>
+                        <div class="pricing-header">
+                            <h3>Pro</h3>
+                            <div class="price">$29<span>/mo</span></div>
+                            <p>For serious content creators.</p>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check"></i> 4K Export</li>
+                            <li><i data-lucide="check"></i> Unlimited Tracks</li>
+                            <li><i data-lucide="check"></i> AI Silence Remover</li>
+                            <li><i data-lucide="check"></i> Custom Fonts</li>
+                        </ul>
+                        <a href="/Auth.html" class="pricing-btn primary">Get Pro</a>
+                    </div>
+
+                    <!-- Studio -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Studio</h3>
+                            <div class="price">$99<span>/mo</span></div>
+                            <p>For production houses.</p>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check"></i> 8K Export</li>
+                            <li><i data-lucide="check"></i> Team Collaboration</li>
+                            <li><i data-lucide="check"></i> API Access</li>
+                            <li><i data-lucide="check"></i> Priority Support</li>
+                        </ul>
+                        <a href="/Auth.html" class="pricing-btn">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

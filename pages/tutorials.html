@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDitors | Tutorials</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/Styles/reset.css">
+    <link rel="stylesheet" href="/Styles/variables.css">
+    <link rel="stylesheet" href="/Styles/layout.css">
+    <link rel="stylesheet" href="/Styles/components.css">
+    <link rel="stylesheet" href="/Styles/phantom-sections.css">
+    
+    <style>
+        .tutorial-thumbnail {
+            width: 100%;
+            height: 180px;
+            background: #222;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tutorial-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tool-card:hover .tutorial-thumbnail img {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        .play-btn {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .tool-card:hover .play-btn {
+            background: var(--accent);
+            color: var(--bg);
+            transform: scale(1.1);
+        }
+        
+        .tutorial-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <a href="/index.html" class="back-home-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="nav-container glass-panel">
+            <div class="container nav-wrapper">
+                <a href="/index.html" class="nav-logo">REDitors</a>
+                <div class="nav-right">
+                    <a href="/Auth.html" class="nav-link">Sign In</a>
+                    <a href="/Auth.html" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <main style="padding-top: 100px;">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                    <span class="section-tag">LEARN</span>
+                    <h1 class="section-title">Master the Art of<br>Monochrome</h1>
+                    <p class="section-description">Professional techniques for cinematic storytelling.</p>
+                </div>
+
+                <!-- Tutorials Grid -->
+                <div class="toolbox-grid">
+                    <!-- Tutorial 1 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Getting Started with REDitors</h3>
+                            <p>Learn the basics of the workspace, importing footage, and your first export.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 12 min</span>
+                                <span class="tool-tag">Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tutorial 2 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Advanced Grading Techniques</h3>
+                            <p>Master the curves and levels tools to create dramatic contrast and depth.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 24 min</span>
+                                <span class="tool-tag">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tutorial 3 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>AI Silence Removal Workflow</h3>
+                            <p>Save hours of editing time by automatically cutting silence from interviews.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 8 min</span>
+                                <span class="tool-tag">Intermediate</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutorial 4 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Film Grain & Texture</h3>
+                            <p>How to apply and customize realistic film grain for that 16mm look.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 15 min</span>
+                                <span class="tool-tag">Intermediate</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutorial 5 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Sound Design Basics</h3>
+                            <p>Layering sound effects and mixing dialogue in the REDitors timeline.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 18 min</span>
+                                <span class="tool-tag">Beginner</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tutorial 6 -->
+                    <div class="tool-card">
+                        <div class="tutorial-thumbnail">
+                            <div class="play-btn"><i data-lucide="play" fill="currentColor"></i></div>
+                        </div>
+                        <div class="tool-content">
+                            <h3>Exporting for Cinema</h3>
+                            <p>Understanding codecs, bitrates, and resolution for big screen projection.</p>
+                            <div class="tutorial-meta">
+                                <span><i data-lucide="clock" style="width:14px; display:inline;"></i> 10 min</span>
+                                <span class="tool-tag">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
