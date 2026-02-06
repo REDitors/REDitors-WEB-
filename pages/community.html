@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDitors | Community</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/Styles/reset.css">
+    <link rel="stylesheet" href="/Styles/variables.css">
+    <link rel="stylesheet" href="/Styles/layout.css">
+    <link rel="stylesheet" href="/Styles/components.css">
+    <link rel="stylesheet" href="/Styles/phantom-sections.css">
+    
+    <style>
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+        
+        .discussion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .discussion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .discussion-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .discussion-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            transform: translateX(8px);
+        }
+        
+        .discussion-main {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .discussion-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        
+        .discussion-meta {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .discussion-stats {
+            display: flex;
+            gap: 16px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        
+        .discussion-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <a href="/index.html" class="back-home-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="nav-container glass-panel">
+            <div class="container nav-wrapper">
+                <a href="/index.html" class="nav-logo">REDitors</a>
+                <div class="nav-right">
+                    <a href="/Auth.html" class="nav-link">Sign In</a>
+                    <a href="/Auth.html" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <main style="padding-top: 100px;">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                    <span class="section-tag">COMMUNITY</span>
+                    <h1 class="section-title">Join the Revolution</h1>
+                    <p class="section-description">Connect with thousands of creators pushing the boundaries of monochrome.</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="community-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">12k+</span>
+                        <span class="stat-label">Active Creators</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">850+</span>
+                        <span class="stat-label">Free Assets</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Expert Support</span>
+                    </div>
+                </div>
+
+                <!-- Recent Discussions -->
+                <div class="discussion-container">
+                    <div class="discussion-header">
+                        <h2>Recent Discussions</h2>
+                        <a href="#" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">New Topic</a>
+                    </div>
+                    
+                    <div class="discussion-list">
+                        <!-- Topic 1 -->
+                        <div class="discussion-item">
+                            <div class="discussion-main">
+                                <div class="user-avatar" style="background: #4A90E2;">JD</div>
+                                <div>
+                                    <div class="discussion-title">Best settings for night street photography style?</div>
+                                    <div class="discussion-meta">Posted by John Doe • 2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="discussion-stats">
+                                <div class="discussion-stat"><i data-lucide="message-square" size="16"></i> 24</div>
+                                <div class="discussion-stat"><i data-lucide="heart" size="16"></i> 156</div>
+                            </div>
+                        </div>
+
+                        <!-- Topic 2 -->
+                        <div class="discussion-item">
+                            <div class="discussion-main">
+                                <div class="user-avatar" style="background: #E24A4A;">SA</div>
+                                <div>
+                                    <div class="discussion-title">Showcase: My first short film edited entirely in REDitors</div>
+                                    <div class="discussion-meta">Posted by Sarah Arts • 5 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="discussion-stats">
+                                <div class="discussion-stat"><i data-lucide="message-square" size="16"></i> 89</div>
+                                <div class="discussion-stat"><i data-lucide="heart" size="16"></i> 432</div>
+                            </div>
+                        </div>
+
+                        <!-- Topic 3 -->
+                        <div class="discussion-item">
+                            <div class="discussion-main">
+                                <div class="user-avatar" style="background: #50E3C2; color: #000;">MK</div>
+                                <div>
+                                    <div class="discussion-title">Feature Request: More film grain presets</div>
+                                    <div class="discussion-meta">Posted by Mike K. • 1 day ago</div>
+                                </div>
+                            </div>
+                            <div class="discussion-stats">
+                                <div class="discussion-stat"><i data-lucide="message-square" size="16"></i> 45</div>
+                                <div class="discussion-stat"><i data-lucide="heart" size="16"></i> 210</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Topic 4 -->
+                        <div class="discussion-item">
+                            <div class="discussion-main">
+                                <div class="user-avatar" style="background: #F5A623;">TR</div>
+                                <div>
+                                    <div class="discussion-title">Tutorial: How to use the new AI Masking tool</div>
+                                    <div class="discussion-meta">Posted by Tom Riddle • 2 days ago</div>
+                                </div>
+                            </div>
+                            <div class="discussion-stats">
+                                <div class="discussion-stat"><i data-lucide="message-square" size="16"></i> 12</div>
+                                <div class="discussion-stat"><i data-lucide="heart" size="16"></i> 85</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="REDitors - Professional monochrome video editing suite with advanced AI-powered tools">
+    <meta name="keywords" content="video editor, monochrome, cinema, RAW, professional editing, AI tools">
+    <meta name="author" content="REDitors Team">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="REDitors | Cinema-Grade Monochrome Editing">
+    <meta property="og:description" content="The most advanced video editor for monochrome storytelling">
+    <meta property="og:type" content="website">
+    
+    <title>REDitors | Professional Monochrome Video Suite</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="Styles/reset.css">
+    <link rel="stylesheet" href="Styles/variables.css">
+    <link rel="stylesheet" href="Styles/animations.css">
+    <link rel="stylesheet" href="Styles/components.css">
+    <link rel="stylesheet" href="Styles/layout.css">
+    <link rel="stylesheet" href="Styles/phantom-sections.css">
+    <link rel="stylesheet" href="Styles/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">REDitors</div>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            <div class="loading-text" id="loadingText">INITIALIZING SYSTEM...</div>
+        </div>
+    </div>
+
+    <!-- Film Grain Overlay -->
+    <div class="noise"></div>
+    <div class="scanlines"></div>
+    
+    <!-- Cursor Follower -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <div class="logo-wrapper">
+                <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
+                <span class="version">Pro v2.0</span>
+            </div>
+            
+            <div class="nav-center">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="pages/workspace.html" class="nav-link">Workspace</a>
+                <a href="pages/pricing.html" class="nav-link">Pricing</a>
+                <a href="pages/tutorials.html" class="nav-link">Learn</a>
+                <a href="pages/community.html" class="nav-link">Community</a>
+                <a href="pages/showcase.html" class="nav-link">Showcase</a>
+            </div>
+            
+            <div class="nav-right">
+                <button class="nav-icon-btn" id="searchBtn" aria-label="Search">
+                    <i data-lucide="search"></i>
+                </button>
+                <button class="nav-icon-btn" id="notificationsBtn" aria-label="Notifications">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <select id="langSwitch" class="lang-switch">
+                    <option value="en">EN</option>
+                    <option value="jp">日本語</option>
+                    <option value="fr">FR</option>
+                    <option value="de">DE</option>
+                    <option value="es">ES</option>
+                    <option value="ru">РУ</option>
+                </select>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <span class="theme-icon">☀</span>
+                </button>
+                <!-- Auth section will be inserted here by session manager -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-header">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Search features, docs, tutorials..." id="searchInput" autofocus>
+                <button class="search-close" id="searchClose">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-category">
+                    <h4>Quick Actions</h4>
+                    <div class="search-item" data-action="new-project">
+                        <i data-lucide="plus-circle"></i>
+                        <span>New Project</span>
+                    </div>
+                    <div class="search-item" data-action="workspace">
+                        <i data-lucide="grid"></i>
+                        <span>Open Workspace</span>
+                    </div>
+                    <div class="search-item" data-action="export">
+                        <i data-lucide="download"></i>
+                        <span>Export Project</span>
+                    </div>
+                </div>
+                <div class="search-category">
+                    <h4>Popular Tutorials</h4>
+                    <div class="search-item">
+                        <i data-lucide="play-circle"></i>
+                        <span>Getting Started Guide</span>
+                    </div>
+                    <div class="search-item">
+                        <i data-lucide="film"></i>
+                        <span>Color Grading Masterclass</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notifications-panel" id="notificationsPanel">
+        <div class="notifications-header">
+            <h3>Notifications</h3>
+            <button class="mark-all-read">Mark all read</button>
+        </div>
+        <div class="notifications-list">
+            <div class="notification-item unread">
+                <div class="notification-icon">🎉</div>
+                <div class="notification-content">
+                    <h4>New Feature Released</h4>
+                    <p>AI-powered auto-reframe is now available</p>
+                    <span class="notification-time">2 hours ago</span>
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-icon">💬</div>
+                <div class="notification-content">
+                    <h4>New Comment on Your Project</h4>
+                    <p>Sarah liked your latest film</p>
+                    <span class="notification-time">5 hours ago</span>
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-icon">🔄</div>
+                <div class="notification-content">
+                    <h4>Update Available</h4>
+                    <p>REDitors v2.0.1 is ready to install</p>
+                    <span class="notification-time">1 day ago</span>
+                </div>
+            </div>
+        </div>
+        <div class="notifications-footer">
+            <a href="pages/notifications.html">View all notifications</a>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <a href="#features" class="mobile-menu-link">Features</a>
+            <a href="pages/workspace.html" class="mobile-menu-link">Workspace</a>
+            <a href="pages/pricing.html" class="mobile-menu-link">Pricing</a>
+            <a href="pages/tutorials.html" class="mobile-menu-link">Learn</a>
+            <a href="pages/community.html" class="mobile-menu-link">Community</a>
+            <a href="pages/showcase.html" class="mobile-menu-link">Showcase</a>
+            <div class="mobile-menu-divider"></div>
+            <a href="Auth.html" class="mobile-menu-link">Login</a>
+            <a href="Auth.html?signup=true" class="mobile-menu-link mobile-menu-cta">Sign Up Free</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero-header" id="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <canvas class="hero-canvas" id="heroCanvas"></canvas>
+        </div>
+        
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge" data-aos="fade-up">
+                    <span class="badge-icon">🎬</span>
+                    <span class="badge-text">Cinema-Grade Professional Suite</span>
+                </div>
+                
+                <h1 class="hero-title" id="heroTitle" data-aos="fade-up" data-aos-delay="100">
+                    CREATE IN<br><span class="hero-title-outline">BLACK & WHITE.</span>
+                </h1>
+                
+                <p class="hero-description" id="heroDesc" data-aos="fade-up" data-aos-delay="200">
+                    The ultimate professional video editor designed exclusively for monochrome storytelling. 
+                    AI-powered tools, RAW support, and cinema-grade color science.
+                </p>
+                
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="50000">0</div>
+                        <div class="stat-label">Active Creators</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="8">0</div>
+                        <div class="stat-label">K Resolution</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">0.01</div>
+                        <div class="stat-label">s Latency</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-count="120">0</div>
+                        <div class="stat-label">FPS Support</div>
+                    </div>
+                </div>
+                
+                <div class="cta-area" data-aos="fade-up" data-aos-delay="400">
+                    <div class="cta-buttons">
+                        <a href="pages/workspace.html" class="cta-btn-primary">
+                            <span class="btn-text">Launch Workspace</span>
+                            <span class="btn-icon">→</span>
+                        </a>
+                        <a href="#download" class="cta-btn-secondary" id="mainBtn">
+                            <span class="btn-text">Download Free</span>
+                            <span class="btn-icon">⬇</span>
+                        </a>
+                        <a href="pages/live-demo.html" class="cta-btn-outline">
+                            <span class="btn-text">Live Demo</span>
+                            <span class="btn-icon">▶</span>
+                        </a>
+                    </div>
+                    <div class="cta-info">
+                        <div class="os-detect">
+                            <span class="os-icon">💻</span>
+                            <span id="osDetect">DETECTING SYSTEM...</span>
+                        </div>
+                        <p class="cta-note">✓ No credit card • ✓ 30-day trial • ✓ Cancel anytime</p>
+                    </div>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="trust-badges" data-aos="fade-up" data-aos-delay="500">
+                    <div class="trust-badge">
+                        <i data-lucide="award"></i>
+                        <span>Editor's Choice 2026</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i data-lucide="shield-check"></i>
+                        <span>SOC 2 Certified</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i data-lucide="star"></i>
+                        <span>4.9/5 Rating</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i data-lucide="users"></i>
+                        <span>50K+ Users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator hero-scroll" data-aos="fade-up" data-aos-delay="600">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </header>
+
+    <!-- Companies/Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <p class="partners-title" data-aos="fade-up">Trusted by leading studios worldwide</p>
+            <div class="partners-grid" data-aos="fade-up" data-aos-delay="100">
+                <div class="partner-logo">PARAMOUNT</div>
+                <div class="partner-logo">WARNER BROS</div>
+                <div class="partner-logo">NETFLIX</div>
+                <div class="partner-logo">A24</div>
+                <div class="partner-logo">CRITERION</div>
+                <div class="partner-logo">BBC FILMS</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Showcase -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">CAPABILITIES</span>
+                <h2 class="section-title">Professional Tools for<br>Monochrome Mastery</h2>
+                <p class="section-description">Everything you need to create stunning black and white films with precision and artistry</p>
+            </div>
+
+            <!-- Feature Tabs -->
+            <div class="feature-tabs" data-aos="fade-up" data-aos-delay="100">
+                <button class="feature-tab active" data-tab="editing">
+                    <i data-lucide="scissors"></i>
+                    <span>Advanced Editing</span>
+                </button>
+                <button class="feature-tab" data-tab="ai">
+                    <i data-lucide="sparkles"></i>
+                    <span>AI Tools</span>
+                </button>
+                <button class="feature-tab" data-tab="color">
+                    <i data-lucide="palette"></i>
+                    <span>Color Science</span>
+                </button>
+                <button class="feature-tab" data-tab="workflow">
+                    <i data-lucide="workflow"></i>
+                    <span>Workflow</span>
+                </button>
+                <button class="feature-tab" data-tab="export">
+                    <i data-lucide="share-2"></i>
+                    <span>Export & Share</span>
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content active" id="editing-tab">
+                <div class="feature-showcase">
+                    <div class="feature-visual" data-aos="fade-right">
+                        <div class="mockup-container">
+                            <div class="mockup-screen">
+                                <div class="timeline-mockup">
+                                    <div class="timeline-track"></div>
+                                    <div class="timeline-track"></div>
+                                    <div class="timeline-track"></div>
+                                    <div class="playhead"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-details" data-aos="fade-left">
+                        <h3>Professional Timeline Editing</h3>
+                        <p>Industry-leading multi-track timeline with frame-accurate editing, magnetic timeline, and advanced trimming tools.</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Unlimited video and audio tracks</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Magnetic timeline with smart snapping</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Advanced ripple, roll, slip, and slide editing</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Multi-cam editing with up to 64 angles</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Nested sequences and compound clips</span>
+                            </li>
+                        </ul>
+                        <a href="pages/features/editing.html" class="feature-link">
+                            Explore editing tools <i data-lucide="arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="ai-tab">
+                <div class="feature-showcase">
+                    <div class="feature-visual" data-aos="fade-right">
+                        <div class="ai-demo-container">
+                            <div class="ai-panel">
+                                <div class="ai-option">
+                                    <i data-lucide="wand-2"></i>
+                                    <span>Auto Reframe</span>
+                                </div>
+                                <div class="ai-option">
+                                    <i data-lucide="target"></i>
+                                    <span>Object Tracking</span>
+                                </div>
+                                <div class="ai-option">
+                                    <i data-lucide="mic"></i>
+                                    <span>Auto Subtitles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-details" data-aos="fade-left">
+                        <h3>AI-Powered Intelligence</h3>
+                        <p>Cutting-edge AI tools that understand your footage and accelerate your workflow.</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Auto reframe for different aspect ratios</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>AI-powered object and face tracking</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Automatic subtitle generation (95+ languages)</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Scene detection and smart cuts</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>AI color matching and tone mapping</span>
+                            </li>
+                        </ul>
+                        <a href="pages/features/ai-tools.html" class="feature-link">
+                            Discover AI features <i data-lucide="arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="color-tab">
+                <div class="feature-showcase">
+                    <div class="feature-visual" data-aos="fade-right">
+                        <div class="color-grading-mockup">
+                            <div class="scopes-panel">
+                                <div class="waveform"></div>
+                                <div class="histogram"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-details" data-aos="fade-left">
+                        <h3>Cinema-Grade Color Science</h3>
+                        <p>Professional color grading tools with industry-standard workflows and LUT support.</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Advanced color wheels and curves</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>HDR and Log format support</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Professional scopes (Waveform, Vectorscope, Histogram)</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>LUT support (.cube, .3dl, .mga)</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Dedicated B&W conversion with full control</span>
+                            </li>
+                        </ul>
+                        <a href="pages/features/color-grading.html" class="feature-link">
+                            Master color grading <i data-lucide="arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="workflow-tab">
+                <div class="feature-showcase">
+                    <div class="feature-visual" data-aos="fade-right">
+                        <div class="workflow-diagram">
+                            <div class="workflow-step">Import</div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">Edit</div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">Grade</div>
+                            <div class="workflow-arrow">→</div>
+                            <div class="workflow-step">Export</div>
+                        </div>
+                    </div>
+                    <div class="feature-details" data-aos="fade-left">
+                        <h3>Streamlined Production Workflow</h3>
+                        <p>Optimize your creative process with tools designed for efficiency and collaboration.</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Project templates and presets</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Cloud sync and collaboration</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Version control and history</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Team workspaces with permissions</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Integration with Adobe, Resolve, and more</span>
+                            </li>
+                        </ul>
+                        <a href="pages/features/workflow.html" class="feature-link">
+                            Optimize your workflow <i data-lucide="arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="export-tab">
+                <div class="feature-showcase">
+                    <div class="feature-visual" data-aos="fade-right">
+                        <div class="export-mockup">
+                            <div class="export-preset">YouTube 4K</div>
+                            <div class="export-preset">ProRes 422 HQ</div>
+                            <div class="export-preset">H.265 HEVC</div>
+                            <div class="export-preset">Custom...</div>
+                        </div>
+                    </div>
+                    <div class="feature-details" data-aos="fade-left">
+                        <h3>Powerful Export & Distribution</h3>
+                        <p>Export your masterpiece in any format with optimized presets for every platform.</p>
+                        <ul class="feature-list">
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>100+ export presets (YouTube, Vimeo, Instagram, etc.)</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Professional codecs (ProRes, DNxHR, H.265, AV1)</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Batch export and queue management</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Direct upload to social platforms</span>
+                            </li>
+                            <li>
+                                <i data-lucide="check"></i>
+                                <span>Background rendering with GPU acceleration</span>
+                            </li>
+                        </ul>
+                        <a href="pages/features/export.html" class="feature-link">
+                            Learn about export <i data-lucide="arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Toolbox (Phantom Style) -->
+    <section class="toolbox-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">POWERHOUSE</span>
+                <h2 class="section-title">12+ Professional Tools<br>At Your Fingertips</h2>
+                <p class="section-description">Automate the boring stuff. Focus on the art. Powered by next-gen AI.</p>
+            </div>
+            
+            <div class="toolbox-grid">
+                <!-- Tool 1 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="mic-off"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Silence Remover</h3>
+                        <p>Automatically detect and remove silence from your footage in one click. Perfect for podcasts and interviews.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">AI</span>
+                            <span class="tool-tag">Audio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 2 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="50">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="type"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Auto Captions</h3>
+                        <p>Generate frame-accurate subtitles in 95+ languages instantly with custom styling controls.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">AI</span>
+                            <span class="tool-tag">Text</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 3 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="scissors"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Scene Edit Detection</h3>
+                        <p>Automatically cut your footage at scene changes. Ideal for color grading workflows.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Video</span>
+                            <span class="tool-tag">Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 4 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="music"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Auto Ducking</h3>
+                        <p>Background music automatically lowers when dialogue is detected. Professional mix in seconds.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Audio</span>
+                            <span class="tool-tag">Mix</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 5 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="wand-2"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Magic Mask</h3>
+                        <p>Isolate subjects with a single click using neural engine masking.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">AI</span>
+                            <span class="tool-tag">VFX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 6 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="crop"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Smart Reframe</h3>
+                        <p>Intelligently keeps subjects in frame when converting landscape to vertical.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Social</span>
+                            <span class="tool-tag">AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tool 7 -->
+                 <div class="tool-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="palette"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Color Match</h3>
+                        <p>Instantly match the look of one clip to another with machine learning color science.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Color</span>
+                            <span class="tool-tag">AI</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Tool 8 -->
+                 <div class="tool-card" data-aos="fade-up" data-aos-delay="350">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="zap"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Render Boost</h3>
+                        <p>Distributed rendering across network nodes for 5x faster export times.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Performance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 9 -->
+                <div class="tool-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="tool-icon-wrapper">
+                        <i data-lucide="file-text"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Text-Based Editing</h3>
+                        <p>Edit your video by editing the transcript. Delete text to delete the clip.</p>
+                        <div class="tool-tags">
+                            <span class="tool-tag">Workflow</span>
+                            <span class="tool-tag">New</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">TRANSFORMATION</span>
+                <h2 class="section-title">See the Difference</h2>
+                <p class="section-description">Drag the slider to see how REDitors transforms flat footage into cinema.</p>
+            </div>
+            
+            <div class="comparison-container" data-aos="fade-up" data-aos-delay="100">
+                <div class="comparison-wrapper">
+                    <div class="comparison-image before">
+                        <div class="comparison-label">Original Log</div>
+                        <!-- Placeholder for before image -->
+                        <div class="placeholder-img before-placeholder"></div>
+                    </div>
+                    <div class="comparison-image after">
+                        <div class="comparison-label">REDitors Monochrome</div>
+                        <!-- Placeholder for after image -->
+                        <div class="placeholder-img after-placeholder"></div>
+                    </div>
+                    <div class="comparison-slider">
+                        <div class="slider-handle">
+                            <i data-lucide="move-horizontal"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">SUPPORT</span>
+                <h2 class="section-title">Common Questions</h2>
+                <p class="section-description">Everything you need to know about REDitors.</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Is there a free version?</h3>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, REDitors offers a robust Free plan that includes all essential editing tools and 720p export. No watermarks for personal use.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="50">
+                    <div class="faq-question">
+                        <h3>Does it work on Windows and Mac?</h3>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely. REDitors is fully optimized for both Windows 11 and macOS Sonoma, including native Apple Silicon support.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        <h3>Can I import my existing projects?</h3>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We support XML and EDL import from Premiere Pro, DaVinci Resolve, and Final Cut Pro so you can switch seamlessly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
+                    <div class="faq-question">
+                        <h3>What are the system requirements?</h3>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We recommend 16GB RAM and 4GB VRAM for 4K editing. However, our proxy workflow allows editing on lower-end systems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">EXPERIENCE</span>
+                <h2 class="section-title">Try REDitors Live</h2>
+                <p class="section-description">Experience the power of monochrome editing right in your browser</p>
+            </div>
+
+            <div class="demo-container" data-aos="fade-up" data-aos-delay="100">
+                <div class="demo-interface">
+                    <div class="demo-toolbar">
+                        <button class="demo-btn" title="Play"><i data-lucide="play"></i></button>
+                        <button class="demo-btn" title="Cut"><i data-lucide="scissors"></i></button>
+                        <button class="demo-btn" title="Trim"><i data-lucide="crop"></i></button>
+                        <button class="demo-btn" title="Color"><i data-lucide="palette"></i></button>
+                        <button class="demo-btn" title="Text"><i data-lucide="type"></i></button>
+                        <button class="demo-btn" title="Effects"><i data-lucide="sparkles"></i></button>
+                    </div>
+                    <div class="demo-viewport">
+                        <div class="demo-placeholder">
+                            <i data-lucide="film"></i>
+                            <p>Interactive demo loading...</p>
+                        </div>
+                    </div>
+                    <div class="demo-timeline">
+                        <div class="demo-track"></div>
+                        <div class="demo-track"></div>
+                    </div>
+                </div>
+                <div class="demo-cta">
+                    <h3>Ready to create?</h3>
+                    <p>Launch the full workspace or download the desktop app</p>
+                    <div class="demo-buttons">
+                        <a href="pages/workspace.html" class="btn-primary">Launch Workspace</a>
+                        <a href="#download" class="btn-secondary">Download App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">TESTIMONIALS</span>
+                <h2 class="section-title">Loved by Creators</h2>
+                <p class="section-description">Hear from professionals using REDitors every day</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">JD</div>
+                        <div class="testimonial-author">
+                            <h4>James Davidson</h4>
+                            <p>Independent Filmmaker</p>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"REDitors transformed my workflow. The B&W tools are unmatched, and the AI features save me hours on every project. It's like having an assistant editor built-in."</p>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">SM</div>
+                        <div class="testimonial-author">
+                            <h4>Sarah Martinez</h4>
+                            <p>Documentary Producer</p>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The color science in REDitors is phenomenal. I can achieve looks that would take hours in other software in just minutes. Game-changer for docs."</p>
+                </div>
+
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">TC</div>
+                        <div class="testimonial-author">
+                            <h4>Thomas Chen</h4>
+                            <p>Colorist, Post House</p>
+                        </div>
+                        <div class="testimonial-rating">
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                            <i data-lucide="star" class="star-filled"></i>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"As a professional colorist, I'm impressed by REDitors' dedication to monochrome. The tools are sophisticated yet intuitive. Highly recommended."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Teaser -->
+    <section class="pricing-teaser">
+        <div class="container">
+            <div class="pricing-teaser-content" data-aos="fade-up">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that fits your needs. All plans include core features.</p>
+                <div class="pricing-cards-mini">
+                    <div class="pricing-mini-card">
+                        <h3>Free</h3>
+                        <div class="price">$0<span>/mo</span></div>
+                        <p>Perfect for learning</p>
+                    </div>
+                    <div class="pricing-mini-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <h3>Pro</h3>
+                        <div class="price">$29<span>/mo</span></div>
+                        <p>For professionals</p>
+                    </div>
+                    <div class="pricing-mini-card">
+                        <h3>Studio</h3>
+                        <div class="price">$99<span>/mo</span></div>
+                        <p>For teams</p>
+                    </div>
+                </div>
+                <a href="pages/pricing.html" class="btn-view-pricing">View Full Pricing →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="final-cta-section">
+        <div class="final-cta-content" data-aos="fade-up">
+            <h2 class="final-cta-title">Start Creating Today</h2>
+            <p class="final-cta-description">
+                Join 50,000+ creators crafting stunning monochrome films with REDitors.
+                Start your 30-day free trial now.
+            </p>
+            <div class="final-cta-buttons">
+                <a href="Auth.html?signup=true" class="final-cta-btn-primary">
+                    <span>Start Free Trial</span>
+                    <span class="cta-arrow">→</span>
+                </a>
+                <a href="pages/workspace.html" class="final-cta-btn-secondary">
+                    <span>Try Web Version</span>
+                </a>
+            </div>
+            <p class="final-cta-note">
+                ✓ No credit card required  •  ✓ 30-day free trial  •  ✓ Cancel anytime
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">REDitors</div>
+                <p class="footer-tagline">Cinema is RAW. Create in monochrome.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+                    <a href="#" class="social-link" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="GitHub"><i data-lucide="github"></i></a>
+                    <a href="#" class="social-link" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="pages/features.html">Features</a>
+                    <a href="pages/pricing.html">Pricing</a>
+                    <a href="pages/workspace.html">Workspace</a>
+                    <a href="pages/download.html">Download</a>
+                    <a href="pages/changelog.html">Changelog</a>
+                    <a href="pages/roadmap.html">Roadmap</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="pages/tutorials.html">Tutorials</a>
+                    <a href="pages/documentation.html">Documentation</a>
+                    <a href="pages/community.html">Community</a>
+                    <a href="pages/showcase.html">Showcase</a>
+                    <a href="pages/templates.html">Templates</a>
+                    <a href="pages/blog.html">Blog</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="pages/about.html">About Us</a>
+                    <a href="pages/careers.html">Careers</a>
+                    <a href="pages/press.html">Press Kit</a>
+                    <a href="pages/contact.html">Contact</a>
+                    <a href="pages/partners.html">Partners</a>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <a href="pages/privacy.html">Privacy Policy</a>
+                    <a href="pages/terms.html">Terms of Service</a>
+                    <a href="pages/license.html">License</a>
+                    <a href="pages/security.html">Security</a>
+                    <a href="pages/gdpr.html">GDPR</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 REDitors. All rights reserved.</p>
+            <p>Made with precision for the cinema industry.</p>
+            <div class="footer-badges">
+                <span class="footer-badge">SOC 2 Type II</span>
+                <span class="footer-badge">GDPR Compliant</span>
+                <span class="footer-badge">ISO 27001</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Consent -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button class="cookie-btn-accept" id="acceptCookies">Accept</button>
+                <button class="cookie-btn-decline" id="declineCookies">Decline</button>
+                <a href="pages/privacy.html" class="cookie-link">Learn more</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts: Load in correct order -->
+    <script src="Scripts/supabase-config.js"></script>
+    <script src="Scripts/utils.js"></script>
+    <script src="Scripts/session.js"></script>
+    <script src="Scripts/animation.js"></script>
+    <script src="Scripts/cursor.js"></script>
+    <script src="Scripts/canvas.js"></script>
+    <script src="Scripts/navigation.js"></script>
+    <script src="Scripts/search.js"></script>
+    <script src="Scripts/notifications.js"></script>
+    <script src="Scripts/feature-tabs.js"></script>
+    <script src="Scripts/main.js"></script>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>

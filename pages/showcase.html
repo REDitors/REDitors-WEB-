@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDitors | Showcase</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/Styles/reset.css">
+    <link rel="stylesheet" href="/Styles/variables.css">
+    <link rel="stylesheet" href="/Styles/layout.css">
+    <link rel="stylesheet" href="/Styles/components.css">
+    <link rel="stylesheet" href="/Styles/phantom-sections.css">
+    
+    <style>
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+        }
+        
+        .showcase-card {
+            background: transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            aspect-ratio: 16/9;
+        }
+        
+        .showcase-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        .showcase-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+        }
+        
+        .showcase-card:hover .showcase-image {
+            transform: scale(1.05);
+            filter: grayscale(0%); /* Optional: reveal color on hover? Or keep monochrome */
+        }
+        
+        .showcase-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .showcase-card:hover .showcase-overlay {
+            transform: translateY(0);
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        
+        .project-author {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        .submit-section {
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+            margin-top: 100px;
+            border: 1px solid var(--border-light);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <a href="/index.html" class="back-home-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="nav-container glass-panel">
+            <div class="container nav-wrapper">
+                <a href="/index.html" class="nav-logo">REDitors</a>
+                <div class="nav-right">
+                    <a href="/Auth.html" class="nav-link">Sign In</a>
+                    <a href="/Auth.html" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <main style="padding-top: 100px;">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+                    <span class="section-tag">SHOWCASE</span>
+                    <h1 class="section-title">Made with REDitors</h1>
+                    <p class="section-description">Inspiring work from our community of creators.</p>
+                </div>
+
+                <!-- Showcase Grid -->
+                <div class="showcase-grid">
+                    <!-- Project 1 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1518932945647-7a1c969f8be2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 1" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">Urban Shadows</h3>
+                            <p class="project-author">by Marcus Chen</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e63?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 2" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">The Long Wait</h3>
+                            <p class="project-author">by Sarah Jenkins</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 3 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 3" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">Silent Echoes</h3>
+                            <p class="project-author">by David Miller</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 4 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 4" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">Neon Noir</h3>
+                            <p class="project-author">by Alex V.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 5 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1517502884422-41e157d4430c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 5" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">Last Train Home</h3>
+                            <p class="project-author">by Elena R.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 6 -->
+                    <div class="showcase-card">
+                        <img src="https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 6" class="showcase-image">
+                        <div class="showcase-overlay">
+                            <h3 class="project-title">Concrete Dreams</h3>
+                            <p class="project-author">by Michael T.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit CTA -->
+                <div class="submit-section">
+                    <h2>Created something amazing?</h2>
+                    <p style="color: var(--text-dim); margin: 16px 0 32px;">We'd love to see what you've built with REDitors.</p>
+                    <a href="#" class="btn-primary">Submit Your Project</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

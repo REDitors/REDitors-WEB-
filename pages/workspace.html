@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDitors Workspace | New Project</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/Styles/reset.css">
+    <link rel="stylesheet" href="/Styles/variables.css">
+    <link rel="stylesheet" href="/Styles/workspace.css">
+    <link rel="stylesheet" href="/Styles/components.css">
+</head>
+<body>
+    <a href="/index.html" class="back-home-btn" style="top: 60px; left: 20px;">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="app-header">
+            <div class="header-left">
+                <a href="/index.html" class="app-logo">REDitors</a>
+                <nav class="app-menu">
+                    <button class="menu-item">File</button>
+                    <button class="menu-item">Edit</button>
+                    <button class="menu-item">View</button>
+                    <button class="menu-item">Window</button>
+                    <button class="menu-item">Help</button>
+                </nav>
+            </div>
+            
+            <div class="header-center">
+                <span class="project-name">Untitled Project.red</span>
+                <span class="save-status">All changes saved</span>
+            </div>
+            
+            <div class="header-right">
+                <button class="icon-btn" title="Export"><i data-lucide="download"></i></button>
+                <button class="icon-btn" title="Settings"><i data-lucide="settings"></i></button>
+                <div class="user-avatar">HP</div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Area -->
+        <main class="workspace-grid">
+            <!-- Left Sidebar: Assets & Browser -->
+            <aside class="panel left-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Assets</span>
+                    <div class="panel-actions">
+                        <button class="tiny-btn"><i data-lucide="plus"></i></button>
+                        <button class="tiny-btn"><i data-lucide="filter"></i></button>
+                    </div>
+                </div>
+                <div class="panel-content assets-grid">
+                    <div class="asset-folder">
+                        <i data-lucide="folder"></i>
+                        <span>Footage</span>
+                    </div>
+                    <div class="asset-folder">
+                        <i data-lucide="folder"></i>
+                        <span>Audio</span>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-thumb"></div>
+                        <span>clip_01.mp4</span>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-thumb"></div>
+                        <span>clip_02.mp4</span>
+                    </div>
+                     <div class="asset-item">
+                        <div class="asset-thumb"></div>
+                        <span>interview.wav</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center: Viewport -->
+            <section class="panel viewport-panel">
+                <div class="viewport-toolbar">
+                    <span class="timecode">00:00:12:04</span>
+                    <div class="zoom-controls">
+                        <button>25%</button>
+                        <button>50%</button>
+                        <button class="active">Fit</button>
+                        <button>100%</button>
+                    </div>
+                </div>
+                <div class="viewport-canvas-container">
+                    <div class="viewport-placeholder">
+                        <i data-lucide="film"></i>
+                        <p>No media selected</p>
+                    </div>
+                </div>
+                <div class="transport-controls">
+                    <button><i data-lucide="skip-back"></i></button>
+                    <button><i data-lucide="play"></i></button>
+                    <button><i data-lucide="skip-forward"></i></button>
+                </div>
+            </section>
+
+            <!-- Right Sidebar: Inspector -->
+            <aside class="panel right-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Inspector</span>
+                </div>
+                <div class="panel-content properties-list">
+                    <div class="property-group">
+                        <div class="property-header">
+                            <i data-lucide="video"></i>
+                            <span>Transform</span>
+                        </div>
+                        <div class="property-row">
+                            <label>Position X</label>
+                            <input type="number" value="960">
+                        </div>
+                        <div class="property-row">
+                            <label>Position Y</label>
+                            <input type="number" value="540">
+                        </div>
+                        <div class="property-row">
+                            <label>Scale</label>
+                            <input type="range" value="100">
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <div class="property-header">
+                            <i data-lucide="droplet"></i>
+                            <span>Opacity</span>
+                        </div>
+                         <div class="property-row">
+                            <label>Level</label>
+                            <input type="range" value="100">
+                        </div>
+                    </div>
+
+                    <div class="property-group">
+                        <div class="property-header">
+                            <i data-lucide="wand-2"></i>
+                            <span>AI Tools</span>
+                        </div>
+                        <button class="ai-action-btn">
+                            <i data-lucide="mic-off"></i> Remove Silence
+                        </button>
+                        <button class="ai-action-btn">
+                            <i data-lucide="type"></i> Auto Caption
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Bottom: Timeline -->
+            <section class="panel timeline-panel">
+                <div class="timeline-header">
+                    <div class="track-headers">
+                        <div class="track-header">V1</div>
+                        <div class="track-header">A1</div>
+                    </div>
+                    <div class="timeline-ruler">
+                        <span>00:00</span>
+                        <span>00:15</span>
+                        <span>00:30</span>
+                        <span>00:45</span>
+                        <span>01:00</span>
+                    </div>
+                </div>
+                <div class="timeline-content">
+                    <div class="playhead"></div>
+                    <!-- Video Track -->
+                    <div class="timeline-track video-track">
+                        <div class="clip" style="left: 0%; width: 20%; background: #3b82f6;">Clip 1</div>
+                        <div class="clip" style="left: 20%; width: 15%; background: #2563eb;">Clip 2</div>
+                        <div class="clip" style="left: 40%; width: 30%; background: #1d4ed8;">Clip 3</div>
+                    </div>
+                    <!-- Audio Track -->
+                    <div class="timeline-track audio-track">
+                        <div class="clip" style="left: 0%; width: 20%; background: #10b981;">Audio 1</div>
+                        <div class="clip" style="left: 40%; width: 30%; background: #059669;">Audio 2</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
