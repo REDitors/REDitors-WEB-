@@ -1,19 +1,24 @@
 // Download Manager for REDitors Software
+// Fixed version for inline download buttons
 
 class DownloadManager {
     constructor() {
-        this.githubRepo = 'remontagedz-cmyk/vvxcvxcv';
-        this.githubURL = 'https://github.com/remontagedz-cmyk/vvxcvxcv.git';
-        this.releaseURL = 'https://api.github.com/repos/remontagedz-cmyk/vvxcvxcv/releases/latest';
-        this.downloadButton = document.getElementById('mainBtn');
+        // Direct installation paths
+        this.installPaths = {
+            'windows': '/install-windows',
+            'macos': '/install-macos',
+            'linux': '/install-linux'
+        };
+        
+        this.windowsButton = document.getElementById('downloadWindows');
+        this.macosButton = document.getElementById('downloadMacOS');
         
         this.init();
     }
     
     init() {
         this.detectOS();
-        this.setupDownloadButton();
-        this.checkLatestRelease();
+        this.setupDownloadButtons();
     }
     
     /**
@@ -22,47 +27,26 @@ class DownloadManager {
     detectOS() {
         const userAgent = navigator.userAgent.toLowerCase();
         let os = 'unknown';
-        let downloadURL = '';
         
         if (userAgent.includes('win')) {
             os = 'windows';
-            downloadURL = this.getDownloadURL('windows');
         } else if (userAgent.includes('mac')) {
             os = 'macos';
-            downloadURL = this.getDownloadURL('macos');
         } else if (userAgent.includes('linux')) {
             os = 'linux';
-            downloadURL = this.getDownloadURL('linux');
         }
         
         this.currentOS = os;
-        this.downloadURL = downloadURL;
         
         // Update UI
         this.updateOSDetection(os);
     }
     
     /**
-     * Get download URL based on OS
+     * Get download path based on OS
      */
-    getDownloadURL(os) {
-        // These URLs point to the latest release downloads
-        const baseURL = `https://github.com/${this.githubRepo}/releases/latest/download/`;
-        
-        const downloads = {
-            'windows': `${baseURL}REDitors-Windows-x64.exe`,
-            'macos': `${baseURL}REDitors-macOS.dmg`,
-            'linux': `${baseURL}REDitors-Linux-x64.AppImage`
-        };
-        
-        return downloads[os] || this.getZipDownload();
-    }
-    
-    /**
-     * Fallback: Download repository as ZIP
-     */
-    getZipDownload() {
-        return `https://github.com/${this.githubRepo}/archive/refs/heads/main.zip`;
+    getDownloadPath(os) {
+        return this.installPaths[os] || this.installPaths['windows'];
     }
     
     /**
@@ -86,144 +70,90 @@ class DownloadManager {
     }
     
     /**
-     * Setup download button functionality
+     * Setup download buttons functionality
      */
-    setupDownloadButton() {
-        if (!this.downloadButton) return;
+    setupDownloadButtons() {
+        // Windows button
+        if (this.windowsButton) {
+            this.windowsButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.initiateDownload('windows');
+            });
+        }
         
-        this.downloadButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.initiateDownload();
-        });
-    }
-    
-    /**
-     * Check for latest release from GitHub API
-     */
-    async checkLatestRelease() {
-        try {
-            const response = await fetch(this.releaseURL);
-            const data = await response.json();
-            
-            if (data.tag_name) {
-                this.latestVersion = data.tag_name;
-                this.releaseAssets = data.assets;
-                this.updateDownloadURLFromRelease(data);
-            }
-        } catch (error) {
-            console.log('Using fallback download method');
-            // Fallback to ZIP download
+        // macOS button
+        if (this.macosButton) {
+            this.macosButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.initiateDownload('macos');
+            });
         }
     }
     
     /**
-     * Update download URL from GitHub release assets
+     * Initiate download for specific OS
      */
-    updateDownloadURLFromRelease(releaseData) {
-        if (!releaseData.assets || releaseData.assets.length === 0) {
-            this.downloadURL = this.getZipDownload();
-            return;
-        }
-        
-        const assets = releaseData.assets;
-        let selectedAsset = null;
-        
-        // Find the appropriate asset for the current OS
-        if (this.currentOS === 'windows') {
-            selectedAsset = assets.find(asset => 
-                asset.name.toLowerCase().includes('windows') || 
-                asset.name.toLowerCase().includes('win') ||
-                asset.name.toLowerCase().includes('.exe')
-            );
-        } else if (this.currentOS === 'macos') {
-            selectedAsset = assets.find(asset => 
-                asset.name.toLowerCase().includes('macos') || 
-                asset.name.toLowerCase().includes('mac') ||
-                asset.name.toLowerCase().includes('.dmg')
-            );
-        } else if (this.currentOS === 'linux') {
-            selectedAsset = assets.find(asset => 
-                asset.name.toLowerCase().includes('linux') ||
-                asset.name.toLowerCase().includes('.appimage')
-            );
-        }
-        
-        if (selectedAsset) {
-            this.downloadURL = selectedAsset.browser_download_url;
-        } else {
-            // If no specific asset found, use the first one or ZIP
-            this.downloadURL = assets[0]?.browser_download_url || this.getZipDownload();
-        }
-    }
-    
-    /**
-     * Initiate download
-     */
-    initiateDownload() {
+    initiateDownload(os) {
         // Show loading state
-        this.showDownloadStatus('preparing');
+        this.showDownloadStatus('preparing', os);
         
         // Animate button
-        this.downloadButton.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.downloadButton.style.transform = '';
-        }, 100);
+        const button = os === 'windows' ? this.windowsButton : this.macosButton;
+        if (button) {
+            button.style.transform = 'scale(0.97)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+        }
         
-        // Start download
+        // Start download after brief delay
         setTimeout(() => {
-            this.startDownload();
+            this.startDownload(os);
         }, 500);
     }
     
     /**
      * Start the actual download
      */
-    startDownload() {
-        // Create a temporary link element
-        const link = document.createElement('a');
-        link.href = this.downloadURL;
-        link.download = this.getFileName();
-        link.style.display = 'none';
+    startDownload(os) {
+        const downloadPath = this.getDownloadPath(os);
         
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Navigate to the installation path
+        window.location.href = downloadPath;
         
         // Show success notification
-        this.showDownloadStatus('success');
+        this.showDownloadStatus('success', os);
         
         // Track download
-        this.trackDownload();
-    }
-    
-    /**
-     * Get appropriate filename
-     */
-    getFileName() {
-        const fileNames = {
-            'windows': 'REDitors-Setup.exe',
-            'macos': 'REDitors-Installer.dmg',
-            'linux': 'REDitors-Linux.AppImage',
-            'unknown': 'REDitors-Source.zip'
-        };
-        
-        return fileNames[this.currentOS];
+        this.trackDownload(os);
     }
     
     /**
      * Show download status notification
      */
-    showDownloadStatus(status) {
+    showDownloadStatus(status, os) {
+        const osNames = {
+            'windows': 'Windows',
+            'macos': 'macOS',
+            'linux': 'Linux'
+        };
+        
         const messages = {
-            'preparing': '⏳ Preparing download...',
-            'success': '✓ Download started for ' + this.currentOS.toUpperCase() + '!',
+            'preparing': `⏳ Preparing ${osNames[os]} download...`,
+            'success': `✓ Download started for ${osNames[os]}!`,
             'error': '✗ Download failed. Please try again.'
         };
         
         const colors = {
-            'preparing': '#666',
-            'success': '#fff',
-            'error': '#ff0000'
+            'preparing': 'rgba(255, 255, 255, 0.1)',
+            'success': '#ffffff',
+            'error': '#ff4444'
+        };
+        
+        const textColors = {
+            'preparing': '#ffffff',
+            'success': '#000000',
+            'error': '#ffffff'
         };
         
         const notification = document.createElement('div');
@@ -232,14 +162,16 @@ class DownloadManager {
             top: 100px;
             right: 20px;
             background: ${colors[status]};
-            color: ${status === 'success' ? '#000' : '#fff'};
+            color: ${textColors[status]};
             padding: 20px 30px;
-            border-radius: 10px;
+            border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             z-index: 10000;
-            animation: slideInRight 0.5s ease;
+            animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
             font-family: 'Inter', sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
         `;
         notification.textContent = messages[status];
         
@@ -251,27 +183,29 @@ class DownloadManager {
                 const instructions = document.createElement('div');
                 instructions.style.cssText = `
                     position: fixed;
-                    top: 160px;
+                    top: 170px;
                     right: 20px;
-                    background: #1a1a1a;
+                    background: rgba(26, 26, 26, 0.95);
                     color: #fff;
                     padding: 15px 20px;
-                    border-radius: 10px;
+                    border-radius: 12px;
                     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
                     z-index: 10000;
-                    animation: slideInRight 0.5s ease;
+                    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                     font-size: 0.9rem;
-                    max-width: 300px;
+                    max-width: 320px;
                     line-height: 1.6;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(20px);
                 `;
-                instructions.innerHTML = this.getInstallationInstructions();
+                instructions.innerHTML = this.getInstallationInstructions(os);
                 document.body.appendChild(instructions);
                 
                 setTimeout(() => {
                     instructions.style.animation = 'fadeOut 0.5s ease';
                     setTimeout(() => instructions.remove(), 500);
                 }, 8000);
-            }, 500);
+            }, 600);
         }
         
         setTimeout(() => {
@@ -283,108 +217,35 @@ class DownloadManager {
     /**
      * Get installation instructions based on OS
      */
-    getInstallationInstructions() {
+    getInstallationInstructions(os) {
         const instructions = {
-            'windows': '📝 Run the .exe file and follow the installation wizard.',
-            'macos': '📝 Open the .dmg file and drag REDitors to Applications folder.',
-            'linux': '📝 Make the AppImage executable: <code>chmod +x REDitors*.AppImage</code>',
-            'unknown': '📝 Extract the ZIP file and follow the README instructions.'
+            'windows': '<strong>Next Steps:</strong><br/>1. Open the downloaded file<br/>2. Follow the installation wizard<br/>3. Launch REDitors',
+            'macos': '<strong>Next Steps:</strong><br/>1. Open the .dmg file<br/>2. Drag REDitors to Applications<br/>3. Launch from Applications folder',
+            'linux': '<strong>Next Steps:</strong><br/>1. Make the file executable<br/>2. Run the installer<br/>3. Launch REDitors'
         };
         
-        return instructions[this.currentOS];
+        return instructions[os] || '<strong>Next Steps:</strong><br/>Follow the installation instructions.';
     }
     
     /**
      * Track download for analytics
      */
-    trackDownload() {
+    trackDownload(os) {
         console.log('Download Analytics:', {
-            os: this.currentOS,
-            version: this.latestVersion || 'latest',
+            os: os,
             timestamp: new Date().toISOString(),
-            downloadURL: this.downloadURL
+            downloadPath: this.getDownloadPath(os),
+            userAgent: navigator.userAgent
         });
-    }
-    
-    /**
-     * Create download modal with options
-     */
-    createDownloadModal() {
-        const modal = document.createElement('div');
-        modal.id = 'downloadModal';
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        `;
         
-        modal.innerHTML = `
-            <div style="background: #1a1a1a; padding: 40px; border-radius: 15px; max-width: 500px; width: 90%;">
-                <h2 style="margin: 0 0 20px; font-size: 2rem; font-weight: 900;">Download REDitors</h2>
-                <p style="color: #666; margin-bottom: 30px;">Choose your platform:</p>
-                
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <button class="download-option" data-os="windows" style="padding: 15px 20px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: left; transition: all 0.3s;">
-                        🪟 Windows (64-bit)
-                    </button>
-                    <button class="download-option" data-os="macos" style="padding: 15px 20px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: left; transition: all 0.3s;">
-                        🍎 macOS
-                    </button>
-                    <button class="download-option" data-os="linux" style="padding: 15px 20px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: left; transition: all 0.3s;">
-                        🐧 Linux (AppImage)
-                    </button>
-                    <button class="download-option" data-os="source" style="padding: 15px 20px; background: #333; color: #fff; border: 1px solid #555; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: left; transition: all 0.3s;">
-                        📦 Source Code (ZIP)
-                    </button>
-                </div>
-                
-                <button id="closeModal" style="margin-top: 30px; padding: 10px 20px; background: transparent; color: #666; border: 1px solid #333; border-radius: 8px; cursor: pointer; width: 100%;">
-                    Cancel
-                </button>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Add event listeners
-        modal.querySelectorAll('.download-option').forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                btn.style.transform = 'translateX(10px)';
+        // You can add Google Analytics or other tracking here
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'download', {
+                'event_category': 'Downloads',
+                'event_label': os,
+                'value': 1
             });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translateX(0)';
-            });
-            btn.addEventListener('click', () => {
-                const os = btn.dataset.os;
-                if (os === 'source') {
-                    window.open(this.getZipDownload(), '_blank');
-                } else {
-                    this.currentOS = os;
-                    this.downloadURL = this.getDownloadURL(os);
-                    this.startDownload();
-                }
-                modal.remove();
-            });
-        });
-        
-        document.getElementById('closeModal').addEventListener('click', () => {
-            modal.remove();
-        });
-        
-        // Close on outside click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.remove();
-            }
-        });
+        }
     }
 }
 
@@ -400,7 +261,7 @@ if (!document.querySelector('#download-animations')) {
     style.textContent = `
         @keyframes slideInRight {
             from {
-                transform: translateX(100%);
+                transform: translateX(400px);
                 opacity: 0;
             }
             to {
@@ -412,9 +273,11 @@ if (!document.querySelector('#download-animations')) {
         @keyframes fadeOut {
             from {
                 opacity: 1;
+                transform: translateY(0);
             }
             to {
                 opacity: 0;
+                transform: translateY(-10px);
             }
         }
         
@@ -425,6 +288,37 @@ if (!document.querySelector('#download-animations')) {
             to {
                 opacity: 1;
             }
+        }
+        
+        /* Enhanced button styles */
+        .cta-btn-secondary {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+        }
+        
+        .cta-btn-secondary:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .cta-btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cta-btn-secondary:hover::before {
+            left: 100%;
         }
     `;
     document.head.appendChild(style);

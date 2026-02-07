@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Credits - REDitors</title>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #000;
+            --text: #fff;
+            --accent: #ff0000;
+            --gray: #1a1a1a;
+            --border: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .user-info {
+            background: var(--gray);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-text h2 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .user-text p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .credit-balance {
+            background: linear-gradient(135deg, var(--accent) 0%, #cc0000 100%);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .credit-balance-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .credit-balance-amount {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .package-card {
+            background: var(--gray);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .package-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.3);
+        }
+
+        .package-card.popular {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, transparent 100%);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .package-name {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .package-credits {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .package-credits span {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .package-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .package-price-per {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 24px;
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .package-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .package-features li i {
+            color: var(--accent);
+            width: 16px;
+            height: 16px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+        }
+
+        .buy-btn:disabled {
+            background: #333;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 80px;
+        }
+
+        .faq-title {
+            font-size: 2rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            background: var(--gray);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .faq-answer {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: #888;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 24px 20px 24px;
+            max-height: 500px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 10001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #00d084;
+        }
+
+        .notification.error {
+            background: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            Back to Home
+        </a>
+
+        <div class="header">
+            <div class="logo">REDITORS</div>
+            <h1>Purchase Credits</h1>
+            <p class="subtitle">1 Credit = 1 Minute of AI-Powered Transcription</p>
+        </div>
+
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="user-details">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-text">
+                    <h2 id="userName">Loading...</h2>
+                    <p id="userEmail">Loading...</p>
+                </div>
+            </div>
+            <div class="credit-balance">
+                <div class="credit-balance-label">Current Balance</div>
+                <div class="credit-balance-amount" id="currentCredits">0</div>
+            </div>
+        </div>
+
+        <div class="packages-grid" id="packagesGrid">
+            <!-- Packages will be loaded here -->
+        </div>
+
+        <div class="faq-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do credits work?
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Credits are used to transcribe audio in your videos. 1 credit = 1 minute of transcription. For example, a 5-minute video costs 5 credits.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Do credits expire?
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    No! Your credits never expire. Buy once, use anytime.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What payment methods do you accept?
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    We accept all major credit cards, debit cards, and digital wallets through our secure Stripe payment processor.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can I get a refund?
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    We offer a 30-day money-back guarantee. If you're not satisfied with the service, contact support for a full refund.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Is there a subscription option?
+                    <i data-lucide="chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Currently, we offer pay-as-you-go credits. Subscription plans are coming soon! Sign up for our newsletter to be notified.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Supabase Config -->
+    <script src="supabase-config.js"></script>
+    
+    <!-- Credits Page Script -->
+    <script src="credits.js"></script>
+    
+    <script>
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+            
+            // Re-initialize icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -66,16 +66,13 @@
         <div class="nav-container">
             <div class="logo-wrapper">
                 <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
-                <span class="version">Pro v2.0</span>
+                <span class="version">Beta</span>
             </div>
             
             <div class="nav-center">
-                <a href="#features" class="nav-link">Features</a>
-                <a href="pages/workspace.html" class="nav-link">Workspace</a>
-                <a href="pages/pricing.html" class="nav-link">Pricing</a>
-                <a href="pages/tutorials.html" class="nav-link">Learn</a>
-                <a href="pages/community.html" class="nav-link">Community</a>
-                <a href="pages/showcase.html" class="nav-link">Showcase</a>
+                <a href="Pages/features.html" class="nav-link">Features</a>
+                <a href="Pages/pricing.html" class="nav-link">Pricing</a>
+                <a href="Pages/contact.html" class="nav-link">Contact</a> 
             </div>
             
             <div class="nav-right">
@@ -124,9 +121,9 @@
                         <i data-lucide="plus-circle"></i>
                         <span>New Project</span>
                     </div>
-                    <div class="search-item" data-action="workspace">
+                    <div class="search-item" data-action="Contact">
                         <i data-lucide="grid"></i>
-                        <span>Open Workspace</span>
+                        <span>Open Contact</span>
                     </div>
                     <div class="search-item" data-action="export">
                         <i data-lucide="download"></i>
@@ -189,7 +186,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-content">
             <a href="#features" class="mobile-menu-link">Features</a>
-            <a href="pages/workspace.html" class="mobile-menu-link">Workspace</a>
+            <a href="pages/Contact.html" class="mobile-menu-link">Contact</a>
             <a href="pages/pricing.html" class="mobile-menu-link">Pricing</a>
             <a href="pages/tutorials.html" class="mobile-menu-link">Learn</a>
             <a href="pages/community.html" class="mobile-menu-link">Community</a>
@@ -242,21 +239,27 @@
                     </div>
                 </div>
                 
-                <div class="cta-area" data-aos="fade-up" data-aos-delay="400">
-                    <div class="cta-buttons">
-                        <a href="pages/workspace.html" class="cta-btn-primary">
-                            <span class="btn-text">Launch Workspace</span>
-                            <span class="btn-icon">→</span>
-                        </a>
-                        <a href="#download" class="cta-btn-secondary" id="mainBtn">
-                            <span class="btn-text">Download Free</span>
-                            <span class="btn-icon">⬇</span>
-                        </a>
-                        <a href="pages/live-demo.html" class="cta-btn-outline">
-                            <span class="btn-text">Live Demo</span>
-                            <span class="btn-icon">▶</span>
-                        </a>
-                    </div>
+             <div class="cta-buttons">
+
+    <!-- Download for Windows -->
+    <a href="https://codeload.github.com/REDitors/install-windows/zip/refs/heads/main"
+       class="cta-btn-secondary"
+       id="downloadWindows">
+        <span class="btn-text">Download for Windows</span>
+        <span class="btn-icon">🪟</span>
+    </a>
+
+
+    <!-- Download for macOS -->
+    <a href="https://codeload.github.com/REDitors/install-macos/zip/refs/heads/main"
+       class="cta-btn-secondary"
+       id="downloadMacOS">
+        <span class="btn-text">Download for macOS</span>
+        <span class="btn-icon">🍎</span>
+    </a>
+
+
+
                     <div class="cta-info">
                         <div class="os-detect">
                             <span class="os-icon">💻</span>
@@ -840,7 +843,7 @@
                     <h3>Ready to create?</h3>
                     <p>Launch the full workspace or download the desktop app</p>
                     <div class="demo-buttons">
-                        <a href="pages/workspace.html" class="btn-primary">Launch Workspace</a>
+                        <a href="pages/Contact.html" class="btn-primary">Launch Contact</a>
                         <a href="#download" class="btn-secondary">Download App</a>
                     </div>
                 </div>
@@ -957,7 +960,7 @@
                     <span>Start Free Trial</span>
                     <span class="cta-arrow">→</span>
                 </a>
-                <a href="pages/workspace.html" class="final-cta-btn-secondary">
+                <a href="pages/Contact.html" class="final-cta-btn-secondary">
                     <span>Try Web Version</span>
                 </a>
             </div>
@@ -985,7 +988,7 @@
             <div class="footer-links">
                 <div class="footer-column">
                     <h4>Product</h4>
-                    <a href="pages/features.html">Features</a>
+                    <a href="Pages/features.html">Features</a>
                     <a href="pages/pricing.html">Pricing</a>
                     <a href="pages/workspace.html">Workspace</a>
                     <a href="pages/download.html">Download</a>
@@ -1057,6 +1060,7 @@
     <script src="Scripts/search.js"></script>
     <script src="Scripts/notifications.js"></script>
     <script src="Scripts/feature-tabs.js"></script>
+    <script src="Scripts/download.js"></script>
     <script src="Scripts/main.js"></script>
     
     <script>

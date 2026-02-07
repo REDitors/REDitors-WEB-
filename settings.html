@@ -4,446 +4,438 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - REDitors</title>
-    <meta name="robots" content="noindex, nofollow">
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="Styles/reset.css">
-    <link rel="stylesheet" href="Styles/variables.css">
-    <link rel="stylesheet" href="Styles/animations.css">
-    <link rel="stylesheet" href="Styles/components.css">
-    <link rel="stylesheet" href="Styles/layout.css">
-    <link rel="stylesheet" href="Styles/responsive.css">
-    
-    <!-- Supabase Client -->
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
-        .settings-container {
-            max-width: 800px;
-            margin: 120px auto 60px;
-            padding: 0 20px;
-            animation: fadeInUp 0.6s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        :root {
+            --bg: #000;
+            --text: #fff;
+            --accent: #ff0000;
+            --gray: #1a1a1a;
+            --border: #333;
         }
-        
-        .settings-header {
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
             margin-bottom: 40px;
+            transition: all 0.3s ease;
         }
-        
-        .settings-header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 10px;
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+        }
+
+        .card {
+            background: var(--gray);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        
-        .settings-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 24px;
+
+        .card-title i {
+            color: var(--accent);
         }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
+
+        .setting-item {
+            padding: 24px 0;
             border-bottom: 1px solid var(--border);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-header {
             display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-dim);
-            font-size: 14px;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-family: inherit;
-            transition: all 0.2s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
-        }
-        
-        .toggle-switch {
-            display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 12px 0;
+            align-items: start;
+            margin-bottom: 8px;
         }
-        
-        .toggle-label {
-            font-weight: 500;
+
+        .setting-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
         }
-        
-        .switch {
+
+        .setting-info p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
             position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
+            width: 60px;
+            height: 32px;
         }
-        
-        .switch input {
+
+        .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
-        .slider {
+
+        .toggle-slider {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--bg);
-            border: 1px solid var(--border);
-            transition: .4s;
-            border-radius: 34px;
+            background-color: #333;
+            transition: 0.4s;
+            border-radius: 32px;
         }
-        
-        .slider:before {
+
+        .toggle-slider:before {
             position: absolute;
             content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: var(--text-dim);
-            transition: .4s;
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
             border-radius: 50%;
         }
-        
-        input:checked + .slider {
+
+        input:checked + .toggle-slider {
             background-color: var(--accent);
-            border-color: var(--accent);
         }
-        
-        input:checked + .slider:before {
-            transform: translateX(24px);
-            background-color: var(--bg);
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(28px);
         }
-        
-        .btn-save {
-            background: var(--accent);
-            color: var(--bg);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 10px;
+            margin-bottom: 8px;
+            color: #ccc;
         }
-        
-        .btn-save:hover {
-            opacity: 0.9;
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn {
+            padding: 14px 32px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #cc0000;
             transform: translateY(-2px);
         }
-        
-        .btn-save:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+
+        .btn-danger {
+            background: #ff4444;
         }
-        
-        .loading-settings {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 400px;
-            font-size: 18px;
-            color: var(--text-dim);
+
+        .btn-danger:hover {
+            background: #cc0000;
         }
-        
-        .success-message {
-            background: #44ff44;
-            color: #000;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            display: none;
+
+        .danger-zone {
+            border: 2px solid #ff4444;
+            background: rgba(255, 68, 68, 0.1);
         }
-        
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
+
+        .danger-zone .card-title {
+            color: #ff4444;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .danger-zone .card-title i {
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .setting-header {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav" id="mainNav">
-        <div class="nav-container">
-            <div class="logo-wrapper">
-                <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
-                <span class="version">Pro v2.0</span>
-            </div>
-            
-            <div class="nav-center">
-                <a href="#features" class="nav-link">Features</a>
-                <a href="pages/workspace.html" class="nav-link">Workspace</a>
-                <a href="pages/pricing.html" class="nav-link">Pricing</a>
-                <a href="pages/tutorials.html" class="nav-link">Learn</a>
-                <a href="pages/community.html" class="nav-link">Community</a>
-                <a href="pages/showcase.html" class="nav-link">Showcase</a>
-            </div>
-            
-            <div class="nav-right">
-                <button class="nav-icon-btn" id="searchBtn" aria-label="Search">
-                    <i data-lucide="search"></i>
-                </button>
-                <button class="nav-icon-btn" id="notificationsBtn" aria-label="Notifications">
-                    <i data-lucide="bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <select id="langSwitch" class="lang-switch">
-                    <option value="en">EN</option>
-                    <option value="jp">日本語</option>
-                    <option value="fr">FR</option>
-                    <option value="de">DE</option>
-                    <option value="es">ES</option>
-                    <option value="ru">РУ</option>
-                </select>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="theme-icon">☀</span>
-                </button>
-                <!-- Auth section will be inserted here by session manager -->
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <div class="container">
+        <a href="Profile.html" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            Back to Profile
+        </a>
 
-    <div class="settings-container" id="settingsContainer">
-        <div class="loading-settings" id="loadingSettings">
-            Loading settings...
+        <div class="header">
+            <div class="logo">REDITORS</div>
+            <h1>Settings</h1>
         </div>
-        
-        <div id="settingsContent" style="display: none;">
-            <div class="settings-header">
-                <h1><i data-lucide="settings"></i> Account Settings</h1>
-                <p>Manage your account preferences and settings</p>
-            </div>
+
+        <!-- Account Settings -->
+        <div class="card">
+            <h2 class="card-title">
+                <i data-lucide="user"></i>
+                Account
+            </h2>
             
-            <div class="success-message" id="successMessage"></div>
-            
-            <div class="settings-section">
-                <div class="section-title">
-                    <i data-lucide="user"></i>
-                    Personal Information
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Email Address</h3>
+                        <p id="currentEmail">Loading...</p>
+                    </div>
                 </div>
-                <form id="profileForm">
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Member Since</h3>
+                        <p id="memberSince">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <form id="passwordForm">
+                    <h3 style="margin-bottom: 16px;">Change Password</h3>
                     <div class="form-group">
-                        <label class="form-label">Display Name</label>
-                        <input type="text" class="form-input" id="settingName" placeholder="Your Name" required>
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="newPassword" class="form-input" placeholder="Enter new password" minlength="6">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" id="settingEmail" readonly style="opacity: 0.7; cursor: not-allowed;">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password" minlength="6">
                     </div>
-                    <button type="submit" class="btn-save" id="saveProfileBtn">Save Changes</button>
+                    <button type="submit" class="btn">Update Password</button>
                 </form>
             </div>
-            
-            <div class="settings-section">
-                <div class="section-title">
-                    <i data-lucide="bell"></i>
-                    Notifications
-                </div>
-                <div class="toggle-switch">
-                    <span class="toggle-label">Email Notifications</span>
-                    <label class="switch">
-                        <input type="checkbox" checked id="emailNotif">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-switch">
-                    <span class="toggle-label">Product Updates</span>
-                    <label class="switch">
-                        <input type="checkbox" checked id="productUpdates">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-switch">
-                    <span class="toggle-label">Security Alerts</span>
-                    <label class="switch">
-                        <input type="checkbox" checked id="securityAlerts">
-                        <span class="slider"></span>
+        </div>
+
+        <!-- Plugin Settings -->
+        <div class="card">
+            <h2 class="card-title">
+                <i data-lucide="sliders"></i>
+                Plugin Preferences
+            </h2>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Auto-sync Captions to Timeline</h3>
+                        <p>Automatically align captions with clip timecode</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoSync" checked>
+                        <span class="toggle-slider"></span>
                     </label>
                 </div>
             </div>
-            
-            <div class="settings-section">
-                <div class="section-title">
-                    <i data-lucide="shield"></i>
-                    Security
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Default Language</h3>
+                        <p>Transcription language preference</p>
+                    </div>
                 </div>
-                <button class="btn-save" onclick="window.location.href='ForgotPassword.html'" style="background: transparent; border: 1px solid var(--border); color: var(--text);">Change Password</button>
-                <button class="btn-save" id="deleteAccountBtn" style="background: transparent; border: 1px solid #ff4444; color: #ff4444; margin-left: 10px;">Delete Account</button>
+                <select class="form-select" id="defaultLanguage" style="margin-top: 12px;">
+                    <option value="auto">Auto-detect</option>
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="zh">Chinese</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Default Caption Style</h3>
+                        <p>Uppercase or normal text</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="upperCaseDefault">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="card">
+            <h2 class="card-title">
+                <i data-lucide="bell"></i>
+                Notifications
+            </h2>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Email Notifications</h3>
+                        <p>Receive updates about your account</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Low Credit Alerts</h3>
+                        <p>Get notified when credits are running low</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="lowCreditAlerts" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card danger-zone">
+            <h2 class="card-title">
+                <i data-lucide="alert-triangle"></i>
+                Danger Zone
+            </h2>
+
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <h3>Delete Account</h3>
+                        <p>Permanently delete your account and all data</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="deleteAccount()" style="margin-top: 12px;">
+                    Delete Account
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="Scripts/supabase-config.js"></script>
-    <script src="Scripts/session.js"></script>
+    <!-- Supabase Config -->
+    <script src="supabase-config.js"></script>
+    
+    <!-- Settings Script -->
+    <script src="settings.js"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
             lucide.createIcons();
+        }
+
+        async function deleteAccount() {
+            const confirmed = confirm(
+                'Are you sure you want to delete your account?\n\n' +
+                'This will permanently delete:\n' +
+                '• Your profile\n' +
+                '• All credits\n' +
+                '• All transcription history\n\n' +
+                'This action cannot be undone.'
+            );
+
+            if (!confirmed) return;
+
+            const doubleConfirm = prompt('Type "DELETE" to confirm:');
             
-            const loadingSettings = document.getElementById('loadingSettings');
-            const settingsContent = document.getElementById('settingsContent');
-            const successMessage = document.getElementById('successMessage');
-            
-            // Wait for session manager to initialize
-            const checkSession = async () => {
-                if (!window.sessionManager) {
-                    setTimeout(checkSession, 100);
-                    return;
-                }
-                
-                await window.sessionManager.waitForInit();
-                
-                if (window.sessionManager.currentUser) {
-                    updateSettingsUI(window.sessionManager.currentUser);
-                    loadingSettings.style.display = 'none';
-                    settingsContent.style.display = 'block';
-                    setupFormHandlers();
-                } else {
-                    setTimeout(() => {
-                        window.location.href = 'Auth.html';
-                    }, 500);
-                }
-            };
-            
-            checkSession();
-            
-            function updateSettingsUI(user) {
-                const name = user.user_metadata?.full_name || user.user_metadata?.display_name || '';
-                const email = user.email;
-                
-                document.getElementById('settingName').value = name;
-                document.getElementById('settingEmail').value = email;
+            if (doubleConfirm !== 'DELETE') {
+                alert('Account deletion cancelled.');
+                return;
             }
-            
-            function setupFormHandlers() {
-                // Profile form submission
-                const profileForm = document.getElementById('profileForm');
-                profileForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    
-                    const saveBtn = document.getElementById('saveProfileBtn');
-                    const nameInput = document.getElementById('settingName');
-                    const newName = nameInput.value.trim();
-                    
-                    if (!newName) return;
-                    
-                    saveBtn.disabled = true;
-                    saveBtn.textContent = 'Saving...';
-                    
-                    try {
-                        const { error } = await window.supabaseClient.auth.updateUser({
-                            data: {
-                                full_name: newName,
-                                display_name: newName.split(' ')[0]
-                            }
-                        });
-                        
-                        if (error) throw error;
-                        
-                        showSuccess('Profile updated successfully!');
-                        
-                        // Update session manager
-                        if (window.sessionManager) {
-                            await window.sessionManager.checkSession();
-                            window.sessionManager.updateNavigationUI();
-                        }
-                        
-                    } catch (error) {
-                        console.error('Update error:', error);
-                        alert('Failed to update profile: ' + error.message);
-                    } finally {
-                        saveBtn.disabled = false;
-                        saveBtn.textContent = 'Save Changes';
-                    }
-                });
-                
-                // Delete account
-                const deleteBtn = document.getElementById('deleteAccountBtn');
-                deleteBtn.addEventListener('click', async () => {
-                    const confirmed = confirm('Are you sure you want to delete your account? This action cannot be undone.');
-                    
-                    if (!confirmed) return;
-                    
-                    const doubleConfirm = prompt('Type "DELETE" to confirm account deletion:');
-                    
-                    if (doubleConfirm !== 'DELETE') {
-                        alert('Account deletion cancelled.');
-                        return;
-                    }
-                    
-                    alert('Account deletion is not yet implemented. Please contact support.');
-                });
+
+            if (window.settingsManager) {
+                await window.settingsManager.deleteAccount();
             }
-            
-            function showSuccess(message) {
-                successMessage.textContent = message;
-                successMessage.classList.add('show');
-                
-                setTimeout(() => {
-                    successMessage.classList.remove('show');
-                }, 3000);
-            }
-        });
+        }
     </script>
 </body>
 </html>
