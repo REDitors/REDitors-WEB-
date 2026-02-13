@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="REDitors - Professional monochrome video editing suite with advanced AI-powered tools">
-    <meta name="keywords" content="video editor, monochrome, cinema, RAW, professional editing, AI tools">
-    <meta name="author" content="REDitors Team">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="REDitors | Cinema-Grade Monochrome Editing">
-    <meta property="og:description" content="The most advanced video editor for monochrome storytelling">
-    <meta property="og:type" content="website">
-    
-    <title>REDitors | Professional Monochrome Video Suite</title>
+    <title>REDitors - Pre-Order Now | Revolutionary Adobe Plugin</title>
+    <meta name="description" content="Pre-order REDitors - The ultimate Adobe Premiere Pro &amp; After Effects plugin. Get exclusive early access!">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Stylesheets -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="Styles/Main.css">
+    <link rel="stylesheet" href="Styles/Preorder.css">
     <link rel="stylesheet" href="Styles/reset.css">
     <link rel="stylesheet" href="Styles/variables.css">
     <link rel="stylesheet" href="Styles/animations.css">
@@ -31,1049 +20,691 @@
     <link rel="stylesheet" href="Styles/phantom-sections.css">
     <link rel="stylesheet" href="Styles/responsive.css">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
-    
-    <!-- Supabase Client -->
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-</head>
-<body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-logo">REDitors</div>
-            <div class="loading-bar">
-                <div class="loading-progress" id="loadingProgress"></div>
-            </div>
-            <div class="loading-text" id="loadingText">INITIALIZING SYSTEM...</div>
-        </div>
-    </div>
-
-    <!-- Film Grain Overlay -->
-    <div class="noise"></div>
-    <div class="scanlines"></div>
-    
-    <!-- Cursor Follower -->
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-outline" id="cursorOutline"></div>
+<style id="auth-notification-styles">
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+        
+        .user-dropdown {
+            min-width: 220px;
+        }
+        
+        .user-info {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+        
+        .user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+        
+        .user-email {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            word-break: break-all;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 8px 0;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            color: var(--text);
+            text-decoration: none;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--gray);
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        .dropdown-icon {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+    </style></head>
+<body class="preorder-body" data-aos-easing="ease-out" data-aos-duration="800" data-aos-delay="0">
     
     <!-- Navigation -->
-    <nav class="nav" id="mainNav">
-        <div class="nav-container">
-            <div class="logo-wrapper">
-                <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
-                <span class="version">Beta</span>
+    <nav id="mainNav" class="main-nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-left">
+                    <a href="index.html" class="logo">
+                        <span class="logo-text">RED</span><span class="logo-accent">itors</span>
+                    </a>
+                </div>
+                <div class="nav-right">
+                    <!-- Session manager will populate this -->
+                <div class="auth-section">
+            <div class="user-menu">
+                <div class="user-avatar" title="REDitors">
+                    R
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-info">
+                        <div class="user-name">REDitors</div>
+                        <div class="user-email">reditorscontact@gmail.com</div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="Profile.html" class="dropdown-item">
+                        <span class="dropdown-icon">👤</span>
+                        Profile
+                    </a>
+                    <a href="settings.html" class="dropdown-item">
+                        <span class="dropdown-icon">⚙️</span>
+                        Settings
+                    </a>
+                    <a href="ForgotPassword.html" class="dropdown-item">
+                        <span class="dropdown-icon">🔑</span>
+                        Reset Password
+                    </a>
+                    <a href="index.html#projects" class="dropdown-item">
+                        <span class="dropdown-icon">📁</span>
+                        My Projects
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="signOutBtn">
+                        <span class="dropdown-icon">🚪</span>
+                        Sign Out
+                    </button>
+                </div>
             </div>
-            
-            <div class="nav-center">
-                <a href="Pages/features.html" class="nav-link">Features</a>
-                <a href="Pages/pricing.html" class="nav-link">Pricing</a>
-                <a href="Pages/contact.html" class="nav-link">Contact</a> 
-            </div>
-            
-            <div class="nav-right">
-                <button class="nav-icon-btn" id="searchBtn" aria-label="Search">
-                    <i data-lucide="search"></i>
-                </button>
-                <button class="nav-icon-btn" id="notificationsBtn" aria-label="Notifications">
-                    <i data-lucide="bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <select id="langSwitch" class="lang-switch">
-                    <option value="en">EN</option>
-                    <option value="jp">日本語</option>
-                    <option value="fr">FR</option>
-                    <option value="de">DE</option>
-                    <option value="es">ES</option>
-                    <option value="ru">РУ</option>
-                </select>
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="theme-icon">☀</span>
-                </button>
-                <!-- Auth section will be inserted here by session manager -->
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+        </div></div>
             </div>
         </div>
     </nav>
 
-    <!-- Search Modal -->
-    <div class="search-modal" id="searchModal">
-        <div class="search-modal-content">
-            <div class="search-header">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Search features, docs, tutorials..." id="searchInput" autofocus>
-                <button class="search-close" id="searchClose">
-                    <i data-lucide="x"></i>
-                </button>
-            </div>
-            <div class="search-results" id="searchResults">
-                <div class="search-category">
-                    <h4>Quick Actions</h4>
-                    <div class="search-item" data-action="new-project">
-                        <i data-lucide="plus-circle"></i>
-                        <span>New Project</span>
-                    </div>
-                    <div class="search-item" data-action="Contact">
-                        <i data-lucide="grid"></i>
-                        <span>Open Contact</span>
-                    </div>
-                    <div class="search-item" data-action="export">
-                        <i data-lucide="download"></i>
-                        <span>Export Project</span>
-                    </div>
-                </div>
-                <div class="search-category">
-                    <h4>Popular Tutorials</h4>
-                    <div class="search-item">
-                        <i data-lucide="play-circle"></i>
-                        <span>Getting Started Guide</span>
-                    </div>
-                    <div class="search-item">
-                        <i data-lucide="film"></i>
-                        <span>Color Grading Masterclass</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notifications Panel -->
-    <div class="notifications-panel" id="notificationsPanel">
-        <div class="notifications-header">
-            <h3>Notifications</h3>
-            <button class="mark-all-read">Mark all read</button>
-        </div>
-        <div class="notifications-list">
-            <div class="notification-item unread">
-                <div class="notification-icon">🎉</div>
-                <div class="notification-content">
-                    <h4>New Feature Released</h4>
-                    <p>AI-powered auto-reframe is now available</p>
-                    <span class="notification-time">2 hours ago</span>
-                </div>
-            </div>
-            <div class="notification-item unread">
-                <div class="notification-icon">💬</div>
-                <div class="notification-content">
-                    <h4>New Comment on Your Project</h4>
-                    <p>Sarah liked your latest film</p>
-                    <span class="notification-time">5 hours ago</span>
-                </div>
-            </div>
-            <div class="notification-item">
-                <div class="notification-icon">🔄</div>
-                <div class="notification-content">
-                    <h4>Update Available</h4>
-                    <p>REDitors v2.0.1 is ready to install</p>
-                    <span class="notification-time">1 day ago</span>
-                </div>
-            </div>
-        </div>
-        <div class="notifications-footer">
-            <a href="pages/notifications.html">View all notifications</a>
-        </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="mobile-menu-content">
-            <a href="#features" class="mobile-menu-link">Features</a>
-            <a href="pages/Contact.html" class="mobile-menu-link">Contact</a>
-            <a href="pages/pricing.html" class="mobile-menu-link">Pricing</a>
-            <a href="pages/tutorials.html" class="mobile-menu-link">Learn</a>
-            <a href="pages/community.html" class="mobile-menu-link">Community</a>
-            <a href="pages/showcase.html" class="mobile-menu-link">Showcase</a>
-            <div class="mobile-menu-divider"></div>
-            <a href="Auth.html" class="mobile-menu-link">Login</a>
-            <a href="Auth.html?signup=true" class="mobile-menu-link mobile-menu-cta">Sign Up Free</a>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <header class="hero-header" id="hero">
-        <div class="hero-background">
-            <div class="hero-gradient"></div>
-            <canvas class="hero-canvas" id="heroCanvas"></canvas>
-        </div>
-        
-        <div class="hero-container">
+    <!-- Hero Section with Countdown -->
+    <section class="preorder-hero">
+        <div class="container">
             <div class="hero-content">
-                <div class="hero-badge" data-aos="fade-up">
-                    <span class="badge-icon">🎬</span>
-                    <span class="badge-text">Cinema-Grade Professional Suite</span>
+                <!-- Status Badge -->
+                <div class="status-badge aos-init aos-animate" data-aos="fade-down">
+                    <span class="status-dot"></span>
+                    <span>COMING SOON</span>
                 </div>
-                
-                <h1 class="hero-title" id="heroTitle" data-aos="fade-up" data-aos-delay="100">
-                    CREATE IN<br><span class="hero-title-outline">BLACK & WHITE.</span>
+
+                <!-- Main Heading -->
+                <h1 class="hero-title aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    The Future of Video Editing<br>
+                    <span class="gradient-text">Starts Here</span>
                 </h1>
-                
-                <p class="hero-description" id="heroDesc" data-aos="fade-up" data-aos-delay="200">
-                    The ultimate professional video editor designed exclusively for monochrome storytelling. 
-                    AI-powered tools, RAW support, and cinema-grade color science.
+
+                <p class="hero-subtitle aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    Revolutionary AI-powered plugin for Adobe Premiere Pro &amp; After Effects.<br>
+                    Join the waitlist for exclusive early access and lifetime benefits.
                 </p>
-                
-                <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="50000">0</div>
-                        <div class="stat-label">Active Creators</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="8">0</div>
-                        <div class="stat-label">K Resolution</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">0.01</div>
-                        <div class="stat-label">s Latency</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-count="120">0</div>
-                        <div class="stat-label">FPS Support</div>
-                    </div>
-                </div>
-                
-             <div class="cta-buttons">
 
-    <!-- Download for Windows -->
-    <a href="https://codeload.github.com/REDitors/install-windows/zip/refs/heads/main"
-       class="cta-btn-secondary"
-       id="downloadWindows">
-        <span class="btn-text">Download for Windows</span>
-        <span class="btn-icon">🪟</span>
-    </a>
-
-
-    <!-- Download for macOS -->
-    <a href="https://codeload.github.com/REDitors/install-macos/zip/refs/heads/main"
-       class="cta-btn-secondary"
-       id="downloadMacOS">
-        <span class="btn-text">Download for macOS</span>
-        <span class="btn-icon">🍎</span>
-    </a>
-
-
-
-                    <div class="cta-info">
-                        <div class="os-detect">
-                            <span class="os-icon">💻</span>
-                            <span id="osDetect">DETECTING SYSTEM...</span>
+                <!-- Countdown Timer -->
+                <div class="countdown-container aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <div class="countdown-label">LAUNCHING IN</div>
+                    <div class="countdown-timer" id="countdown">
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="days">16</div>
+                            <div class="countdown-unit">Days</div>
                         </div>
-                        <p class="cta-note">✓ No credit card • ✓ 30-day trial • ✓ Cancel anytime</p>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="hours">04</div>
+                            <div class="countdown-unit">Hours</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="minutes">21</div>
+                            <div class="countdown-unit">Minutes</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="seconds">02</div>
+                            <div class="countdown-unit">Seconds</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Trust Badges -->
-                <div class="trust-badges" data-aos="fade-up" data-aos-delay="500">
-                    <div class="trust-badge">
-                        <i data-lucide="award"></i>
-                        <span>Editor's Choice 2026</span>
+                <!-- CTA Buttons -->
+                <div class="cta-group aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+                    <button class="btn-primary btn-glow" id="joinWaitlistBtn">
+                        <span>🚀 Join Early Access</span>
+                    </button>
+                    <button class="btn-secondary" id="learnMoreBtn">
+                        <span>Watch Teaser</span>
+                    </button>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="social-proof aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+                    <div class="proof-item">
+                        <div class="proof-number" id="waitlistCount">2,847</div>
+                        <div class="proof-label">Creators Waiting</div>
                     </div>
-                    <div class="trust-badge">
-                        <i data-lucide="shield-check"></i>
-                        <span>SOC 2 Certified</span>
+                    <div class="proof-divider"></div>
+                    <div class="proof-item">
+                        <div class="proof-number">72%</div>
+                        <div class="proof-label">Spots Filled</div>
                     </div>
-                    <div class="trust-badge">
-                        <i data-lucide="star"></i>
-                        <span>4.9/5 Rating</span>
+                    <div class="proof-divider"></div>
+                    <div class="proof-item">
+                        <div class="proof-number">48h</div>
+                        <div class="proof-label">Early Access Period</div>
                     </div>
-                    <div class="trust-badge">
-                        <i data-lucide="users"></i>
-                        <span>50K+ Users</span>
-                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="waitlist-progress aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
+                <div class="progress-info">
+                    <span>Limited Spots: 2,847 / 4,000</span>
+                    <span class="spots-left">1,153 spots left</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 72%"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator hero-scroll" data-aos="fade-up" data-aos-delay="600">
-            <div class="scroll-mouse">
-                <div class="scroll-wheel"></div>
-            </div>
-            <span>Scroll to explore</span>
-        </div>
-    </header>
-
-    <!-- Companies/Partners Section -->
-    <section class="partners-section">
-        <div class="container">
-            <p class="partners-title" data-aos="fade-up">Trusted by leading studios worldwide</p>
-            <div class="partners-grid" data-aos="fade-up" data-aos-delay="100">
-                <div class="partner-logo">PARAMOUNT</div>
-                <div class="partner-logo">WARNER BROS</div>
-                <div class="partner-logo">NETFLIX</div>
-                <div class="partner-logo">A24</div>
-                <div class="partner-logo">CRITERION</div>
-                <div class="partner-logo">BBC FILMS</div>
-            </div>
+        <!-- Animated Background -->
+        <div class="hero-bg-effects">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
         </div>
     </section>
 
-    <!-- Features Showcase -->
-    <section class="features-section" id="features">
+    <!-- Pre-Order Tiers Section -->
+    <section class="preorder-tiers">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">CAPABILITIES</span>
-                <h2 class="section-title">Professional Tools for<br>Monochrome Mastery</h2>
-                <p class="section-description">Everything you need to create stunning black and white films with precision and artistry</p>
+            <div class="section-header aos-init aos-animate" data-aos="fade-up">
+                <h2>Choose Your Access Level</h2>
+                <p>Early supporters get exclusive lifetime benefits</p>
             </div>
 
-            <!-- Feature Tabs -->
-            <div class="feature-tabs" data-aos="fade-up" data-aos-delay="100">
-                <button class="feature-tab active" data-tab="editing">
-                    <i data-lucide="scissors"></i>
-                    <span>Advanced Editing</span>
-                </button>
-                <button class="feature-tab" data-tab="ai">
-                    <i data-lucide="sparkles"></i>
-                    <span>AI Tools</span>
-                </button>
-                <button class="feature-tab" data-tab="color">
-                    <i data-lucide="palette"></i>
-                    <span>Color Science</span>
-                </button>
-                <button class="feature-tab" data-tab="workflow">
-                    <i data-lucide="workflow"></i>
-                    <span>Workflow</span>
-                </button>
-                <button class="feature-tab" data-tab="export">
-                    <i data-lucide="share-2"></i>
-                    <span>Export & Share</span>
-                </button>
-            </div>
-
-            <!-- Tab Content -->
-            <div class="tab-content active" id="editing-tab">
-                <div class="feature-showcase">
-                    <div class="feature-visual" data-aos="fade-right">
-                        <div class="mockup-container">
-                            <div class="mockup-screen">
-                                <div class="timeline-mockup">
-                                    <div class="timeline-track"></div>
-                                    <div class="timeline-track"></div>
-                                    <div class="timeline-track"></div>
-                                    <div class="playhead"></div>
-                                </div>
-                            </div>
+            <div class="tiers-grid">
+                <!-- Tier 1: Early Bird -->
+                <div class="tier-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <div class="tier-header">
+                        <div class="tier-icon">🌟</div>
+                        <h3>Early Bird</h3>
+                        <p class="tier-subtitle">Limited to First 500</p>
+                    </div>
+                    <div class="tier-price">
+                        <span class="price-value">FREE</span>
+                        <span class="price-period">Forever</span>
+                    </div>
+                    <div class="tier-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>48 hours early access</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Exclusive beta tester badge</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Priority support for 6 months</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Early feature previews</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Community Discord access</span>
                         </div>
                     </div>
-                    <div class="feature-details" data-aos="fade-left">
-                        <h3>Professional Timeline Editing</h3>
-                        <p>Industry-leading multi-track timeline with frame-accurate editing, magnetic timeline, and advanced trimming tools.</p>
-                        <ul class="feature-list">
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Unlimited video and audio tracks</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Magnetic timeline with smart snapping</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Advanced ripple, roll, slip, and slide editing</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Multi-cam editing with up to 64 angles</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Nested sequences and compound clips</span>
-                            </li>
-                        </ul>
-                        <a href="pages/features/editing.html" class="feature-link">
-                            Explore editing tools <i data-lucide="arrow-right"></i>
-                        </a>
+                    <button class="tier-btn" data-tier="early-bird">Join Waitlist</button>
+                    <div class="tier-availability">
+                        <span class="spots-remaining">327 spots left</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-content" id="ai-tab">
-                <div class="feature-showcase">
-                    <div class="feature-visual" data-aos="fade-right">
-                        <div class="ai-demo-container">
-                            <div class="ai-panel">
-                                <div class="ai-option">
-                                    <i data-lucide="wand-2"></i>
-                                    <span>Auto Reframe</span>
-                                </div>
-                                <div class="ai-option">
-                                    <i data-lucide="target"></i>
-                                    <span>Object Tracking</span>
-                                </div>
-                                <div class="ai-option">
-                                    <i data-lucide="mic"></i>
-                                    <span>Auto Subtitles</span>
-                                </div>
-                            </div>
+                <!-- Tier 2: Founder -->
+                <div class="tier-card tier-featured aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="tier-header">
+                        <div class="tier-icon">👑</div>
+                        <h3>Founder</h3>
+                        <p class="tier-subtitle">Limited to 1,000 Total</p>
+                    </div>
+                    <div class="tier-price">
+                        <span class="price-original">$149</span>
+                        <span class="price-value">$49</span>
+                        <span class="price-period">One-time</span>
+                    </div>
+                    <div class="tier-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Everything in Early Bird</span>
+                        </div>
+                        <div class="benefit highlighted">
+                            <span class="benefit-icon">✓</span>
+                            <span>Lifetime Pro license (worth $299/yr)</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>72 hours early access</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Founder badge &amp; credits in app</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Lifetime priority support</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>All future updates FREE</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Private Slack channel access</span>
                         </div>
                     </div>
-                    <div class="feature-details" data-aos="fade-left">
-                        <h3>AI-Powered Intelligence</h3>
-                        <p>Cutting-edge AI tools that understand your footage and accelerate your workflow.</p>
-                        <ul class="feature-list">
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Auto reframe for different aspect ratios</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>AI-powered object and face tracking</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Automatic subtitle generation (95+ languages)</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Scene detection and smart cuts</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>AI color matching and tone mapping</span>
-                            </li>
-                        </ul>
-                        <a href="pages/features/ai-tools.html" class="feature-link">
-                            Discover AI features <i data-lucide="arrow-right"></i>
-                        </a>
+                    <button class="tier-btn tier-btn-featured" data-tier="founder">Secure Founder Access</button>
+                    <div class="tier-availability">
+                        <span class="spots-remaining">412 spots left</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="tab-content" id="color-tab">
-                <div class="feature-showcase">
-                    <div class="feature-visual" data-aos="fade-right">
-                        <div class="color-grading-mockup">
-                            <div class="scopes-panel">
-                                <div class="waveform"></div>
-                                <div class="histogram"></div>
-                            </div>
+                <!-- Tier 3: VIP -->
+                <div class="tier-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <div class="tier-header">
+                        <div class="tier-icon">💎</div>
+                        <h3>VIP Elite</h3>
+                        <p class="tier-subtitle">Only 100 Available</p>
+                    </div>
+                    <div class="tier-price">
+                        <span class="price-original">$499</span>
+                        <span class="price-value">$199</span>
+                        <span class="price-period">One-time</span>
+                    </div>
+                    <div class="tier-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Everything in Founder</span>
+                        </div>
+                        <div class="benefit highlighted">
+                            <span class="benefit-icon">✓</span>
+                            <span>1 week exclusive early access</span>
+                        </div>
+                        <div class="benefit highlighted">
+                            <span class="benefit-icon">✓</span>
+                            <span>Direct line to dev team</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Custom feature requests</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>1-on-1 onboarding call</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Exclusive VIP preset packs</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Listed as VIP supporter</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>Early access to all future products</span>
                         </div>
                     </div>
-                    <div class="feature-details" data-aos="fade-left">
-                        <h3>Cinema-Grade Color Science</h3>
-                        <p>Professional color grading tools with industry-standard workflows and LUT support.</p>
-                        <ul class="feature-list">
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Advanced color wheels and curves</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>HDR and Log format support</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Professional scopes (Waveform, Vectorscope, Histogram)</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>LUT support (.cube, .3dl, .mga)</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Dedicated B&W conversion with full control</span>
-                            </li>
-                        </ul>
-                        <a href="pages/features/color-grading.html" class="feature-link">
-                            Master color grading <i data-lucide="arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="workflow-tab">
-                <div class="feature-showcase">
-                    <div class="feature-visual" data-aos="fade-right">
-                        <div class="workflow-diagram">
-                            <div class="workflow-step">Import</div>
-                            <div class="workflow-arrow">→</div>
-                            <div class="workflow-step">Edit</div>
-                            <div class="workflow-arrow">→</div>
-                            <div class="workflow-step">Grade</div>
-                            <div class="workflow-arrow">→</div>
-                            <div class="workflow-step">Export</div>
-                        </div>
-                    </div>
-                    <div class="feature-details" data-aos="fade-left">
-                        <h3>Streamlined Production Workflow</h3>
-                        <p>Optimize your creative process with tools designed for efficiency and collaboration.</p>
-                        <ul class="feature-list">
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Project templates and presets</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Cloud sync and collaboration</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Version control and history</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Team workspaces with permissions</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Integration with Adobe, Resolve, and more</span>
-                            </li>
-                        </ul>
-                        <a href="pages/features/workflow.html" class="feature-link">
-                            Optimize your workflow <i data-lucide="arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="export-tab">
-                <div class="feature-showcase">
-                    <div class="feature-visual" data-aos="fade-right">
-                        <div class="export-mockup">
-                            <div class="export-preset">YouTube 4K</div>
-                            <div class="export-preset">ProRes 422 HQ</div>
-                            <div class="export-preset">H.265 HEVC</div>
-                            <div class="export-preset">Custom...</div>
-                        </div>
-                    </div>
-                    <div class="feature-details" data-aos="fade-left">
-                        <h3>Powerful Export & Distribution</h3>
-                        <p>Export your masterpiece in any format with optimized presets for every platform.</p>
-                        <ul class="feature-list">
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>100+ export presets (YouTube, Vimeo, Instagram, etc.)</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Professional codecs (ProRes, DNxHR, H.265, AV1)</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Batch export and queue management</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Direct upload to social platforms</span>
-                            </li>
-                            <li>
-                                <i data-lucide="check"></i>
-                                <span>Background rendering with GPU acceleration</span>
-                            </li>
-                        </ul>
-                        <a href="pages/features/export.html" class="feature-link">
-                            Learn about export <i data-lucide="arrow-right"></i>
-                        </a>
+                    <button class="tier-btn" data-tier="vip">Claim VIP Status</button>
+                    <div class="tier-availability">
+                        <span class="spots-remaining urgent">Only 23 spots left!</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- The Toolbox (Phantom Style) -->
-    <section class="toolbox-section">
+    <!-- Teaser Section -->
+    <section class="teaser-section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">POWERHOUSE</span>
-                <h2 class="section-title">12+ Professional Tools<br>At Your Fingertips</h2>
-                <p class="section-description">Automate the boring stuff. Focus on the art. Powered by next-gen AI.</p>
+            <div class="section-header aos-init aos-animate" data-aos="fade-up">
+                <h2>Sneak Peek</h2>
+                <p>Get a glimpse of what's coming</p>
             </div>
-            
-            <div class="toolbox-grid">
-                <!-- Tool 1 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="0">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="mic-off"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Silence Remover</h3>
-                        <p>Automatically detect and remove silence from your footage in one click. Perfect for podcasts and interviews.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">AI</span>
-                            <span class="tool-tag">Audio</span>
+
+            <div class="teaser-grid">
+                <!-- Feature Teasers -->
+                <div class="teaser-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <div class="teaser-image blurred">
+                        <div class="blur-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <p>Unlock with Pre-Order</p>
                         </div>
+                        <div class="teaser-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    </div>
+                    <div class="teaser-content">
+                        <h3>AI-Powered Editing</h3>
+                        <p>Revolutionary automation features that will change your workflow forever</p>
                     </div>
                 </div>
 
-                <!-- Tool 2 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="50">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="type"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Auto Captions</h3>
-                        <p>Generate frame-accurate subtitles in 95+ languages instantly with custom styling controls.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">AI</span>
-                            <span class="tool-tag">Text</span>
+                <div class="teaser-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                    <div class="teaser-image blurred">
+                        <div class="blur-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <p>Unlock with Pre-Order</p>
                         </div>
+                        <div class="teaser-bg" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                    </div>
+                    <div class="teaser-content">
+                        <h3>One-Click Effects</h3>
+                        <p>Professional-grade effects and transitions at your fingertips</p>
                     </div>
                 </div>
 
-                <!-- Tool 3 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="scissors"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Scene Edit Detection</h3>
-                        <p>Automatically cut your footage at scene changes. Ideal for color grading workflows.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Video</span>
-                            <span class="tool-tag">Time</span>
+                <div class="teaser-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                    <div class="teaser-image blurred">
+                        <div class="blur-overlay">
+                            <div class="lock-icon">🔒</div>
+                            <p>Unlock with Pre-Order</p>
                         </div>
+                        <div class="teaser-bg" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
                     </div>
-                </div>
-
-                <!-- Tool 4 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="150">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="music"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Auto Ducking</h3>
-                        <p>Background music automatically lowers when dialogue is detected. Professional mix in seconds.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Audio</span>
-                            <span class="tool-tag">Mix</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tool 5 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="wand-2"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Magic Mask</h3>
-                        <p>Isolate subjects with a single click using neural engine masking.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">AI</span>
-                            <span class="tool-tag">VFX</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tool 6 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="250">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="crop"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Smart Reframe</h3>
-                        <p>Intelligently keeps subjects in frame when converting landscape to vertical.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Social</span>
-                            <span class="tool-tag">AI</span>
-                        </div>
-                    </div>
-                </div>
-
-                 <!-- Tool 7 -->
-                 <div class="tool-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="palette"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Color Match</h3>
-                        <p>Instantly match the look of one clip to another with machine learning color science.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Color</span>
-                            <span class="tool-tag">AI</span>
-                        </div>
-                    </div>
-                </div>
-
-                 <!-- Tool 8 -->
-                 <div class="tool-card" data-aos="fade-up" data-aos-delay="350">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="zap"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Render Boost</h3>
-                        <p>Distributed rendering across network nodes for 5x faster export times.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Performance</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tool 9 -->
-                <div class="tool-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="tool-icon-wrapper">
-                        <i data-lucide="file-text"></i>
-                    </div>
-                    <div class="tool-content">
-                        <h3>Text-Based Editing</h3>
-                        <p>Edit your video by editing the transcript. Delete text to delete the clip.</p>
-                        <div class="tool-tags">
-                            <span class="tool-tag">Workflow</span>
-                            <span class="tool-tag">New</span>
-                        </div>
+                    <div class="teaser-content">
+                        <h3>Smart Presets</h3>
+                        <p>Customizable presets that adapt to your editing style</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Comparison Section -->
-    <section class="comparison-section">
+    <!-- Referral Section -->
+    <section class="referral-section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">TRANSFORMATION</span>
-                <h2 class="section-title">See the Difference</h2>
-                <p class="section-description">Drag the slider to see how REDitors transforms flat footage into cinema.</p>
-            </div>
-            
-            <div class="comparison-container" data-aos="fade-up" data-aos-delay="100">
-                <div class="comparison-wrapper">
-                    <div class="comparison-image before">
-                        <div class="comparison-label">Original Log</div>
-                        <!-- Placeholder for before image -->
-                        <div class="placeholder-img before-placeholder"></div>
-                    </div>
-                    <div class="comparison-image after">
-                        <div class="comparison-label">REDitors Monochrome</div>
-                        <!-- Placeholder for after image -->
-                        <div class="placeholder-img after-placeholder"></div>
-                    </div>
-                    <div class="comparison-slider">
-                        <div class="slider-handle">
-                            <i data-lucide="move-horizontal"></i>
+            <div class="referral-card aos-init aos-animate" data-aos="fade-up">
+                <div class="referral-content">
+                    <h2>🎁 Share &amp; Earn Rewards</h2>
+                    <p>Refer friends and climb the leaderboard. Top referrers get exclusive bonuses!</p>
+                    
+                    <div class="referral-benefits">
+                        <div class="referral-benefit">
+                            <span class="benefit-number">3</span>
+                            <span class="benefit-text">Referrals = Jump ahead 100 spots</span>
+                        </div>
+                        <div class="referral-benefit">
+                            <span class="benefit-number">10</span>
+                            <span class="benefit-text">Referrals = Free Founder upgrade</span>
+                        </div>
+                        <div class="referral-benefit">
+                            <span class="benefit-number">25</span>
+                            <span class="benefit-text">Referrals = VIP Elite status</span>
                         </div>
                     </div>
+
+                    <div class="referral-link-container" id="referralLinkContainer" style="display: none;">
+                        <label>Your Referral Link:</label>
+                        <div class="referral-link-input">
+                            <input type="text" id="referralLink" readonly="">
+                            <button class="copy-btn" id="copyLinkBtn">Copy</button>
+                        </div>
+                        <div class="referral-stats">
+                            <span>Referrals: <strong id="referralCount">0</strong></span>
+                            <span>•</span>
+                            <span>Rank: <strong id="referralRank">#--</strong></span>
+                        </div>
+                    </div>
+
+                    <button class="btn-secondary" id="getReferralLinkBtn">Get My Referral Link</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="faq-section">
+    
+
+    <!-- Final CTA -->
+    <section class="final-cta">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">SUPPORT</span>
-                <h2 class="section-title">Common Questions</h2>
-                <p class="section-description">Everything you need to know about REDitors.</p>
-            </div>
+            <div class="cta-content aos-init aos-animate" data-aos="fade-up">
+                <h2>Don't Miss Out on This<br></h2>
+                <p>Join thousands of editors who are getting ready to revolutionize their editing workflow</p>
+                
+<div class="cta-urgency">
 
-            <div class="faq-grid">
-                <div class="faq-item" data-aos="fade-up">
-                    <div class="faq-question">
-                        <h3>Is there a free version?</h3>
-                        <i data-lucide="chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes, REDitors offers a robust Free plan that includes all essential editing tools and 720p export. No watermarks for personal use.</p>
-                    </div>
-                </div>
+    <div class="urgency-item">
+        <img src="assets/premiere-pro.png" class="urgency-icon-img" alt="Premiere Pro">
+        <span>Adobe Premiere Pro</span>
+    </div>
 
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="50">
-                    <div class="faq-question">
-                        <h3>Does it work on Windows and Mac?</h3>
-                        <i data-lucide="chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Absolutely. REDitors is fully optimized for both Windows 11 and macOS Sonoma, including native Apple Silicon support.</p>
-                    </div>
-                </div>
+    <div class="urgency-item">
+        <img src="assets/after-effects.png" class="urgency-icon-img" alt="After Effects">
+        <span>Adobe After Effects</span>
+    </div>
 
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="faq-question">
-                        <h3>Can I import my existing projects?</h3>
-                        <i data-lucide="chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We support XML and EDL import from Premiere Pro, DaVinci Resolve, and Final Cut Pro so you can switch seamlessly.</p>
-                    </div>
-                </div>
+</div>
 
-                <div class="faq-item" data-aos="fade-up" data-aos-delay="150">
-                    <div class="faq-question">
-                        <h3>What are the system requirements?</h3>
-                        <i data-lucide="chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We recommend 16GB RAM and 4GB VRAM for 4K editing. However, our proxy workflow allows editing on lower-end systems.</p>
-                    </div>
-                </div>
+
+                <button class="btn-primary btn-large btn-glow" id="finalCtaBtn">
+                    Secure Your Spot Now
+                </button>
+
+                <p class="cta-guarantee">✓ 30-Day Money-Back Guarantee • ✓ Instant Access After Launch</p>
             </div>
         </div>
     </section>
 
-    <!-- Interactive Demo Section -->
-    <section class="demo-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">EXPERIENCE</span>
-                <h2 class="section-title">Try REDitors Live</h2>
-                <p class="section-description">Experience the power of monochrome editing right in your browser</p>
+    <!-- Waitlist Modal -->
+    <div class="modal" id="waitlistModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            
+            <div class="modal-header">
+                <h2>Join the Revolution</h2>
+                <p>Secure your early access to REDitors</p>
             </div>
 
-            <div class="demo-container" data-aos="fade-up" data-aos-delay="100">
-                <div class="demo-interface">
-                    <div class="demo-toolbar">
-                        <button class="demo-btn" title="Play"><i data-lucide="play"></i></button>
-                        <button class="demo-btn" title="Cut"><i data-lucide="scissors"></i></button>
-                        <button class="demo-btn" title="Trim"><i data-lucide="crop"></i></button>
-                        <button class="demo-btn" title="Color"><i data-lucide="palette"></i></button>
-                        <button class="demo-btn" title="Text"><i data-lucide="type"></i></button>
-                        <button class="demo-btn" title="Effects"><i data-lucide="sparkles"></i></button>
-                    </div>
-                    <div class="demo-viewport">
-                        <div class="demo-placeholder">
-                            <i data-lucide="film"></i>
-                            <p>Interactive demo loading...</p>
-                        </div>
-                    </div>
-                    <div class="demo-timeline">
-                        <div class="demo-track"></div>
-                        <div class="demo-track"></div>
-                    </div>
-                </div>
-                <div class="demo-cta">
-                    <h3>Ready to create?</h3>
-                    <p>Launch the full workspace or download the desktop app</p>
-                    <div class="demo-buttons">
-                        <a href="pages/Contact.html" class="btn-primary">Launch Contact</a>
-                        <a href="#download" class="btn-secondary">Download App</a>
+            <div class="modal-body">
+                <!-- Tier Selection -->
+                <div class="tier-selection" id="tierSelection">
+                    <label>Select Your Tier:</label>
+                    <div class="tier-options">
+                        <button class="tier-option" data-tier="early-bird">
+                            <span class="tier-option-icon">🌟</span>
+                            <span class="tier-option-name">Early Bird</span>
+                            <span class="tier-option-price">FREE</span>
+                        </button>
+                        <button class="tier-option tier-option-featured" data-tier="founder">
+                            <span class="tier-option-icon">👑</span>
+                            <span class="tier-option-name">Founder</span>
+                            <span class="tier-option-price">$49</span>
+                        </button>
+                        <button class="tier-option" data-tier="vip">
+                            <span class="tier-option-icon">💎</span>
+                            <span class="tier-option-name">VIP Elite</span>
+                            <span class="tier-option-price">$199</span>
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">TESTIMONIALS</span>
-                <h2 class="section-title">Loved by Creators</h2>
-                <p class="section-description">Hear from professionals using REDitors every day</p>
-            </div>
+                <!-- Auth Forms -->
+                <div class="auth-forms">
+                    <div class="auth-form active" id="signupForm">
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required="">
+                        <input type="password" id="signupPassword" placeholder="Create password (min 6 characters)" required="">
+                        <input type="text" id="signupName" placeholder="Your name (optional)">
+                        
+                        <button class="btn-primary btn-full" id="signupSubmitBtn">
+                            <span>Join Waitlist</span>
+                        </button>
 
-            <div class="testimonials-grid">
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="0">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">JD</div>
-                        <div class="testimonial-author">
-                            <h4>James Davidson</h4>
-                            <p>Independent Filmmaker</p>
-                        </div>
-                        <div class="testimonial-rating">
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                        </div>
+                        <p class="form-footer">
+                            Already have an account? 
+                            <a href="#" id="switchToLogin">Sign in</a>
+                        </p>
                     </div>
-                    <p class="testimonial-text">"REDitors transformed my workflow. The B&W tools are unmatched, and the AI features save me hours on every project. It's like having an assistant editor built-in."</p>
-                </div>
 
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">SM</div>
-                        <div class="testimonial-author">
-                            <h4>Sarah Martinez</h4>
-                            <p>Documentary Producer</p>
-                        </div>
-                        <div class="testimonial-rating">
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                        </div>
-                    </div>
-                    <p class="testimonial-text">"The color science in REDitors is phenomenal. I can achieve looks that would take hours in other software in just minutes. Game-changer for docs."</p>
-                </div>
+                    <div class="auth-form" id="loginForm">
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required="">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required="">
+                        
+                        <button class="btn-primary btn-full" id="loginSubmitBtn">
+                            <span>Sign In &amp; Continue</span>
+                        </button>
 
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">TC</div>
-                        <div class="testimonial-author">
-                            <h4>Thomas Chen</h4>
-                            <p>Colorist, Post House</p>
-                        </div>
-                        <div class="testimonial-rating">
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                            <i data-lucide="star" class="star-filled"></i>
-                        </div>
-                    </div>
-                    <p class="testimonial-text">"As a professional colorist, I'm impressed by REDitors' dedication to monochrome. The tools are sophisticated yet intuitive. Highly recommended."</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Teaser -->
-    <section class="pricing-teaser">
-        <div class="container">
-            <div class="pricing-teaser-content" data-aos="fade-up">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your needs. All plans include core features.</p>
-                <div class="pricing-cards-mini">
-                    <div class="pricing-mini-card">
-                        <h3>Free</h3>
-                        <div class="price">$0<span>/mo</span></div>
-                        <p>Perfect for learning</p>
-                    </div>
-                    <div class="pricing-mini-card featured">
-                        <div class="featured-badge">Most Popular</div>
-                        <h3>Pro</h3>
-                        <div class="price">$29<span>/mo</span></div>
-                        <p>For professionals</p>
-                    </div>
-                    <div class="pricing-mini-card">
-                        <h3>Studio</h3>
-                        <div class="price">$99<span>/mo</span></div>
-                        <p>For teams</p>
+                        <p class="form-footer">
+                            Don't have an account? 
+                            <a href="#" id="switchToSignup">Sign up</a>
+                        </p>
                     </div>
                 </div>
-                <a href="pages/pricing.html" class="btn-view-pricing">View Full Pricing →</a>
-            </div>
-        </div>
-    </section>
 
-    <!-- CTA Section -->
-    <section class="final-cta-section">
-        <div class="final-cta-content" data-aos="fade-up">
-            <h2 class="final-cta-title">Start Creating Today</h2>
-            <p class="final-cta-description">
-                Join 50,000+ creators crafting stunning monochrome films with REDitors.
-                Start your 30-day free trial now.
-            </p>
-            <div class="final-cta-buttons">
-                <a href="Auth.html?signup=true" class="final-cta-btn-primary">
-                    <span>Start Free Trial</span>
-                    <span class="cta-arrow">→</span>
-                </a>
-                <a href="pages/Contact.html" class="final-cta-btn-secondary">
-                    <span>Try Web Version</span>
-                </a>
-            </div>
-            <p class="final-cta-note">
-                ✓ No credit card required  •  ✓ 30-day free trial  •  ✓ Cancel anytime
-            </p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">REDitors</div>
-                <p class="footer-tagline">Cinema is RAW. Create in monochrome.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Twitter"><i data-lucide="twitter"></i></a>
-                    <a href="#" class="social-link" aria-label="YouTube"><i data-lucide="youtube"></i></a>
-                    <a href="#" class="social-link" aria-label="Instagram"><i data-lucide="instagram"></i></a>
-                    <a href="#" class="social-link" aria-label="GitHub"><i data-lucide="github"></i></a>
-                    <a href="#" class="social-link" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+                <div class="auth-benefits">
+                    <div class="benefit-item">✓ Instant confirmation email</div>
+                    <div class="benefit-item">✓ Track your position in waitlist</div>
+                    <div class="benefit-item">✓ Receive launch notifications</div>
                 </div>
-            </div>
-
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h4>Product</h4>
-                    <a href="Pages/features.html">Features</a>
-                    <a href="pages/pricing.html">Pricing</a>
-                    <a href="pages/workspace.html">Workspace</a>
-                    <a href="pages/download.html">Download</a>
-                    <a href="pages/changelog.html">Changelog</a>
-                    <a href="pages/roadmap.html">Roadmap</a>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Resources</h4>
-                    <a href="pages/tutorials.html">Tutorials</a>
-                    <a href="pages/documentation.html">Documentation</a>
-                    <a href="pages/community.html">Community</a>
-                    <a href="pages/showcase.html">Showcase</a>
-                    <a href="pages/templates.html">Templates</a>
-                    <a href="pages/blog.html">Blog</a>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Company</h4>
-                    <a href="pages/about.html">About Us</a>
-                    <a href="pages/careers.html">Careers</a>
-                    <a href="pages/press.html">Press Kit</a>
-                    <a href="pages/contact.html">Contact</a>
-                    <a href="pages/partners.html">Partners</a>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <a href="pages/privacy.html">Privacy Policy</a>
-                    <a href="pages/terms.html">Terms of Service</a>
-                    <a href="pages/license.html">License</a>
-                    <a href="pages/security.html">Security</a>
-                    <a href="pages/gdpr.html">GDPR</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 REDitors. All rights reserved.</p>
-            <p>Made with precision for the cinema industry.</p>
-            <div class="footer-badges">
-                <span class="footer-badge">SOC 2 Type II</span>
-                <span class="footer-badge">GDPR Compliant</span>
-                <span class="footer-badge">ISO 27001</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cookie Consent -->
-    <div class="cookie-banner" id="cookieBanner">
-        <div class="cookie-content">
-            <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
-            <div class="cookie-buttons">
-                <button class="cookie-btn-accept" id="acceptCookies">Accept</button>
-                <button class="cookie-btn-decline" id="declineCookies">Decline</button>
-                <a href="pages/privacy.html" class="cookie-link">Learn more</a>
             </div>
         </div>
     </div>
 
-    <!-- Scripts: Load in correct order -->
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-success">
+            <div class="success-animation">
+                <div class="success-checkmark">✓</div>
+            </div>
+            <h2>Welcome to the Future! 🎉</h2>
+            <p class="success-message" id="successMessage">You're in! Check your email for confirmation.</p>
+            <div class="success-details" id="successDetails"></div>
+            <button class="btn-primary" id="successCloseBtn">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
     <script src="Scripts/supabase-config.js"></script>
-    <script src="Scripts/utils.js"></script>
     <script src="Scripts/session.js"></script>
-    <script src="Scripts/animation.js"></script>
-    <script src="Scripts/cursor.js"></script>
-    <script src="Scripts/canvas.js"></script>
-    <script src="Scripts/navigation.js"></script>
-    <script src="Scripts/search.js"></script>
-    <script src="Scripts/notifications.js"></script>
-    <script src="Scripts/feature-tabs.js"></script>
-    <script src="Scripts/download.js"></script>
-    <script src="Scripts/main.js"></script>
+    <script src="Scripts/Preorder.js"></script>
     
+    <!-- AOS Animation Library (Optional but recommended) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-        
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 100
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: true,
+                offset: 100
+            });
+        }
+    </script>
+
+    <!-- GOOGLE SHEETS INTEGRATION - ADDED CODE -->
+    <script>
+        // ============================================
+        // GOOGLE SHEETS INTEGRATION
+        // ============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvb4y9g3r3msXTnYP9trTnGtcIchdCPghyVI21aJmQbPlFoKO02uIdZ6LMOGZ5X-i0-Q/exec';
+
+        // Override the signup submit button to also send to Google Sheets
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+            
+            if (signupSubmitBtn) {
+                // Store the original click handler
+                const originalHandler = signupSubmitBtn.onclick;
+                
+                // Add our Google Sheets submission
+                signupSubmitBtn.addEventListener('click', async function(e) {
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const name = document.getElementById('signupName').value.trim();
+                    
+                    // Get selected tier
+                    const selectedTierBtn = document.querySelector('.tier-option.selected');
+                    const tier = selectedTierBtn ? selectedTierBtn.getAttribute('data-tier') : 'early-bird';
+                    
+                    // Validate email before submitting
+                    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        try {
+                            // Send to Google Sheets
+                            await fetch(GOOGLE_SCRIPT_URL, {
+                                method: 'POST',
+                                mode: 'no-cors',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    email: email,
+                                    name: name || 'Not provided',
+                                    tier: tier.toUpperCase(),
+                                    timestamp: new Date().toISOString()
+                                })
+                            });
+                            
+                            console.log('✅ Successfully sent to Google Sheets');
+                        } catch (error) {
+                            console.error('❌ Error sending to Google Sheets:', error);
+                        }
+                    }
+                });
+            }
+            
+            // Also add click handlers to tier buttons to track selection
+            const tierButtons = document.querySelectorAll('.tier-option');
+            tierButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove selected class from all buttons
+                    tierButtons.forEach(b => b.classList.remove('selected'));
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                });
+            });
         });
     </script>
-</body>
-</html>
+    <!-- END GOOGLE SHEETS INTEGRATION -->
+
+</body></html>
