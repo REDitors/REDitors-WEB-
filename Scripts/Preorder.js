@@ -1,14 +1,15 @@
 // ====================================
-// REDitors Pre-Order System - FIXED VERSION WITH REAL USER ACCOUNTS
-// Integrates with Supabase Auth + users table + waitlist table
+// REDitors Simple Waitlist System - PRODUCTION READY
+// Integrates with Supabase waitlist table + Google Sheets
+// No passwords, no tiers, no referrals - just email collection
 // ====================================
 
 class PreOrderManager {
     constructor() {
         this.supabase = null;
-        this.selectedTier = 'early-bird';
         this.launchDate = new Date('2026-03-01T15:00:00Z');
         this.countdownInterval = null;
+        this.googleSheetsUrl = 'https://script.google.com/macros/s/AKfycbyvb4y9g3r3msXTnYP9trTnGtcIchdCPghyVI21aJmQbPlFoKO02uIdZ6LMOGZ5X-i0-Q/exec';
         this.init();
     }
 
@@ -18,7 +19,7 @@ class PreOrderManager {
         this.setupEventListeners();
         this.setupFAQ();
         await this.updateWaitlistStats();
-        console.log('✅ Pre-Order Manager Initialized (FIXED WITH REAL AUTH)');
+        console.log('✅ REDitors Waitlist System Ready');
     }
 
     waitForSupabase() {
@@ -34,7 +35,7 @@ class PreOrderManager {
             
             setTimeout(() => {
                 clearInterval(check);
-                console.warn('⚠️ Supabase timeout');
+                console.warn('⚠️ Supabase timeout - continuing without database');
                 resolve();
             }, 5000);
         });
@@ -88,11 +89,13 @@ class PreOrderManager {
 
     // ===== EVENT LISTENERS =====
     setupEventListeners() {
-        const joinButtons = document.querySelectorAll('#joinWaitlistBtn, #joinWaitlistBtnNav, #finalCtaBtn, .tier-btn');
+        // All join waitlist buttons
+        const joinButtons = document.querySelectorAll(
+            '#joinWaitlistBtn, #joinWaitlistBtnNav, #finalCtaBtn, .tier-btn'
+        );
+        
         joinButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const tier = e.target.getAttribute('data-tier');
-                if (tier) this.selectedTier = tier;
+            btn.addEventListener('click', () => {
                 this.openWaitlistModal();
             });
         });
@@ -105,8 +108,7 @@ class PreOrderManager {
         }
 
         this.setupModalControls();
-        this.setupTierSelection();
-        this.setupAuthForms();
+        this.setupWaitlistForm();
     }
 
     setupModalControls() {
@@ -114,212 +116,185 @@ class PreOrderManager {
         const modalOverlay = document.getElementById('modalOverlay');
         const successCloseBtn = document.getElementById('successCloseBtn');
         
-        if (modalClose) modalClose.addEventListener('click', () => this.closeModal('waitlistModal'));
-        if (modalOverlay) modalOverlay.addEventListener('click', () => this.closeModal('waitlistModal'));
-        if (successCloseBtn) successCloseBtn.addEventListener('click', () => {
-            this.closeModal('successModal');
-            // Refresh the app to show profile
-            if (window.reditors) {
-                window.reditors.checkAuthAndLoadProfile();
+        if (modalClose) {
+            modalClose.addEventListener('click', () => this.closeModal('waitlistModal'));
+        }
+        
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', () => this.closeModal('waitlistModal'));
+        }
+        
+        if (successCloseBtn) {
+            successCloseBtn.addEventListener('click', () => {
+                this.closeModal('successModal');
+                // Refresh to show profile
+                if (window.reditors) {
+                    window.reditors.checkWaitlistStatus();
+                }
+            });
+        }
+    }
+
+    setupWaitlistForm() {
+        const joinBtn = document.getElementById('joinWaitlistSubmitBtn');
+        const emailInput = document.getElementById('waitlistEmail');
+        const nameInput = document.getElementById('waitlistName');
+        
+        if (joinBtn) {
+            joinBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleJoinWaitlist();
+            });
+        }
+        
+        // Handle enter key
+        [emailInput, nameInput].forEach(input => {
+            if (input) {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.handleJoinWaitlist();
+                    }
+                });
             }
         });
     }
 
-    setupTierSelection() {
-        const tierOptions = document.querySelectorAll('.tier-option');
-        tierOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                tierOptions.forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-                this.selectedTier = option.getAttribute('data-tier');
-            });
-        });
+    // ===== JOIN WAITLIST - SIMPLE EMAIL ONLY =====
+    async handleJoinWaitlist() {
+        const email = document.getElementById('waitlistEmail')?.value.trim().toLowerCase();
+        const name = document.getElementById('waitlistName')?.value.trim();
         
-        const defaultTier = document.querySelector('.tier-option[data-tier="founder"]');
-        if (defaultTier) {
-            defaultTier.classList.add('selected');
-            this.selectedTier = 'founder';
-        }
-    }
-
-    setupAuthForms() {
-        const switchToLogin = document.getElementById('switchToLogin');
-        const switchToSignup = document.getElementById('switchToSignup');
+        if (!this.validateEmail(email)) return;
         
-        if (switchToLogin) {
-            switchToLogin.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.toggleAuthForm('login');
-            });
-        }
+        const joinBtn = document.getElementById('joinWaitlistSubmitBtn');
+        if (!joinBtn) return;
         
-        if (switchToSignup) {
-            switchToSignup.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.toggleAuthForm('signup');
-            });
-        }
-        
-        const signupBtn = document.getElementById('signupSubmitBtn');
-        const loginBtn = document.getElementById('loginSubmitBtn');
-        
-        if (signupBtn) {
-            signupBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.handleSignup();
-            });
-        }
-        
-        if (loginBtn) {
-            loginBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.handleLogin();
-            });
-        }
-
-        // Handle enter key
-        const inputs = document.querySelectorAll('#signupEmail, #signupPassword, #signupName, #loginEmail, #loginPassword');
-        inputs.forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const form = input.closest('.auth-form');
-                    if (form.id === 'signupForm') {
-                        this.handleSignup();
-                    } else {
-                        this.handleLogin();
-                    }
-                }
-            });
-        });
-    }
-
-    toggleAuthForm(form) {
-        const signupForm = document.getElementById('signupForm');
-        const loginForm = document.getElementById('loginForm');
-        
-        if (form === 'login') {
-            signupForm.classList.remove('active');
-            loginForm.classList.add('active');
-        } else {
-            loginForm.classList.remove('active');
-            signupForm.classList.add('active');
-        }
-    }
-
-    // ===== SIGNUP - CREATES REAL SUPABASE AUTH USER =====
-    async handleSignup() {
-        const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-        const password = document.getElementById('signupPassword').value;
-        const name = document.getElementById('signupName').value.trim();
-        
-        if (!this.validateSignup(email, password)) return;
-        
-        const signupBtn = document.getElementById('signupSubmitBtn');
-        signupBtn.disabled = true;
-        signupBtn.innerHTML = '<span>⏳ Creating account...</span>';
+        joinBtn.disabled = true;
+        joinBtn.innerHTML = '<span>⏳ Joining...</span>';
         
         try {
-            // Generate referral code BEFORE signup
-            const referralCode = 'REF' + Math.random().toString(36).substring(2, 10).toUpperCase();
-            
-            // Get referred_by code from URL or session
-            const urlParams = new URLSearchParams(window.location.search);
-            const referredBy = urlParams.get('ref') || sessionStorage.getItem('referral_code') || null;
-            
-            // 1. Create Supabase Auth user
-            const { data: authData, error: authError } = await this.supabase.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        display_name: name || null,
-                        referral_code: referralCode,
-                        referred_by: referredBy,
-                        tier: this.selectedTier
-                    }
-                }
-            });
-            
-            if (authError) throw authError;
-            
-            if (!authData.user) {
-                throw new Error('User creation failed');
+            if (!this.supabase) {
+                throw new Error('Database connection not available');
             }
-            
-            console.log('✅ Auth user created:', authData.user.id);
-            
-            // 2. Create/update user in public.users table
-            const { error: userError } = await this.supabase
-                .from('users')
-                .upsert({
-                    id: authData.user.id,
-                    email: email,
-                    display_name: name || null,
-                    referral_code: referralCode,
-                    referred_by: referredBy,
-                    email_verified: false,
-                    subscription_tier: this.selectedTier,
-                    created_at: new Date().toISOString()
-                }, {
-                    onConflict: 'id'
-                });
-            
-            if (userError) {
-                console.error('User table error:', userError);
-                // Continue even if this fails - the trigger should handle it
-            }
-            
-            // 3. Add to waitlist table
-            const { error: waitlistError } = await this.supabase
+
+            // Check if email already exists
+            const { data: existingUser, error: checkError } = await this.supabase
                 .from('waitlist')
-                .insert({
+                .select('email, position, name, created_at')
+                .eq('email', email)
+                .maybeSingle();
+            
+            if (existingUser) {
+                // User already exists
+                console.log('User already on waitlist:', existingUser);
+                
+                // Save to localStorage
+                localStorage.setItem('waitlist_email', email);
+                
+                // Show success with existing data
+                this.showToast('✓ You\'re already on the waitlist!', 'success');
+                this.closeModal('waitlistModal');
+                this.showSuccessModal(email, existingUser.position || 0, existingUser.name);
+                
+                // Refresh app
+                if (window.reditors) {
+                    await window.reditors.checkWaitlistStatus();
+                }
+                
+                return;
+            }
+            
+            // Generate unique referral code
+            const referralCode = this.generateReferralCode();
+            
+            // Add to waitlist database
+            const { data: newEntry, error: insertError } = await this.supabase
+                .from('waitlist')
+                .insert([{
                     email: email,
                     name: name || null,
-                    tier: this.selectedTier,
+                    tier: 'early-bird',
                     referral_code: referralCode,
-                    referred_by: referredBy,
-                    user_id: authData.user.id,
+                    referred_by: null,
                     source: 'website',
-                    campaign: 'preorder',
-                    user_agent: navigator.userAgent
-                });
+                    campaign: 'launch-waitlist',
+                    landing_page: window.location.pathname,
+                    user_agent: navigator.userAgent,
+                    metadata: {
+                        signup_date: new Date().toISOString(),
+                        browser: this.getBrowserInfo()
+                    }
+                }])
+                .select('id, email, position, created_at')
+                .single();
             
-            if (waitlistError) {
-                console.warn('Waitlist insertion warning:', waitlistError);
-                // Continue even if this fails
+            if (insertError) {
+                console.error('Insert error:', insertError);
+                throw insertError;
             }
             
-            // 4. Update referrer's count if applicable
-            if (referredBy) {
-                await this.incrementReferralCount(referredBy);
-            }
+            console.log('✅ Added to waitlist:', newEntry);
             
-            // 5. Send to Google Sheets
-            await this.sendToGoogleSheets(email, name, this.selectedTier);
+            // Save email to localStorage for future visits
+            localStorage.setItem('waitlist_email', email);
             
-            // 6. Update stats
+            // Send to Google Sheets (async, don't wait)
+            this.sendToGoogleSheets(email, name, newEntry.position).catch(err => {
+                console.warn('Google Sheets error (non-critical):', err);
+            });
+            
+            // Update stats
             await this.updateWaitlistStats();
             
-            // 7. Show success
+            // Show success
             this.closeModal('waitlistModal');
-            this.showSuccessModal(email, referralCode, authData.user.id);
+            this.showSuccessModal(email, newEntry.position || 0, name);
+            
+            // Refresh app to show profile
+            if (window.reditors) {
+                await window.reditors.checkWaitlistStatus();
+            }
             
         } catch (error) {
-            console.error('Signup error:', error);
+            console.error('Waitlist error:', error);
             
-            if (error.message?.includes('already registered') || error.message?.includes('duplicate')) {
-                this.showToast('✓ You already have an account! Please sign in.', 'error');
-                this.toggleAuthForm('login');
+            // Check for duplicate email error
+            if (error.message?.includes('duplicate') || 
+                error.code === '23505' || 
+                error.message?.includes('unique')) {
+                
+                this.showToast('✓ You\'re already on the waitlist!', 'success');
+                localStorage.setItem('waitlist_email', email);
+                this.closeModal('waitlistModal');
+                
+                // Try to get existing data
+                try {
+                    const { data } = await this.supabase
+                        .from('waitlist')
+                        .select('position')
+                        .eq('email', email)
+                        .single();
+                    
+                    if (data) {
+                        this.showSuccessModal(email, data.position || 0, name);
+                    }
+                } catch (e) {
+                    console.warn('Could not fetch existing position');
+                }
+                
+                if (window.reditors) {
+                    await window.reditors.checkWaitlistStatus();
+                }
             } else {
-                this.showToast('⚠️ Error: ' + (error.message || 'Signup failed'), 'error');
+                this.showToast('⚠️ Error: ' + (error.message || 'Could not join waitlist'), 'error');
             }
         } finally {
-            signupBtn.disabled = false;
-            signupBtn.innerHTML = '<span>Join Waitlist</span>';
+            joinBtn.disabled = false;
+            joinBtn.innerHTML = '<span>Join Waitlist</span>';
         }
     }
 
-    validateSignup(email, password) {
+    validateEmail(email) {
         if (!email) {
             this.showToast('⚠️ Please enter your email', 'error');
             return false;
@@ -331,119 +306,52 @@ class PreOrderManager {
             return false;
         }
         
-        if (!password || password.length < 6) {
-            this.showToast('⚠️ Password must be at least 6 characters', 'error');
-            return false;
-        }
-        
         return true;
     }
 
-    async incrementReferralCount(referralCode) {
-        try {
-            // Update in users table
-            const { error: usersError } = await this.supabase.rpc('increment_referral_count', {
-                ref_code: referralCode
-            });
-            
-            if (usersError) {
-                // Fallback: direct update
-                const { error: updateError } = await this.supabase
-                    .from('users')
-                    .update({ 
-                        referral_count: this.supabase.raw('referral_count + 1')
-                    })
-                    .eq('referral_code', referralCode);
-                
-                if (updateError) console.warn('Referral count update failed:', updateError);
-            }
-            
-            // Also update waitlist table
-            await this.supabase
-                .from('waitlist')
-                .update({ 
-                    referral_count: this.supabase.raw('referral_count + 1')
-                })
-                .eq('referral_code', referralCode);
-                
-        } catch (e) {
-            console.error('Referral increment error:', e);
+    generateReferralCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = 'REF';
+        for (let i = 0; i < 7; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
+        return code;
+    }
+
+    getBrowserInfo() {
+        const ua = navigator.userAgent;
+        let browser = 'Unknown';
+        
+        if (ua.includes('Firefox')) browser = 'Firefox';
+        else if (ua.includes('Chrome')) browser = 'Chrome';
+        else if (ua.includes('Safari')) browser = 'Safari';
+        else if (ua.includes('Edge')) browser = 'Edge';
+        
+        return browser;
     }
 
     // ===== SEND TO GOOGLE SHEETS =====
-    async sendToGoogleSheets(email, name, tier) {
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvb4y9g3r3msXTnYP9trTnGtcIchdCPghyVI21aJmQbPlFoKO02uIdZ6LMOGZ5X-i0-Q/exec';
-        
+    async sendToGoogleSheets(email, name, position) {
         try {
-            await fetch(GOOGLE_SCRIPT_URL, {
+            const response = await fetch(this.googleSheetsUrl, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: email,
                     name: name || 'Not provided',
-                    tier: tier.toUpperCase(),
-                    timestamp: new Date().toISOString()
+                    position: position || 'N/A',
+                    tier: 'WAITLIST',
+                    timestamp: new Date().toISOString(),
+                    source: 'website'
                 })
             });
+            
             console.log('✅ Sent to Google Sheets');
+            return true;
         } catch (error) {
-            console.error('Google Sheets error:', error);
-        }
-    }
-
-    // ===== LOGIN - USES REAL SUPABASE AUTH =====
-    async handleLogin() {
-        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-        const password = document.getElementById('loginPassword').value;
-        
-        if (!email || !password) {
-            this.showToast('⚠️ Please fill in all fields', 'error');
-            return;
-        }
-        
-        const loginBtn = document.getElementById('loginSubmitBtn');
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<span>⏳ Signing in...</span>';
-        
-        try {
-            // Sign in with Supabase Auth
-            const { data, error } = await this.supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-            
-            if (error) throw error;
-            
-            if (!data.user) {
-                throw new Error('Login failed');
-            }
-            
-            console.log('✅ User logged in:', data.user.id);
-            
-            // Show success
-            this.showToast('✓ Welcome back!', 'success');
-            this.closeModal('waitlistModal');
-            
-            // Refresh app to load user profile
-            if (window.reditors) {
-                await window.reditors.checkAuthAndLoadProfile();
-            }
-            
-        } catch (error) {
-            console.error('Login error:', error);
-            
-            if (error.message?.includes('Invalid login credentials')) {
-                this.showToast('⚠️ Invalid email or password', 'error');
-            } else if (error.message?.includes('Email not confirmed')) {
-                this.showToast('⚠️ Please verify your email first', 'error');
-            } else {
-                this.showToast('⚠️ Login failed. Please try again.', 'error');
-            }
-        } finally {
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<span>Sign In & Continue</span>';
+            console.warn('Google Sheets sync failed (non-critical):', error);
+            return false;
         }
     }
 
@@ -453,6 +361,12 @@ class PreOrderManager {
         if (modal) {
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Focus email input
+            setTimeout(() => {
+                const emailInput = document.getElementById('waitlistEmail');
+                if (emailInput) emailInput.focus();
+            }, 100);
         }
     }
 
@@ -464,27 +378,29 @@ class PreOrderManager {
         }
     }
 
-    showSuccessModal(email, referralCode, userId) {
+    showSuccessModal(email, position, name) {
         const modal = document.getElementById('successModal');
         const messageEl = document.getElementById('successMessage');
         const detailsEl = document.getElementById('successDetails');
         
         if (modal && messageEl) {
             messageEl.innerHTML = `
-                <strong>Welcome aboard!</strong><br>
-                Your account has been created successfully.
+                <strong>Welcome to the waitlist!</strong><br>
+                You're all set for early access.
             `;
         }
         
         if (detailsEl) {
+            const displayName = name ? `<p style="margin: 0 0 12px 0;"><strong>👋 Name:</strong> ${name}</p>` : '';
+            
             detailsEl.innerHTML = `
                 <div style="text-align: left; margin-top: 20px; padding: 20px; background: rgba(68, 255, 68, 0.1); border-radius: 12px; border: 1px solid rgba(68, 255, 68, 0.3);">
                     <p style="margin: 0 0 12px 0;"><strong>📧 Email:</strong> ${email}</p>
-                    <p style="margin: 0 0 12px 0;"><strong>🎯 Tier:</strong> ${this.getTierName(this.selectedTier)}</p>
-                    <p style="margin: 0;"><strong>🔗 Referral Code:</strong> <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px; font-family: monospace;">${referralCode}</code></p>
+                    ${displayName}
+                    <p style="margin: 0;"><strong>📊 Position:</strong> #${position}</p>
                 </div>
                 <p style="margin-top: 16px; font-size: 14px; color: #999;">
-                    Check your email for verification link!
+                    We'll notify you when REDitors launches!
                 </p>
             `;
         }
@@ -494,33 +410,31 @@ class PreOrderManager {
         }
     }
 
-    getTierName(tier) {
-        const names = {
-            'early-bird': '🌟 Early Bird',
-            'founder': '👑 Founder',
-            'vip': '💎 VIP Elite'
-        };
-        return names[tier] || tier;
-    }
-
     // ===== WAITLIST STATS =====
     async updateWaitlistStats() {
-        if (!this.supabase) return;
+        if (!this.supabase) {
+            console.warn('No database connection for stats');
+            return;
+        }
         
         try {
-            // Get total count from waitlist
-            const { count: totalCount } = await this.supabase
+            // Get total count
+            const { count: totalCount, error: countError } = await this.supabase
                 .from('waitlist')
                 .select('*', { count: 'exact', head: true });
+            
+            if (countError) throw countError;
             
             // Get today's signups
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            const { count: todayCount } = await this.supabase
+            const { count: todayCount, error: todayError } = await this.supabase
                 .from('waitlist')
                 .select('*', { count: 'exact', head: true })
                 .gte('created_at', today.toISOString());
+            
+            if (todayError) throw todayError;
             
             // Update UI
             const waitlistCountEl = document.getElementById('waitlistCount');
@@ -537,8 +451,10 @@ class PreOrderManager {
             // Update progress bar
             this.updateProgressBar(totalCount || 0);
             
+            console.log('📊 Stats updated:', { total: totalCount, today: todayCount });
+            
         } catch (error) {
-            console.error('Stats error:', error);
+            console.error('Stats update error:', error);
         }
     }
 
@@ -594,9 +510,7 @@ class PreOrderManager {
             if (question) {
                 question.addEventListener('click', () => {
                     const isActive = item.classList.contains('active');
-                    
                     faqItems.forEach(i => i.classList.remove('active'));
-                    
                     if (!isActive) {
                         item.classList.add('active');
                     }
