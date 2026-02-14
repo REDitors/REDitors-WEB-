@@ -96,7 +96,7 @@
         
         /* Profile Modal */
         .profile-modal-content {
-            max-width: 500px;
+            max-width: 550px;
             width: 90%;
             background: var(--card-bg, #111);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -210,6 +210,54 @@
             background: #ef4444;
         }
         
+        /* ============================================ */
+        /* REFERRAL SYSTEM STYLES - NEW */
+        /* ============================================ */
+        
+        /* Referral code input styling */
+        #referredByCode {
+            text-transform: uppercase;
+        }
+        
+        #referredByCode::placeholder {
+            text-transform: none;
+        }
+        
+        #referredByCode:not(:placeholder-shown) {
+            border-color: rgba(255, 215, 0, 0.6) !important;
+            background: rgba(255, 215, 0, 0.1) !important;
+        }
+        
+        /* Referral count highlight in profile */
+        #profileReferralCount {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Copy buttons hover effect */
+        #copyReferralBtn:hover,
+        #copyReferralBtnProfile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Referral URL inputs */
+        #referralUrlInput,
+        #profileReferralUrl {
+            cursor: text;
+            user-select: all;
+        }
+        
+        #referralUrlInput:focus,
+        #profileReferralUrl:focus {
+            outline: 2px solid rgba(255, 215, 0, 0.5);
+            outline-offset: 2px;
+        }
+        
+        /* Success modal wider for referral content */
+        .modal-success {
+            max-width: 600px !important;
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .profile-btn .profile-text {
@@ -219,6 +267,23 @@
                 width: 95%;
                 max-height: 90vh;
                 overflow-y: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #referralUrlInput,
+            #profileReferralUrl {
+                font-size: 11px !important;
+            }
+            
+            #copyReferralBtn,
+            #copyReferralBtnProfile {
+                padding: 12px 16px !important;
+                font-size: 12px !important;
+            }
+            
+            .modal-success {
+                max-width: 95% !important;
             }
         }
     </style>
@@ -392,7 +457,9 @@
 
     <!-- ADD YOUR OTHER SECTIONS HERE (Features, FAQ, etc.) -->
 
-    <!-- Waitlist Modal -->
+    <!-- ============================================ -->
+    <!-- WAITLIST MODAL - ENHANCED WITH REFERRAL -->
+    <!-- ============================================ -->
     <div class="modal" id="waitlistModal">
         <div class="modal-overlay" id="modalOverlay"></div>
         <div class="modal-content">
@@ -404,40 +471,61 @@
             </div>
 
             <div class="modal-body">
-                <!-- Simple Waitlist Form -->
+                <!-- Waitlist Form with Referral Input -->
                 <div class="waitlist-form">
+                    <!-- Email Input -->
                     <input 
                         type="email" 
                         id="waitlistEmail" 
-                        placeholder="Enter your email" 
+                        placeholder="Enter your email *" 
                         required 
                         autocomplete="email"
                         style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
                     >
                     
+                    <!-- Name Input (Optional) -->
                     <input 
                         type="text" 
                         id="waitlistName" 
                         placeholder="Your name (optional)" 
                         autocomplete="name"
-                        style="margin-bottom: 20px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
+                        style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
                     >
                     
+                    <!-- NEW: Referral Code Input -->
+                    <div style="margin-bottom: 20px;">
+                        <input 
+                            type="text" 
+                            id="referredByCode" 
+                            placeholder="Referral code (optional)" 
+                            maxlength="10"
+                            style="width: 100%; padding: 14px; border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.05); color: #fff; border-radius: 8px; font-size: 16px; text-transform: uppercase; font-family: monospace;"
+                        >
+                        <p style="margin: 6px 0 0 0; font-size: 12px; color: #999;">
+                            🎁 Have a referral code? Enter it to help your friend move up!
+                        </p>
+                    </div>
+                    
+                    <!-- Submit Button -->
                     <button class="btn-primary btn-full" id="joinWaitlistSubmitBtn">
                         <span>Join Waitlist</span>
                     </button>
                 </div>
 
+                <!-- Benefits List -->
                 <div class="auth-benefits" style="margin-top: 24px;">
                     <div class="benefit-item">✓ Be first to know when we launch</div>
                     <div class="benefit-item">✓ Track your position in line</div>
                     <div class="benefit-item">✓ Get exclusive early access</div>
+                    <div class="benefit-item">✓ Earn rewards through referrals</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Modal -->
+    <!-- ============================================ -->
+    <!-- SUCCESS MODAL - ENHANCED WITH REFERRAL URL -->
+    <!-- ============================================ -->
     <div class="modal" id="successModal">
         <div class="modal-overlay"></div>
         <div class="modal-content modal-success">
@@ -446,12 +534,16 @@
             </div>
             <h2>You're on the list! 🎉</h2>
             <p class="success-message" id="successMessage">Welcome to the waitlist!</p>
-            <div class="success-details" id="successDetails"></div>
+            <div class="success-details" id="successDetails">
+                <!-- Referral URL will be injected here by JavaScript -->
+            </div>
             <button class="btn-primary" id="successCloseBtn">View My Position</button>
         </div>
     </div>
 
-    <!-- Profile Modal -->
+    <!-- ============================================ -->
+    <!-- PROFILE MODAL - ENHANCED WITH REFERRAL STATS -->
+    <!-- ============================================ -->
     <div class="modal" id="profileModal">
         <div class="modal-overlay"></div>
         <div class="modal-content profile-modal-content">
@@ -487,6 +579,44 @@
                 <div class="profile-field">
                     <label class="profile-label">Joined</label>
                     <div class="profile-value" id="profileJoined">loading...</div>
+                </div>
+
+                <!-- NEW: Referral Stats -->
+                <div class="profile-field">
+                    <label class="profile-label">🎁 Referrals Made</label>
+                    <div class="profile-value" style="font-size: 24px; font-weight: 700; color: #ffd700;" id="profileReferralCount">0</div>
+                    <p style="margin: 8px 0 0 0; font-size: 12px; color: #999;">
+                        Share your link to move up the waitlist!
+                    </p>
+                </div>
+
+                <!-- NEW: Referral Code -->
+                <div class="profile-field">
+                    <label class="profile-label">Your Referral Code</label>
+                    <div class="profile-value" style="font-family: monospace; font-size: 18px; letter-spacing: 2px; color: #ffd700;" id="profileReferralCode">LOADING...</div>
+                </div>
+
+                <!-- NEW: Referral URL -->
+                <div class="profile-field">
+                    <label class="profile-label">🚀 Your Referral Link</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input 
+                            type="text" 
+                            id="profileReferralUrl" 
+                            readonly 
+                            style="flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 6px; color: #fff; font-size: 12px; font-family: monospace;"
+                            value="Loading..."
+                        >
+                        <button 
+                            id="copyReferralBtnProfile" 
+                            style="padding: 12px 20px; background: #ffd700; color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; white-space: nowrap;"
+                        >
+                            📋 Copy
+                        </button>
+                    </div>
+                    <p style="margin: 8px 0 0 0; font-size: 11px; color: #999;">
+                        Share this link with friends to earn rewards and move up the waitlist
+                    </p>
                 </div>
             </div>
 
