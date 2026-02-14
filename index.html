@@ -318,21 +318,30 @@
         <div class="container">
             <div class="hero-content">
                 <!-- Status Badge -->
-                <div class="status-badge" data-aos="fade-down">
+                <div class="status-badge aos-animate" data-aos="fade-down">
                     <span class="status-dot"></span>
                     <span>COMING SOON</span>
                 </div>
 
                 <!-- Main Heading -->
-                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                <h1 class="hero-title aos-animate" data-aos="fade-up" data-aos-delay="100">
                     The Future of Video Editing<br>
                     <span class="gradient-text">Starts Here</span>
                 </h1>
 
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                    Revolutionary AI-powered plugin for Adobe Premiere Pro &amp; After Effects.<br>
-                    Join the waitlist for exclusive early access.
-                </p>
+                <div class="cta-urgency">
+
+    <div class="urgency-item">
+        <img src="assets/premiere-pro.png" class="urgency-icon-img" alt="Premiere Pro">
+        <span>Adobe Premiere Pro</span>
+    </div>
+
+    <div class="urgency-item">
+        <img src="assets/after-effects.png" class="urgency-icon-img" alt="After Effects">
+        <span>Adobe After Effects</span>
+    </div>
+
+</div>
 
                 <!-- Countdown Timer -->
                 <div class="countdown-container aos-animate" data-aos="fade-up" data-aos-delay="300">
@@ -344,17 +353,17 @@
                         </div>
                         <div class="countdown-separator">:</div>
                         <div class="countdown-item">
-                            <div class="countdown-value" id="hours">09</div>
+                            <div class="countdown-value" id="hours">08</div>
                             <div class="countdown-unit">Hours</div>
                         </div>
                         <div class="countdown-separator">:</div>
                         <div class="countdown-item">
-                            <div class="countdown-value" id="minutes">21</div>
+                            <div class="countdown-value" id="minutes">10</div>
                             <div class="countdown-unit">Minutes</div>
                         </div>
                         <div class="countdown-separator">:</div>
                         <div class="countdown-item">
-                            <div class="countdown-value" id="seconds">05</div>
+                            <div class="countdown-value" id="seconds">46</div>
                             <div class="countdown-unit">Seconds</div>
                         </div>
                     </div>
@@ -381,11 +390,8 @@
                         <div class="proof-number" id="todaySignups">2</div>
                         <div class="proof-label">Joined Today</div>
                     </div>
-                    <div class="proof-divider"></div>
-                    <div class="proof-item">
-                        <div class="proof-number">FREE</div>
-                        <div class="proof-label">Early Access</div>
-                    </div>
+                    
+                    
                 </div>
             </div>
 
@@ -472,13 +478,13 @@
                     <div class="teaser-image blurred">
                         <div class="blur-overlay">
                             <div class="lock-icon">🔒</div>
-                            <p>Unlock with Pre-Order</p>
+                            <p>Unlock Soon...</p>
                         </div>
                         <div class="teaser-bg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
                     </div>
                     <div class="teaser-content">
-                        <h3>AI-Powered Editing</h3>
-                        <p>Revolutionary automation features that will change your workflow forever</p>
+                        <h3>Coming Soon...</h3>
+                        <p>Coming Soon...</p>
                     </div>
                 </div>
 
@@ -486,13 +492,13 @@
                     <div class="teaser-image blurred">
                         <div class="blur-overlay">
                             <div class="lock-icon">🔒</div>
-                            <p>Unlock with Pre-Order</p>
+                            <p>Unlock Soon...</p>
                         </div>
                         <div class="teaser-bg" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
                     </div>
                     <div class="teaser-content">
-                        <h3>One-Click Effects</h3>
-                        <p>Professional-grade effects and transitions at your fingertips</p>
+                        <h3>Coming Soon...</h3>
+                        <p>Coming Soon...</p>
                     </div>
                 </div>
 
@@ -500,13 +506,13 @@
                     <div class="teaser-image blurred">
                         <div class="blur-overlay">
                             <div class="lock-icon">🔒</div>
-                            <p>Unlock with Pre-Order</p>
+                            <p>Unlock Soon...</p>
                         </div>
                         <div class="teaser-bg" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
                     </div>
                     <div class="teaser-content">
-                        <h3>Smart Presets</h3>
-                        <p>Customizable presets that adapt to your editing style</p>
+                        <h3>Coming Soon...</h3>
+                        <p>Coming Soon...</p>
                     </div>
                 </div>
             </div>
@@ -590,19 +596,7 @@
                 <h2>Don't Miss Out on This<br></h2>
                 <p>Join thousands of editors who are getting ready to revolutionize their editing workflow</p>
                 
-<div class="cta-urgency">
 
-    <div class="urgency-item">
-        <img src="assets/premiere-pro.png" class="urgency-icon-img" alt="Premiere Pro">
-        <span>Adobe Premiere Pro</span>
-    </div>
-
-    <div class="urgency-item">
-        <img src="assets/after-effects.png" class="urgency-icon-img" alt="After Effects">
-        <span>Adobe After Effects</span>
-    </div>
-
-</div>
 
 
                 <button class="btn-primary btn-large btn-glow" id="finalCtaBtn">
@@ -614,4 +608,81 @@
         </div>
     </section>
     
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
 </body></html>
