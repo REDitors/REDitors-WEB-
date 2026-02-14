@@ -1,8 +1,27 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REDitors - Pre-Order Now | Revolutionary Adobe Plugin</title>
-    <meta name="description" content="Pre-order REDitors - The ultimate Adobe Premiere Pro &amp; After Effects plugin. Get exclusive early access!">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>REDitors - Join Waitlist | Revolutionary Adobe Plugin</title>
+    <meta name="description" content="Join the REDitors waitlist - The ultimate Adobe Premiere Pro &amp; After Effects plugin. Get exclusive early access!">
+    <meta name="keywords" content="adobe plugin, premiere pro, after effects, video editing, ai editing, reditors, video editor, filmmaking">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://reditors.com/">
+    <meta property="og:title" content="REDitors - Revolutionary Adobe Plugin | Join Waitlist">
+    <meta property="og:description" content="Join the waitlist for exclusive early access to REDitors">
+    <meta property="og:image" content="https://reditors.com/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reditors.com/">
+    <meta property="twitter:title" content="REDitors - Revolutionary Adobe Plugin">
+    <meta property="twitter:description" content="Join the waitlist for exclusive early access">
+    <meta property="twitter:image" content="https://reditors.com/og-image.jpg">
+    
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,98 +39,276 @@
     <link rel="stylesheet" href="Styles/phantom-sections.css">
     <link rel="stylesheet" href="Styles/responsive.css">
     
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style id="auth-notification-styles">
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+
+<style>
+        /* Profile System Styles */
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: var(--text, #fff);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
         }
         
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-                transform: translateX(100%);
-            }
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent, #44ff44);
+            transform: translateY(-2px);
         }
         
-        .user-dropdown {
-            min-width: 220px;
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent, #44ff44);
+            color: var(--bg, #000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
         }
         
-        .user-info {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
+        .guest-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .btn-nav {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        
+        /* Profile Modal */
+        .profile-modal-content {
+            max-width: 500px;
+            width: 90%;
+            background: var(--card-bg, #111);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            position: relative;
+        }
+        
+        .profile-modal-header {
+            text-align: center;
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent, #44ff44);
+            color: var(--bg, #000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 0 4px rgba(68, 255, 68, 0.2);
+        }
+        
+        .profile-modal-body {
+            padding: 30px;
+        }
+        
+        .profile-field {
+            margin-bottom: 24px;
+        }
+        
+        .profile-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim, #999);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 8px;
         }
         
-        .user-name {
+        .profile-value {
+            font-size: 16px;
+            color: var(--text, #fff);
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-position {
             font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-            color: var(--accent);
+            font-size: 20px;
+            color: var(--accent, #44ff44);
         }
         
-        .user-email {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            word-break: break-all;
+        .profile-modal-footer {
+            padding: 20px 30px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .dropdown-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 8px 0;
-        }
-        
-        .dropdown-item {
+        .sign-out-btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            color: #ff4444;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            color: var(--text);
-            text-decoration: none;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            justify-content: center;
+            gap: 8px;
         }
         
-        .dropdown-item:hover {
-            background: var(--gray);
-            color: var(--accent);
-            transform: translateX(4px);
+        .sign-out-btn:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff4444;
         }
         
-        .dropdown-icon {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            background: #22c55e;
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.error {
+            background: #ef4444;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .profile-btn .profile-text {
+                display: none;
+            }
+            .profile-modal-content {
+                width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+<style id="utility-styles">
+        [data-aos] {
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        [data-aos].aos-animate {
+            opacity: 1;
+        }
+        
+        [data-aos="fade-up"] {
+            transform: translateY(30px);
+        }
+        
+        [data-aos="fade-up"].aos-animate {
+            transform: translateY(0);
+        }
+        
+        [data-aos="fade-down"] {
+            transform: translateY(-30px);
+        }
+        
+        [data-aos="fade-down"].aos-animate {
+            transform: translateY(0);
+        }
+        
+        [data-aos="fade-left"] {
+            transform: translateX(30px);
+        }
+        
+        [data-aos="fade-left"].aos-animate {
+            transform: translateX(0);
+        }
+        
+        [data-aos="fade-right"] {
+            transform: translateX(-30px);
+        }
+        
+        [data-aos="fade-right"].aos-animate {
+            transform: translateX(0);
+        }
+        
+        [data-aos="zoom-in"] {
+            transform: scale(0.8);
+        }
+        
+        [data-aos="zoom-in"].aos-animate {
+            transform: scale(1);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            [data-aos] {
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
         }
     </style></head>
-<body class="preorder-body" data-aos-easing="ease-out" data-aos-duration="800" data-aos-delay="0">
+<body class="preorder-body">
     
     <!-- Navigation -->
-    <nav class="nav" id="mainNav">
+    <nav class="nav scrolled" id="mainNav">
         <div class="nav-container">
             <div class="logo-wrapper">
                 <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
                 <span class="version">Beta</span>
             </div>
-        </div></div>
+            
+            <!-- Navigation Right - Profile/Guest Buttons -->
+            <div class="nav-right">
+                <!-- Profile Button (Hidden by default, shown when user is in waitlist) -->
+                <button id="profileBtn" class="profile-btn" style="display: none;">
+                    <div class="profile-avatar">U</div>
+                    <span class="profile-text">Profile</span>
+                </button>
+                
+                <!-- Guest Buttons (Shown when user is NOT in waitlist) -->
+                <div id="guestButtons" class="guest-buttons" style="display: flex;">
+                    <button class="btn-secondary btn-nav" id="joinWaitlistBtnNav">
+                        Join Waitlist
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
@@ -121,33 +318,33 @@
         <div class="container">
             <div class="hero-content">
                 <!-- Status Badge -->
-                <div class="status-badge aos-init aos-animate" data-aos="fade-down">
+                <div class="status-badge" data-aos="fade-down">
                     <span class="status-dot"></span>
                     <span>COMING SOON</span>
                 </div>
 
                 <!-- Main Heading -->
-                <h1 class="hero-title aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
                     The Future of Video Editing<br>
                     <span class="gradient-text">Starts Here</span>
                 </h1>
 
-                <p class="hero-subtitle aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
                     Revolutionary AI-powered plugin for Adobe Premiere Pro &amp; After Effects.<br>
-                    Join the waitlist for exclusive early access and lifetime benefits.
+                    Join the waitlist for exclusive early access.
                 </p>
 
                 <!-- Countdown Timer -->
-                <div class="countdown-container aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                <div class="countdown-container aos-animate" data-aos="fade-up" data-aos-delay="300">
                     <div class="countdown-label">LAUNCHING IN</div>
                     <div class="countdown-timer" id="countdown">
                         <div class="countdown-item">
-                            <div class="countdown-value" id="days">16</div>
+                            <div class="countdown-value" id="days">15</div>
                             <div class="countdown-unit">Days</div>
                         </div>
                         <div class="countdown-separator">:</div>
                         <div class="countdown-item">
-                            <div class="countdown-value" id="hours">04</div>
+                            <div class="countdown-value" id="hours">09</div>
                             <div class="countdown-unit">Hours</div>
                         </div>
                         <div class="countdown-separator">:</div>
@@ -157,16 +354,16 @@
                         </div>
                         <div class="countdown-separator">:</div>
                         <div class="countdown-item">
-                            <div class="countdown-value" id="seconds">02</div>
+                            <div class="countdown-value" id="seconds">05</div>
                             <div class="countdown-unit">Seconds</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- CTA Buttons -->
-                <div class="cta-group aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+                <div class="cta-group aos-animate" data-aos="fade-up" data-aos-delay="400">
                     <button class="btn-primary btn-glow" id="joinWaitlistBtn">
-                        <span>🚀 Join Early Access</span>
+                        <span>🚀 Join Waitlist</span>
                     </button>
                     <button class="btn-secondary" id="learnMoreBtn">
                         <span>Watch Teaser</span>
@@ -174,32 +371,32 @@
                 </div>
 
                 <!-- Social Proof -->
-                <div class="social-proof aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+                <div class="social-proof aos-animate" data-aos="fade-up" data-aos-delay="500">
                     <div class="proof-item">
-                        <div class="proof-number" id="waitlistCount">2,847</div>
-                        <div class="proof-label">Creators Waiting</div>
+                        <div class="proof-number" id="waitlistCount">2</div>
+                        <div class="proof-label">On Waitlist</div>
                     </div>
                     <div class="proof-divider"></div>
                     <div class="proof-item">
-                        <div class="proof-number">72%</div>
-                        <div class="proof-label">Spots Filled</div>
+                        <div class="proof-number" id="todaySignups">2</div>
+                        <div class="proof-label">Joined Today</div>
                     </div>
                     <div class="proof-divider"></div>
                     <div class="proof-item">
-                        <div class="proof-number">48h</div>
-                        <div class="proof-label">Early Access Period</div>
+                        <div class="proof-number">FREE</div>
+                        <div class="proof-label">Early Access</div>
                     </div>
                 </div>
             </div>
 
             <!-- Progress Bar -->
-            <div class="waitlist-progress aos-init aos-animate" data-aos="fade-up" data-aos-delay="600">
+            <div class="waitlist-progress aos-animate" data-aos="fade-up" data-aos-delay="600">
                 <div class="progress-info">
-                    <span>Limited Spots: 2,847 / 4,000</span>
-                    <span class="spots-left">1,153 spots left</span>
+                    <span id="progressLabel">2 joined</span>
+                    <span class="spots-left">998 spots remaining</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 72%"></div>
+                    <div class="progress-fill" style="width: 0.2%;"></div>
                 </div>
             </div>
         </div>
@@ -212,160 +409,57 @@
         </div>
     </section>
 
-    <!-- Pre-Order Tiers Section -->
-    <section class="preorder-tiers">
-        <div class="container">
-            <div class="section-header aos-init aos-animate" data-aos="fade-up">
-                <h2>Choose Your Access Level</h2>
-                <p>Early supporters get exclusive lifetime benefits</p>
+    <!-- Simple CTA Section (replaces tier/pricing) -->
+    
+
+    <!-- ADD YOUR OTHER SECTIONS HERE (Features, FAQ, etc.) -->
+
+    <!-- Waitlist Modal -->
+    <div class="modal" id="waitlistModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            
+            <div class="modal-header">
+                <h2>Join the Waitlist</h2>
+                <p>Get early access to REDitors when we launch</p>
             </div>
 
-            <div class="tiers-grid">
-                <!-- Tier 1: Early Bird -->
-                <div class="tier-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                    <div class="tier-header">
-                        <div class="tier-icon">🌟</div>
-                        <h3>Early Bird</h3>
-                        <p class="tier-subtitle">Limited to First 500</p>
-                    </div>
-                    <div class="tier-price">
-                        <span class="price-value">FREE</span>
-                        <span class="price-period">Forever</span>
-                    </div>
-                    <div class="tier-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>48 hours early access</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Exclusive beta tester badge</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Priority support for 6 months</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Early feature previews</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Community Discord access</span>
-                        </div>
-                    </div>
-                    <button class="tier-btn" data-tier="early-bird">Join Waitlist</button>
-                    <div class="tier-availability">
-                        <span class="spots-remaining">327 spots left</span>
-                    </div>
+            <div class="modal-body">
+                <!-- Simple Waitlist Form -->
+                <div class="waitlist-form">
+                    <input type="email" id="waitlistEmail" placeholder="Enter your email" required="" autocomplete="email" style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;">
+                    
+                    <input type="text" id="waitlistName" placeholder="Your name (optional)" autocomplete="name" style="margin-bottom: 20px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;">
+                    
+                    <button class="btn-primary btn-full" id="joinWaitlistSubmitBtn">
+                        <span>Join Waitlist</span>
+                    </button>
                 </div>
 
-                <!-- Tier 2: Founder -->
-                <div class="tier-card tier-featured aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                    <div class="popular-badge">MOST POPULAR</div>
-                    <div class="tier-header">
-                        <div class="tier-icon">👑</div>
-                        <h3>Founder</h3>
-                        <p class="tier-subtitle">Limited to 1,000 Total</p>
-                    </div>
-                    <div class="tier-price">
-                        <span class="price-original">$149</span>
-                        <span class="price-value">$49</span>
-                        <span class="price-period">One-time</span>
-                    </div>
-                    <div class="tier-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Everything in Early Bird</span>
-                        </div>
-                        <div class="benefit highlighted">
-                            <span class="benefit-icon">✓</span>
-                            <span>Lifetime Pro license (worth $299/yr)</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>72 hours early access</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Founder badge &amp; credits in app</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Lifetime priority support</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>All future updates FREE</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Private Slack channel access</span>
-                        </div>
-                    </div>
-                    <button class="tier-btn tier-btn-featured" data-tier="founder">Secure Founder Access</button>
-                    <div class="tier-availability">
-                        <span class="spots-remaining">412 spots left</span>
-                    </div>
-                </div>
-
-                <!-- Tier 3: VIP -->
-                <div class="tier-card aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-                    <div class="tier-header">
-                        <div class="tier-icon">💎</div>
-                        <h3>VIP Elite</h3>
-                        <p class="tier-subtitle">Only 100 Available</p>
-                    </div>
-                    <div class="tier-price">
-                        <span class="price-original">$499</span>
-                        <span class="price-value">$199</span>
-                        <span class="price-period">One-time</span>
-                    </div>
-                    <div class="tier-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Everything in Founder</span>
-                        </div>
-                        <div class="benefit highlighted">
-                            <span class="benefit-icon">✓</span>
-                            <span>1 week exclusive early access</span>
-                        </div>
-                        <div class="benefit highlighted">
-                            <span class="benefit-icon">✓</span>
-                            <span>Direct line to dev team</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Custom feature requests</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>1-on-1 onboarding call</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Exclusive VIP preset packs</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Listed as VIP supporter</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">✓</span>
-                            <span>Early access to all future products</span>
-                        </div>
-                    </div>
-                    <button class="tier-btn" data-tier="vip">Claim VIP Status</button>
-                    <div class="tier-availability">
-                        <span class="spots-remaining urgent">Only 23 spots left!</span>
-                    </div>
+                <div class="auth-benefits" style="margin-top: 24px;">
+                    <div class="benefit-item">✓ Be first to know when we launch</div>
+                    <div class="benefit-item">✓ Track your position in line</div>
+                    <div class="benefit-item">✓ Get exclusive early access</div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Teaser Section -->
-    <section class="teaser-section">
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-success">
+            <div class="success-animation">
+                <div class="success-checkmark">✓</div>
+            </div>
+            <h2>You're on the list! 🎉</h2>
+            <p class="success-message" id="successMessage">Welcome to the waitlist!</p>
+            <div class="success-details" id="successDetails"></div>
+            <button class="btn-primary" id="successCloseBtn">View My Position</button>
+        </div>
+    </div>
+<section class="teaser-section">
         <div class="container">
             <div class="section-header aos-init aos-animate" data-aos="fade-up">
                 <h2>Sneak Peek</h2>
@@ -418,54 +512,79 @@
             </div>
         </div>
     </section>
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content profile-modal-content">
+            <button class="modal-close" id="profileClose" aria-label="Close">×</button>
+            
+            <div class="profile-modal-header">
+                <div class="avatar-circle">
+                    <span id="profileAvatarInitial">U</span>
+                </div>
+                <h2>Your Waitlist Status</h2>
+            </div>
 
-    <!-- Referral Section -->
-    <section class="referral-section">
-        <div class="container">
-            <div class="referral-card aos-init aos-animate" data-aos="fade-up">
-                <div class="referral-content">
-                    <h2>🎁 Share &amp; Earn Rewards</h2>
-                    <p>Refer friends and climb the leaderboard. Top referrers get exclusive bonuses!</p>
-                    
-                    <div class="referral-benefits">
-                        <div class="referral-benefit">
-                            <span class="benefit-number">3</span>
-                            <span class="benefit-text">Referrals = Jump ahead 100 spots</span>
-                        </div>
-                        <div class="referral-benefit">
-                            <span class="benefit-number">10</span>
-                            <span class="benefit-text">Referrals = Free Founder upgrade</span>
-                        </div>
-                        <div class="referral-benefit">
-                            <span class="benefit-number">25</span>
-                            <span class="benefit-text">Referrals = VIP Elite status</span>
-                        </div>
-                    </div>
+            <div class="profile-modal-body">
+                <!-- Email -->
+                <div class="profile-field">
+                    <label class="profile-label">Email</label>
+                    <div class="profile-value" id="profileEmail">loading...</div>
+                </div>
 
-                    <div class="referral-link-container" id="referralLinkContainer" style="display: none;">
-                        <label>Your Referral Link:</label>
-                        <div class="referral-link-input">
-                            <input type="text" id="referralLink" readonly="">
-                            <button class="copy-btn" id="copyLinkBtn">Copy</button>
-                        </div>
-                        <div class="referral-stats">
-                            <span>Referrals: <strong id="referralCount">0</strong></span>
-                            <span>•</span>
-                            <span>Rank: <strong id="referralRank">#--</strong></span>
-                        </div>
-                    </div>
+                <!-- Name (if provided) -->
+                <div class="profile-field" id="profileNameField">
+                    <label class="profile-label">Name</label>
+                    <div class="profile-value" id="profileName">loading...</div>
+                </div>
 
-                    <button class="btn-secondary" id="getReferralLinkBtn">Get My Referral Link</button>
+                <!-- Position -->
+                <div class="profile-field">
+                    <label class="profile-label">Your Position</label>
+                    <div class="profile-value profile-position" id="profilePosition">#0</div>
+                </div>
+
+                <!-- Joined Date -->
+                <div class="profile-field">
+                    <label class="profile-label">Joined</label>
+                    <div class="profile-value" id="profileJoined">loading...</div>
                 </div>
             </div>
+
+            <div class="profile-modal-footer">
+                <button id="signOutBtn" class="sign-out-btn">
+                    <span>🚪</span>
+                    Leave Waitlist
+                </button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- FAQ Section -->
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Scripts -->
+    <script src="Scripts/supabase-config.js"></script>
+    <script src="Scripts/utils.js"></script>
+    <script src="Scripts/Preorder.js"></script>
+    <script src="Scripts/reditors-master.js"></script>
     
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: true,
+                offset: 100
+            });
+        }
+    </script>
 
-    <!-- Final CTA -->
-    <section class="final-cta">
+
+
+<section class="final-cta">
         <div class="container">
             <div class="cta-content aos-init aos-animate" data-aos="fade-up">
                 <h2>Don't Miss Out on This<br></h2>
@@ -494,179 +613,5 @@
             </div>
         </div>
     </section>
-
-    <!-- Waitlist Modal -->
-    <div class="modal" id="waitlistModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">×</button>
-            
-            <div class="modal-header">
-                <h2>Join the Revolution</h2>
-                <p>Secure your early access to REDitors</p>
-            </div>
-
-            <div class="modal-body">
-                <!-- Tier Selection -->
-                <div class="tier-selection" id="tierSelection">
-                    <label>Select Your Tier:</label>
-                    <div class="tier-options">
-                        <button class="tier-option" data-tier="early-bird">
-                            <span class="tier-option-icon">🌟</span>
-                            <span class="tier-option-name">Early Bird</span>
-                            <span class="tier-option-price">FREE</span>
-                        </button>
-                        <button class="tier-option tier-option-featured" data-tier="founder">
-                            <span class="tier-option-icon">👑</span>
-                            <span class="tier-option-name">Founder</span>
-                            <span class="tier-option-price">$49</span>
-                        </button>
-                        <button class="tier-option" data-tier="vip">
-                            <span class="tier-option-icon">💎</span>
-                            <span class="tier-option-name">VIP Elite</span>
-                            <span class="tier-option-price">$199</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Auth Forms -->
-                <div class="auth-forms">
-                    <div class="auth-form active" id="signupForm">
-                        <input type="email" id="signupEmail" placeholder="Enter your email" required="">
-                        <input type="password" id="signupPassword" placeholder="Create password (min 6 characters)" required="">
-                        <input type="text" id="signupName" placeholder="Your name (optional)">
-                        
-                        <button class="btn-primary btn-full" id="signupSubmitBtn">
-                            <span>Join Waitlist</span>
-                        </button>
-
-                        <p class="form-footer">
-                            Already have an account? 
-                            <a href="#" id="switchToLogin">Sign in</a>
-                        </p>
-                    </div>
-
-                    <div class="auth-form" id="loginForm">
-                        <input type="email" id="loginEmail" placeholder="Enter your email" required="">
-                        <input type="password" id="loginPassword" placeholder="Enter your password" required="">
-                        
-                        <button class="btn-primary btn-full" id="loginSubmitBtn">
-                            <span>Sign In &amp; Continue</span>
-                        </button>
-
-                        <p class="form-footer">
-                            Don't have an account? 
-                            <a href="#" id="switchToSignup">Sign up</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="auth-benefits">
-                    <div class="benefit-item">✓ Instant confirmation email</div>
-                    <div class="benefit-item">✓ Track your position in waitlist</div>
-                    <div class="benefit-item">✓ Receive launch notifications</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content modal-success">
-            <div class="success-animation">
-                <div class="success-checkmark">✓</div>
-            </div>
-            <h2>Welcome to the Future! 🎉</h2>
-            <p class="success-message" id="successMessage">You're in! Check your email for confirmation.</p>
-            <div class="success-details" id="successDetails"></div>
-            <button class="btn-primary" id="successCloseBtn">Got it!</button>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div class="toast" id="toast"></div>
-
-    <!-- Scripts -->
-    <script src="Scripts/supabase-config.js"></script>
-    <script src="Scripts/session.js"></script>
-    <script src="Scripts/Preorder.js"></script>
     
-    <!-- AOS Animation Library (Optional but recommended) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        if (typeof AOS !== 'undefined') {
-            AOS.init({
-                duration: 800,
-                easing: 'ease-out',
-                once: true,
-                offset: 100
-            });
-        }
-    </script>
-
-    <!-- GOOGLE SHEETS INTEGRATION - ADDED CODE -->
-    <script>
-        // ============================================
-        // GOOGLE SHEETS INTEGRATION
-        // ============================================
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvb4y9g3r3msXTnYP9trTnGtcIchdCPghyVI21aJmQbPlFoKO02uIdZ6LMOGZ5X-i0-Q/exec';
-
-        // Override the signup submit button to also send to Google Sheets
-        document.addEventListener('DOMContentLoaded', function() {
-            const signupSubmitBtn = document.getElementById('signupSubmitBtn');
-            
-            if (signupSubmitBtn) {
-                // Store the original click handler
-                const originalHandler = signupSubmitBtn.onclick;
-                
-                // Add our Google Sheets submission
-                signupSubmitBtn.addEventListener('click', async function(e) {
-                    const email = document.getElementById('signupEmail').value.trim();
-                    const name = document.getElementById('signupName').value.trim();
-                    
-                    // Get selected tier
-                    const selectedTierBtn = document.querySelector('.tier-option.selected');
-                    const tier = selectedTierBtn ? selectedTierBtn.getAttribute('data-tier') : 'early-bird';
-                    
-                    // Validate email before submitting
-                    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                        try {
-                            // Send to Google Sheets
-                            await fetch(GOOGLE_SCRIPT_URL, {
-                                method: 'POST',
-                                mode: 'no-cors',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    email: email,
-                                    name: name || 'Not provided',
-                                    tier: tier.toUpperCase(),
-                                    timestamp: new Date().toISOString()
-                                })
-                            });
-                            
-                            console.log('✅ Successfully sent to Google Sheets');
-                        } catch (error) {
-                            console.error('❌ Error sending to Google Sheets:', error);
-                        }
-                    }
-                });
-            }
-            
-            // Also add click handlers to tier buttons to track selection
-            const tierButtons = document.querySelectorAll('.tier-option');
-            tierButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Remove selected class from all buttons
-                    tierButtons.forEach(b => b.classList.remove('selected'));
-                    // Add selected class to clicked button
-                    this.classList.add('selected');
-                });
-            });
-        });
-    </script>
-    <!-- END GOOGLE SHEETS INTEGRATION -->
-
 </body></html>
