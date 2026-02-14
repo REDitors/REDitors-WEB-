@@ -1,6 +1,7 @@
 // ====================================
-// REDitors SIMPLE Waitlist - Email + Name Only
-// No signup, no auth, just collect data
+// REDitors ULTRA-SIMPLE Waitlist
+// Only email + name → database
+// No position tracking, no extra fields
 // ====================================
 
 class PreOrderManager {
@@ -151,7 +152,7 @@ class PreOrderManager {
         });
     }
 
-    // ===== SIMPLE JOIN - JUST EMAIL + NAME → DATABASE =====
+    // ===== ULTRA-SIMPLE JOIN - ONLY EMAIL + NAME =====
     async handleJoinWaitlist() {
         const email = document.getElementById('waitlistEmail')?.value.trim().toLowerCase();
         const name = document.getElementById('waitlistName')?.value.trim();
@@ -171,17 +172,12 @@ class PreOrderManager {
 
             console.log('📝 Adding to waitlist:', email);
 
-            // Check if email already exists
-            const { data: existingUser, error: checkError } = await this.supabase
+            // Check if email already exists (only check email field)
+            const { data: existingUser } = await this.supabase
                 .from('waitlist')
                 .select('email, name')
                 .eq('email', email)
                 .maybeSingle();
-            
-            if (checkError && checkError.code !== 'PGRST116') {
-                console.error('Check error:', checkError);
-                throw checkError;
-            }
             
             if (existingUser) {
                 console.log('✅ Email already registered');
@@ -191,10 +187,10 @@ class PreOrderManager {
                 return;
             }
             
-            // Generate simple referral code
+            // Generate referral code
             const referralCode = this.generateReferralCode();
             
-            // Insert with MINIMAL data - just what we need
+            // MINIMAL INSERT - Only the fields we absolutely need
             const insertData = {
                 email: email,
                 name: name || null,
@@ -203,19 +199,17 @@ class PreOrderManager {
             
             console.log('💾 Inserting:', insertData);
             
-            // Insert new record
-            const { data: newUser, error: insertError } = await this.supabase
+            // Insert and don't try to read back any columns we're not sure exist
+            const { error: insertError } = await this.supabase
                 .from('waitlist')
-                .insert([insertData])
-                .select()
-                .single();
+                .insert([insertData]);
             
             if (insertError) {
                 console.error('Insert error:', insertError);
                 throw insertError;
             }
             
-            console.log('✅ Added to waitlist!', newUser);
+            console.log('✅ Added to waitlist!');
             
             // Show success
             this.showToast('✓ Successfully joined the waitlist!', 'success');
@@ -230,7 +224,7 @@ class PreOrderManager {
             
             let errorMessage = 'Failed to join waitlist. Please try again.';
             
-            if (error.message.includes('duplicate')) {
+            if (error.message.includes('duplicate') || error.code === '23505') {
                 errorMessage = 'This email is already registered!';
             } else if (error.message.includes('connection')) {
                 errorMessage = 'Connection error. Please check your internet.';
@@ -309,10 +303,10 @@ class PreOrderManager {
                 <div style="text-align: left; margin-top: 20px; padding: 20px; background: rgba(68, 255, 68, 0.1); border-radius: 12px; border: 1px solid rgba(68, 255, 68, 0.3);">
                     <p style="margin: 0 0 12px 0;"><strong>📧 Email:</strong> ${email}</p>
                     ${displayName}
+                    <p style="margin: 12px 0 0 0; font-size: 14px; color: #999;">
+                        We'll notify you when REDitors launches!
+                    </p>
                 </div>
-                <p style="margin-top: 16px; font-size: 14px; color: #999;">
-                    We'll notify you when REDitors launches!
-                </p>
             `;
         }
         
