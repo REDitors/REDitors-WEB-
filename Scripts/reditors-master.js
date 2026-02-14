@@ -1,14 +1,13 @@
 // ============================================================
-// REDitors Master Script - FIXED VERSION WITH REAL AUTH
-// Integrates with Supabase Auth + users table
-// Real user profiles and referral system
+// REDitors Master Script - PRODUCTION READY
+// Simple waitlist check from database - No auth complexity
 // ============================================================
 
 class REDitorsApp {
     constructor() {
         this.supabase = null;
-        this.currentUser = null;
-        this.userData = null;
+        this.userEmail = null;
+        this.waitlistData = null;
         this.stats = {
             total: 0,
             today: 0,
@@ -24,8 +23,8 @@ class REDitorsApp {
         // Wait for Supabase
         await this.waitForSupabase();
         
-        // Check authentication and load user profile
-        await this.checkAuthAndLoadProfile();
+        // Check if user is in waitlist
+        await this.checkWaitlistStatus();
         
         // Initialize all modules
         this.initNavigation();
@@ -36,13 +35,7 @@ class REDitorsApp {
         // Load real statistics
         await this.loadRealStats();
         
-        // Setup event listeners
-        this.setupEventListeners();
-        
-        // Check for referral code in URL
-        this.checkReferralCode();
-        
-        console.log('✅ REDitors App Initialized');
+        console.log('✅ REDitors App Ready');
     }
 
     // ============================================================
@@ -69,58 +62,47 @@ class REDitorsApp {
     }
 
     // ============================================================
-    // AUTHENTICATION & PROFILE SYSTEM
+    // WAITLIST STATUS CHECK
     // ============================================================
     
-    async checkAuthAndLoadProfile() {
-        if (!this.supabase) {
+    async checkWaitlistStatus() {
+        const savedEmail = localStorage.getItem('waitlist_email');
+        
+        if (!savedEmail || !this.supabase) {
             this.showGuestUI();
             return;
         }
         
         try {
-            // Check current session
-            const { data: { session } } = await this.supabase.auth.getSession();
-            
-            if (!session) {
-                this.showGuestUI();
-                return;
-            }
-            
-            // User is authenticated - load their profile from users table
-            const { data: userData, error } = await this.supabase
-                .from('users')
-                .select('*')
-                .eq('id', session.user.id)
-                .single();
-            
-            if (error || !userData) {
-                console.error('Error loading user profile:', error);
-                this.showGuestUI();
-                return;
-            }
-            
-            // Get waitlist position
-            const { data: waitlistData } = await this.supabase
+            // Check if email exists in waitlist
+            const { data, error } = await this.supabase
                 .from('waitlist')
-                .select('position')
-                .eq('user_id', session.user.id)
-                .single();
+                .select('*')
+                .eq('email', savedEmail.toLowerCase())
+                .maybeSingle();
             
-            // Set current user data
-            this.currentUser = session.user;
-            this.userData = {
-                ...userData,
-                position: waitlistData?.position || 0
-            };
+            if (error) {
+                console.error('Waitlist check error:', error);
+                this.showGuestUI();
+                return;
+            }
             
+            if (!data) {
+                // Email not found, clear localStorage
+                localStorage.removeItem('waitlist_email');
+                this.showGuestUI();
+                return;
+            }
+            
+            // User found in waitlist!
+            this.userEmail = data.email;
+            this.waitlistData = data;
             this.showUserUI();
             
-            console.log('✅ User authenticated:', this.currentUser.email);
-            console.log('📊 User data:', this.userData);
+            console.log('✅ User on waitlist:', this.userEmail, 'Position:', data.position);
             
         } catch (error) {
-            console.error('Error checking auth:', error);
+            console.error('Error checking waitlist:', error);
             this.showGuestUI();
         }
     }
@@ -141,17 +123,17 @@ class REDitorsApp {
             profileBtn.style.display = 'flex';
             
             // Update profile button with initial
-            const initial = (this.userData.display_name || this.userData.email || 'U').charAt(0).toUpperCase();
+            const initial = this.userEmail.charAt(0).toUpperCase();
             const avatar = profileBtn.querySelector('.profile-avatar');
             if (avatar) {
                 avatar.textContent = initial;
-                avatar.title = this.userData.email;
+                avatar.title = this.userEmail;
             }
             
             // Update text if exists
             const profileText = profileBtn.querySelector('.profile-text');
             if (profileText) {
-                profileText.textContent = this.userData.display_name || 'Profile';
+                profileText.textContent = this.waitlistData?.name || 'Profile';
             }
         }
         
@@ -166,8 +148,7 @@ class REDitorsApp {
         const profileBtn = document.getElementById('profileBtn');
         const profileModal = document.getElementById('profileModal');
         const profileClose = document.getElementById('profileClose');
-        const signOutBtn = document.getElementById('signOutBtn');
-        const copyReferralBtn = document.getElementById('copyReferralBtn');
+        const leaveWaitlistBtn = document.getElementById('signOutBtn');
         
         if (profileBtn) {
             profileBtn.addEventListener('click', (e) => {
@@ -190,30 +171,24 @@ class REDitorsApp {
             });
         }
         
-        if (signOutBtn) {
-            signOutBtn.addEventListener('click', () => {
-                this.handleSignOut();
-            });
-        }
-        
-        if (copyReferralBtn) {
-            copyReferralBtn.addEventListener('click', () => {
-                this.copyReferralLink();
+        if (leaveWaitlistBtn) {
+            leaveWaitlistBtn.addEventListener('click', () => {
+                this.handleLeaveWaitlist();
             });
         }
     }
 
     async showProfileModal() {
-        if (!this.currentUser || !this.userData) {
-            this.showToast('Please sign in first', 'error');
+        if (!this.userEmail || !this.waitlistData) {
+            this.showToast('Please join the waitlist first', 'error');
             return;
         }
         
         const modal = document.getElementById('profileModal');
         if (!modal) return;
         
-        // Refresh user data before showing
-        await this.refreshUserData();
+        // Refresh data before showing
+        await this.refreshWaitlistData();
         
         // Update profile data in modal
         this.updateProfileData();
@@ -223,99 +198,81 @@ class REDitorsApp {
         document.body.style.overflow = 'hidden';
     }
 
-    async refreshUserData() {
-        if (!this.currentUser) return;
+    async refreshWaitlistData() {
+        if (!this.userEmail || !this.supabase) return;
         
         try {
-            // Reload user data from database
-            const { data: userData, error } = await this.supabase
-                .from('users')
+            const { data, error } = await this.supabase
+                .from('waitlist')
                 .select('*')
-                .eq('id', this.currentUser.id)
-                .single();
+                .eq('email', this.userEmail)
+                .maybeSingle();
             
-            if (!error && userData) {
-                // Get waitlist position
-                const { data: waitlistData } = await this.supabase
-                    .from('waitlist')
-                    .select('position')
-                    .eq('user_id', this.currentUser.id)
-                    .single();
-                
-                this.userData = {
-                    ...userData,
-                    position: waitlistData?.position || 0
-                };
-                
-                console.log('✅ User data refreshed');
+            if (!error && data) {
+                this.waitlistData = data;
+                console.log('✅ Profile data refreshed');
             }
         } catch (error) {
-            console.error('Error refreshing user data:', error);
+            console.error('Error refreshing data:', error);
         }
     }
 
     updateProfileData() {
-        if (!this.userData) return;
+        if (!this.waitlistData) return;
         
         // Update avatar initial
         const avatarInitial = document.getElementById('profileAvatarInitial');
         if (avatarInitial) {
-            const initial = (this.userData.display_name || this.userData.email || 'U').charAt(0).toUpperCase();
+            const initial = (this.waitlistData.name || this.userEmail || 'U').charAt(0).toUpperCase();
             avatarInitial.textContent = initial;
         }
         
         // Update email
         const emailEl = document.getElementById('profileEmail');
         if (emailEl) {
-            emailEl.textContent = this.userData.email;
+            emailEl.textContent = this.userEmail;
         }
         
-        // Update tier
-        const tierEl = document.getElementById('profileTier');
-        if (tierEl) {
-            tierEl.textContent = this.getTierDisplay(this.userData.subscription_tier);
+        // Update name (if provided)
+        const nameEl = document.getElementById('profileName');
+        const nameField = document.getElementById('profileNameField');
+        if (nameEl && nameField) {
+            if (this.waitlistData.name) {
+                nameEl.textContent = this.waitlistData.name;
+                nameField.style.display = 'block';
+            } else {
+                nameField.style.display = 'none';
+            }
         }
         
         // Update position
         const positionEl = document.getElementById('profilePosition');
         if (positionEl) {
-            positionEl.textContent = `#${this.userData.position || 'N/A'}`;
+            positionEl.textContent = `#${this.waitlistData.position || 'N/A'}`;
         }
         
-        // Update referral code
-        const referralCodeEl = document.getElementById('profileReferralCode');
-        if (referralCodeEl) {
-            referralCodeEl.textContent = this.userData.referral_code || 'LOADING...';
+        // Update joined date
+        const joinedEl = document.getElementById('profileJoined');
+        if (joinedEl && this.waitlistData.created_at) {
+            const date = new Date(this.waitlistData.created_at);
+            joinedEl.textContent = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
         }
         
-        // Update referral count
-        const referralCountEl = document.getElementById('profileReferralCount');
-        if (referralCountEl) {
-            referralCountEl.textContent = this.userData.referral_count || 0;
+        // Update tier if element exists
+        const tierEl = document.getElementById('profileTier');
+        if (tierEl && this.waitlistData.tier) {
+            const tierDisplay = {
+                'early-bird': '🌟 Early Bird',
+                'founder': '👑 Founder',
+                'vip': '💎 VIP',
+                'beta-tester': '🧪 Beta Tester'
+            };
+            tierEl.textContent = tierDisplay[this.waitlistData.tier] || this.waitlistData.tier;
         }
-        
-        // Update referral link
-        const referralLinkEl = document.getElementById('profileReferralLink');
-        if (referralLinkEl && this.userData.referral_code) {
-            const baseUrl = window.location.origin + window.location.pathname;
-            const referralUrl = `${baseUrl}?ref=${this.userData.referral_code}`;
-            referralLinkEl.value = referralUrl;
-        }
-    }
-
-    getTierDisplay(tier) {
-        const tiers = {
-            'free': '🌟 Free',
-            'early-bird': '🌟 Early Bird',
-            'starter': '⭐ Starter',
-            'founder': '👑 Founder',
-            'pro': '💼 Pro',
-            'vip': '💎 VIP Elite',
-            'business': '🏢 Business',
-            'enterprise': '🏆 Enterprise',
-            'lifetime': '♾️ Lifetime'
-        };
-        return tiers[tier] || tier;
     }
 
     closeProfileModal() {
@@ -326,79 +283,25 @@ class REDitorsApp {
         }
     }
 
-    async handleSignOut() {
-        try {
-            const { error } = await this.supabase.auth.signOut();
+    handleLeaveWaitlist() {
+        if (confirm('Are you sure you want to leave the waitlist? You can always rejoin later.')) {
+            // Clear localStorage
+            localStorage.removeItem('waitlist_email');
             
-            if (error) throw error;
+            // Clear data
+            this.userEmail = null;
+            this.waitlistData = null;
             
-            // Clear user data
-            this.currentUser = null;
-            this.userData = null;
-            
-            // Close profile modal
+            // Close modal
             this.closeProfileModal();
             
             // Show guest UI
             this.showGuestUI();
             
-            // Show success message
-            this.showToast('✓ Signed out successfully', 'success');
+            // Show message
+            this.showToast('✓ You\'ve left the waitlist. You can rejoin anytime!', 'success');
             
-            console.log('✅ User signed out');
-            
-        } catch (error) {
-            console.error('Sign out error:', error);
-            this.showToast('⚠️ Error signing out', 'error');
-        }
-    }
-
-    copyReferralLink() {
-        const referralLinkEl = document.getElementById('profileReferralLink');
-        
-        if (!referralLinkEl) return;
-        
-        referralLinkEl.select();
-        referralLinkEl.setSelectionRange(0, 99999); // For mobile
-        
-        navigator.clipboard.writeText(referralLinkEl.value).then(() => {
-            this.showToast('✓ Referral link copied!', 'success');
-            
-            // Visual feedback on button
-            const copyBtn = document.getElementById('copyReferralBtn');
-            if (copyBtn) {
-                const originalText = copyBtn.textContent;
-                copyBtn.textContent = '✓ Copied!';
-                setTimeout(() => {
-                    copyBtn.textContent = originalText;
-                }, 2000);
-            }
-        }).catch(err => {
-            console.error('Copy failed:', err);
-            this.showToast('⚠️ Failed to copy', 'error');
-        });
-    }
-
-    // ============================================================
-    // REFERRAL CODE HANDLING
-    // ============================================================
-    
-    checkReferralCode() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref');
-        
-        if (refCode) {
-            // Store in session
-            sessionStorage.setItem('referral_code', refCode);
-            
-            // Show toast
-            this.showToast(`✓ Referral code ${refCode} applied!`, 'success');
-            
-            // Clean URL (optional)
-            const cleanUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-            
-            console.log('✅ Referral code stored:', refCode);
+            console.log('✅ User left waitlist');
         }
     }
 
@@ -516,14 +419,6 @@ class REDitorsApp {
     }
 
     // ============================================================
-    // EVENT LISTENERS
-    // ============================================================
-    
-    setupEventListeners() {
-        // Any additional global event listeners can go here
-    }
-
-    // ============================================================
     // TOAST NOTIFICATIONS
     // ============================================================
     
@@ -550,18 +445,3 @@ class REDitorsApp {
 document.addEventListener('DOMContentLoaded', () => {
     window.reditors = new REDitorsApp();
 });
-
-// Listen for auth state changes
-if (window.supabaseClient) {
-    window.supabaseClient.auth.onAuthStateChange((event, session) => {
-        console.log('Auth state changed:', event);
-        
-        if (event === 'SIGNED_IN' && window.reditors) {
-            // User signed in - reload profile
-            window.reditors.checkAuthAndLoadProfile();
-        } else if (event === 'SIGNED_OUT' && window.reditors) {
-            // User signed out - show guest UI
-            window.reditors.showGuestUI();
-        }
-    });
-}
