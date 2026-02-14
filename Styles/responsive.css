@@ -1,0 +1,42 @@
+
+/* ===== New Phantom Sections Responsive ===== */
+@media (max-width: 768px) {
+    /* Toolbox */
+    .toolbox-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .tool-card {
+        padding: 24px;
+    }
+
+    /* Comparison */
+    .comparison-container {
+        margin-top: 32px;
+    }
+    
+    .comparison-label {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .slider-handle {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* FAQ */
+    .faq-question {
+        padding: 16px;
+        font-size: 1rem;
+    }
+    
+    .faq-answer {
+        padding: 0 16px;
+    }
+    
+    .faq-item.active .faq-answer {
+        padding-bottom: 16px;
+    }
+}
