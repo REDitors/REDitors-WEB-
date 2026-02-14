@@ -1,7 +1,6 @@
 // ====================================
-// REDitors Simple Waitlist System - PRODUCTION READY
-// Integrates with Supabase waitlist table + Google Sheets
-// No passwords, no tiers, no referrals - just email collection
+// REDitors Waitlist System - PRODUCTION v1.0
+// Matches exact Supabase schema + Google Sheets integration
 // ====================================
 
 class PreOrderManager {
@@ -19,7 +18,7 @@ class PreOrderManager {
         this.setupEventListeners();
         this.setupFAQ();
         await this.updateWaitlistStats();
-        console.log('✅ REDitors Waitlist System Ready');
+        console.log('✅ REDitors Waitlist Ready');
     }
 
     waitForSupabase() {
@@ -28,14 +27,14 @@ class PreOrderManager {
                 if (window.supabaseClient) {
                     this.supabase = window.supabaseClient;
                     clearInterval(check);
-                    console.log('✅ Supabase Connected');
+                    console.log('✅ Supabase Connected to:', SUPABASE_CONFIG.url);
                     resolve();
                 }
             }, 100);
             
             setTimeout(() => {
                 clearInterval(check);
-                console.warn('⚠️ Supabase timeout - continuing without database');
+                console.error('❌ Supabase connection timeout');
                 resolve();
             }, 5000);
         });
@@ -89,7 +88,6 @@ class PreOrderManager {
 
     // ===== EVENT LISTENERS =====
     setupEventListeners() {
-        // All join waitlist buttons
         const joinButtons = document.querySelectorAll(
             '#joinWaitlistBtn, #joinWaitlistBtnNav, #finalCtaBtn, .tier-btn'
         );
@@ -127,7 +125,6 @@ class PreOrderManager {
         if (successCloseBtn) {
             successCloseBtn.addEventListener('click', () => {
                 this.closeModal('successModal');
-                // Refresh to show profile
                 if (window.reditors) {
                     window.reditors.checkWaitlistStatus();
                 }
@@ -147,7 +144,6 @@ class PreOrderManager {
             });
         }
         
-        // Handle enter key
         [emailInput, nameInput].forEach(input => {
             if (input) {
                 input.addEventListener('keypress', (e) => {
@@ -159,7 +155,7 @@ class PreOrderManager {
         });
     }
 
-    // ===== JOIN WAITLIST - SIMPLE EMAIL ONLY =====
+    // ===== JOIN WAITLIST - MATCHES EXACT SCHEMA =====
     async handleJoinWaitlist() {
         const email = document.getElementById('waitlistEmail')?.value.trim().toLowerCase();
         const name = document.getElementById('waitlistName')?.value.trim();
@@ -174,29 +170,31 @@ class PreOrderManager {
         
         try {
             if (!this.supabase) {
-                throw new Error('Database connection not available');
+                throw new Error('Database connection not available. Please refresh the page.');
             }
 
-            // Check if email already exists
+            console.log('📝 Checking for existing email:', email);
+
+            // Check if email exists
             const { data: existingUser, error: checkError } = await this.supabase
                 .from('waitlist')
-                .select('email, position, name, created_at')
+                .select('email, position, name, created_at, referral_code')
                 .eq('email', email)
                 .maybeSingle();
             
+            if (checkError && checkError.code !== 'PGRST116') {
+                console.error('Check error:', checkError);
+                throw checkError;
+            }
+            
             if (existingUser) {
-                // User already exists
-                console.log('User already on waitlist:', existingUser);
-                
-                // Save to localStorage
+                console.log('✅ User already exists:', existingUser);
                 localStorage.setItem('waitlist_email', email);
                 
-                // Show success with existing data
                 this.showToast('✓ You\'re already on the waitlist!', 'success');
                 this.closeModal('waitlistModal');
                 this.showSuccessModal(email, existingUser.position || 0, existingUser.name);
                 
-                // Refresh app
                 if (window.reditors) {
                     await window.reditors.checkWaitlistStatus();
                 }
@@ -207,40 +205,51 @@ class PreOrderManager {
             // Generate unique referral code
             const referralCode = this.generateReferralCode();
             
-            // Add to waitlist database
+            console.log('📝 Inserting new entry:', { email, name, referralCode });
+            
+            // Build insert object matching EXACT schema
+            const insertData = {
+                email: email,
+                name: name || null,
+                tier: 'early-bird',
+                referral_code: referralCode,
+                referred_by: null,
+                referral_count: 0,
+                priority_score: 0,
+                email_verified: false,
+                invite_sent: false,
+                converted_to_user: false,
+                source: 'website',
+                campaign: 'launch-waitlist',
+                user_agent: navigator.userAgent || null,
+                metadata: {
+                    signup_date: new Date().toISOString(),
+                    browser: this.getBrowserInfo(),
+                    referrer: document.referrer || 'direct'
+                },
+                tags: ['website-signup']
+            };
+            
+            // Insert into database
             const { data: newEntry, error: insertError } = await this.supabase
                 .from('waitlist')
-                .insert([{
-                    email: email,
-                    name: name || null,
-                    tier: 'early-bird',
-                    referral_code: referralCode,
-                    referred_by: null,
-                    source: 'website',
-                    campaign: 'launch-waitlist',
-                    landing_page: window.location.pathname,
-                    user_agent: navigator.userAgent,
-                    metadata: {
-                        signup_date: new Date().toISOString(),
-                        browser: this.getBrowserInfo()
-                    }
-                }])
-                .select('id, email, position, created_at')
+                .insert([insertData])
+                .select('id, email, position, created_at, referral_code')
                 .single();
             
             if (insertError) {
-                console.error('Insert error:', insertError);
+                console.error('❌ Insert error:', insertError);
                 throw insertError;
             }
             
-            console.log('✅ Added to waitlist:', newEntry);
+            console.log('✅ Successfully added to waitlist:', newEntry);
             
-            // Save email to localStorage for future visits
+            // Save to localStorage
             localStorage.setItem('waitlist_email', email);
             
-            // Send to Google Sheets (async, don't wait)
-            this.sendToGoogleSheets(email, name, newEntry.position).catch(err => {
-                console.warn('Google Sheets error (non-critical):', err);
+            // Send to Google Sheets (non-blocking)
+            this.sendToGoogleSheets(email, name, newEntry.position, referralCode).catch(err => {
+                console.warn('Google Sheets sync failed (non-critical):', err);
             });
             
             // Update stats
@@ -250,15 +259,15 @@ class PreOrderManager {
             this.closeModal('waitlistModal');
             this.showSuccessModal(email, newEntry.position || 0, name);
             
-            // Refresh app to show profile
+            // Refresh app
             if (window.reditors) {
                 await window.reditors.checkWaitlistStatus();
             }
             
         } catch (error) {
-            console.error('Waitlist error:', error);
+            console.error('❌ Waitlist error:', error);
             
-            // Check for duplicate email error
+            // Handle specific errors
             if (error.message?.includes('duplicate') || 
                 error.code === '23505' || 
                 error.message?.includes('unique')) {
@@ -267,26 +276,14 @@ class PreOrderManager {
                 localStorage.setItem('waitlist_email', email);
                 this.closeModal('waitlistModal');
                 
-                // Try to get existing data
-                try {
-                    const { data } = await this.supabase
-                        .from('waitlist')
-                        .select('position')
-                        .eq('email', email)
-                        .single();
-                    
-                    if (data) {
-                        this.showSuccessModal(email, data.position || 0, name);
-                    }
-                } catch (e) {
-                    console.warn('Could not fetch existing position');
-                }
-                
                 if (window.reditors) {
                     await window.reditors.checkWaitlistStatus();
                 }
+            } else if (error.message?.includes('landing_page')) {
+                // Schema mismatch - try without landing_page
+                this.showToast('⚠️ Database configuration error. Please contact support.', 'error');
             } else {
-                this.showToast('⚠️ Error: ' + (error.message || 'Could not join waitlist'), 'error');
+                this.showToast('⚠️ ' + (error.message || 'Could not join waitlist. Please try again.'), 'error');
             }
         } finally {
             joinBtn.disabled = false;
@@ -311,8 +308,8 @@ class PreOrderManager {
 
     generateReferralCode() {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = 'REF';
-        for (let i = 0; i < 7; i++) {
+        let code = 'RED';
+        for (let i = 0; i < 6; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return code;
@@ -320,18 +317,15 @@ class PreOrderManager {
 
     getBrowserInfo() {
         const ua = navigator.userAgent;
-        let browser = 'Unknown';
-        
-        if (ua.includes('Firefox')) browser = 'Firefox';
-        else if (ua.includes('Chrome')) browser = 'Chrome';
-        else if (ua.includes('Safari')) browser = 'Safari';
-        else if (ua.includes('Edge')) browser = 'Edge';
-        
-        return browser;
+        if (ua.includes('Firefox')) return 'Firefox';
+        if (ua.includes('Chrome')) return 'Chrome';
+        if (ua.includes('Safari')) return 'Safari';
+        if (ua.includes('Edge')) return 'Edge';
+        return 'Unknown';
     }
 
-    // ===== SEND TO GOOGLE SHEETS =====
-    async sendToGoogleSheets(email, name, position) {
+    // ===== GOOGLE SHEETS INTEGRATION =====
+    async sendToGoogleSheets(email, name, position, referralCode) {
         try {
             const response = await fetch(this.googleSheetsUrl, {
                 method: 'POST',
@@ -341,16 +335,18 @@ class PreOrderManager {
                     email: email,
                     name: name || 'Not provided',
                     position: position || 'N/A',
-                    tier: 'WAITLIST',
+                    tier: 'EARLY-BIRD',
+                    referral_code: referralCode,
                     timestamp: new Date().toISOString(),
-                    source: 'website'
+                    source: 'website',
+                    campaign: 'launch-waitlist'
                 })
             });
             
             console.log('✅ Sent to Google Sheets');
             return true;
         } catch (error) {
-            console.warn('Google Sheets sync failed (non-critical):', error);
+            console.warn('⚠️ Google Sheets sync failed:', error);
             return false;
         }
     }
@@ -362,7 +358,6 @@ class PreOrderManager {
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // Focus email input
             setTimeout(() => {
                 const emailInput = document.getElementById('waitlistEmail');
                 if (emailInput) emailInput.focus();
@@ -410,7 +405,7 @@ class PreOrderManager {
         }
     }
 
-    // ===== WAITLIST STATS =====
+    // ===== STATS =====
     async updateWaitlistStats() {
         if (!this.supabase) {
             console.warn('No database connection for stats');
@@ -519,7 +514,7 @@ class PreOrderManager {
         });
     }
 
-    // ===== TOAST NOTIFICATIONS =====
+    // ===== TOAST =====
     showToast(message, type = 'success') {
         const toast = document.getElementById('toast');
         if (!toast) return;
@@ -539,7 +534,7 @@ class PreOrderManager {
     }
 }
 
-// Initialize when DOM is ready
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     window.preOrderManager = new PreOrderManager();
 });
