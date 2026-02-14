@@ -210,11 +210,7 @@
             background: #ef4444;
         }
         
-        /* ============================================ */
-        /* REFERRAL SYSTEM STYLES - NEW */
-        /* ============================================ */
-        
-        /* Referral code input styling */
+        /* Referral System Styles */
         #referredByCode {
             text-transform: uppercase;
         }
@@ -228,19 +224,16 @@
             background: rgba(255, 215, 0, 0.1) !important;
         }
         
-        /* Referral count highlight in profile */
         #profileReferralCount {
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
         
-        /* Copy buttons hover effect */
         #copyReferralBtn:hover,
         #copyReferralBtnProfile:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
         }
         
-        /* Referral URL inputs */
         #referralUrlInput,
         #profileReferralUrl {
             cursor: text;
@@ -253,9 +246,14 @@
             outline-offset: 2px;
         }
         
-        /* Success modal wider for referral content */
         .modal-success {
             max-width: 600px !important;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
         /* Mobile Responsive */
@@ -300,14 +298,17 @@
             
             <!-- Navigation Right - Profile/Guest Buttons -->
             <div class="nav-right">
-                <!-- Profile Button (Hidden by default, shown when user is in waitlist) -->
+                <!-- Profile Button (Hidden by default, shown when user is logged in) -->
                 <button id="profileBtn" class="profile-btn" style="display: none;">
                     <div class="profile-avatar">U</div>
                     <span class="profile-text">Profile</span>
                 </button>
                 
-                <!-- Guest Buttons (Shown when user is NOT in waitlist) -->
+                <!-- Guest Buttons (Shown when user is NOT logged in) -->
                 <div id="guestButtons" class="guest-buttons" style="display: flex;">
+                    <button class="btn-secondary btn-nav" id="loginNavBtn">
+                        Login
+                    </button>
                     <button class="btn-secondary btn-nav" id="joinWaitlistBtnNav">
                         Join Waitlist
                     </button>
@@ -419,46 +420,155 @@
         </div>
     </section>
 
-    <!-- Simple CTA Section (replaces tier/pricing) -->
-    <section class="simple-cta-section" style="padding: 80px 0; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%);">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up" style="text-align: center; max-width: 700px; margin: 0 auto;">
-                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Get Early Access</h2>
-                <p style="font-size: 1.25rem; color: #999; margin-bottom: 40px;">
-                    Join the waitlist to be among the first to experience REDitors when we launch. 
-                    No commitment, just exclusive early access.
+    <!-- Leaderboard + Prizes Section -->
+    <section class="leaderboard-section" style="padding: 100px 0; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(10,10,10,1) 50%, rgba(0,0,0,0.95) 100%); position: relative; overflow: hidden;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-aos="fade-up" style="text-align: center; margin-bottom: 60px;">
+                <div style="display: inline-block; padding: 8px 24px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 100px; margin-bottom: 20px;">
+                    <span style="color: #ffd700; font-size: 14px; font-weight: 700; letter-spacing: 1px;">🏆 REFERRAL COMPETITION</span>
+                </div>
+                <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px; background: linear-gradient(135deg, #fff 0%, #ffd700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Refer Friends, Win Big Prizes
+                </h2>
+                <p style="font-size: clamp(1rem, 3vw, 1.25rem); color: #999; max-width: 700px; margin: 0 auto;">
+                    Share your unique referral link and climb the leaderboard. Top referrers get exclusive rewards!
+                </p>
+            </div>
+
+            <!-- Prize Tiers -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 80px;">
+                
+                <!-- 1st Place Prize -->
+                <div data-aos="fade-up" data-aos-delay="100" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%); border: 2px solid rgba(255, 215, 0, 0.5); border-radius: 20px; padding: 35px; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(255,215,0,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; padding: 8px 24px; border-radius: 100px; font-weight: 800; font-size: 12px; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(255,215,0,0.4);">1ST PLACE</div>
+                    <div style="font-size: 4rem; margin: 25px 0 15px; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));">🥇</div>
+                    <h3 style="font-size: 1.75rem; margin-bottom: 12px; color: #ffd700; font-weight: 700;">Lifetime Pro</h3>
+                    <p style="color: #ccc; font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">Free forever + All premium features + Early beta access</p>
+                    <div style="background: rgba(255, 215, 0, 0.2); padding: 12px 20px; border-radius: 12px; margin-top: 20px;">
+                        <div style="color: #ffd700; font-weight: 700; font-size: 1.3rem;">20+ Referrals</div>
+                        <div style="color: #999; font-size: 0.85rem; margin-top: 5px;">Unlock this tier</div>
+                    </div>
+                </div>
+
+                <!-- 2nd Place Prize -->
+                <div data-aos="fade-up" data-aos-delay="200" style="background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.05) 100%); border: 2px solid rgba(192, 192, 192, 0.5); border-radius: 20px; padding: 35px; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(192,192,192,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #000; padding: 8px 24px; border-radius: 100px; font-weight: 800; font-size: 12px; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(192,192,192,0.4);">2ND PLACE</div>
+                    <div style="font-size: 4rem; margin: 25px 0 15px; filter: drop-shadow(0 0 10px rgba(192,192,192,0.5));">🥈</div>
+                    <h3 style="font-size: 1.75rem; margin-bottom: 12px; color: #c0c0c0; font-weight: 700;">1 Year Pro</h3>
+                    <p style="color: #ccc; font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">12 months free access + Premium support</p>
+                    <div style="background: rgba(192, 192, 192, 0.2); padding: 12px 20px; border-radius: 12px; margin-top: 20px;">
+                        <div style="color: #c0c0c0; font-weight: 700; font-size: 1.3rem;">15+ Referrals</div>
+                        <div style="color: #999; font-size: 0.85rem; margin-top: 5px;">Unlock this tier</div>
+                    </div>
+                </div>
+
+                <!-- 3rd Place Prize -->
+                <div data-aos="fade-up" data-aos-delay="300" style="background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.05) 100%); border: 2px solid rgba(205, 127, 50, 0.5); border-radius: 20px; padding: 35px; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(205,127,50,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #cd7f32, #e8a87c); color: #fff; padding: 8px 24px; border-radius: 100px; font-weight: 800; font-size: 12px; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(205,127,50,0.4);">3RD PLACE</div>
+                    <div style="font-size: 4rem; margin: 25px 0 15px; filter: drop-shadow(0 0 10px rgba(205,127,50,0.5));">🥉</div>
+                    <h3 style="font-size: 1.75rem; margin-bottom: 12px; color: #cd7f32; font-weight: 700;">6 Months Pro</h3>
+                    <p style="color: #ccc; font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">Half year free access + Bonus templates</p>
+                    <div style="background: rgba(205, 127, 50, 0.2); padding: 12px 20px; border-radius: 12px; margin-top: 20px;">
+                        <div style="color: #cd7f32; font-weight: 700; font-size: 1.3rem;">10+ Referrals</div>
+                        <div style="color: #999; font-size: 0.85rem; margin-top: 5px;">Unlock this tier</div>
+                    </div>
+                </div>
+
+                <!-- Participation Prize -->
+                <div data-aos="fade-up" data-aos-delay="400" style="background: linear-gradient(135deg, rgba(68, 255, 68, 0.15) 0%, rgba(68, 255, 68, 0.05) 100%); border: 2px solid rgba(68, 255, 68, 0.5); border-radius: 20px; padding: 35px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(68,255,68,0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="font-size: 4rem; margin: 0 0 15px; filter: drop-shadow(0 0 10px rgba(68,255,68,0.5));">🎁</div>
+                    <h3 style="font-size: 1.75rem; margin-bottom: 12px; color: #44ff44; font-weight: 700;">Early Access</h3>
+                    <p style="color: #ccc; font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">Skip the line + Exclusive bonuses + Launch swag</p>
+                    <div style="background: rgba(68, 255, 68, 0.2); padding: 12px 20px; border-radius: 12px; margin-top: 20px;">
+                        <div style="color: #44ff44; font-weight: 700; font-size: 1.3rem;">5+ Referrals</div>
+                        <div style="color: #999; font-size: 0.85rem; margin-top: 5px;">Unlock this tier</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Leaderboard -->
+            <div data-aos="fade-up" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 50px; backdrop-filter: blur(10px);">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h3 style="font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 15px;">
+                        <span style="background: linear-gradient(135deg, #ffd700, #ffed4e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🔥 Live Leaderboard</span>
+                    </h3>
+                    <p style="color: #999; font-size: 1rem;">Top 5 referrers competing for prizes</p>
+                </div>
+                
+                <!-- Leaderboard List -->
+                <div id="leaderboardList" style="display: flex; flex-direction: column; gap: 16px; max-width: 800px; margin: 0 auto;">
+                    <!-- Loading state -->
+                    <div style="text-align: center; padding: 60px 20px; color: #666;">
+                        <div style="font-size: 3rem; margin-bottom: 15px; animation: pulse 2s infinite;">⏳</div>
+                        <p style="font-size: 1.1rem;">Loading leaderboard...</p>
+                    </div>
+                </div>
+                
+                <!-- CTA -->
+                <div style="margin-top: 50px; text-align: center; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <button class="btn-primary btn-glow" id="joinToCompeteBtn" style="font-size: 1.15rem; padding: 20px 50px; margin-bottom: 20px;">
+                        <span>🚀 Join & Start Competing</span>
+                    </button>
+                    <p style="font-size: 14px; color: #666; max-width: 500px; margin: 0 auto;">
+                        Competition ends at launch. Share your unique link now and watch your position climb!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background effects -->
+        <div style="position: absolute; top: 10%; right: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none; filter: blur(60px);"></div>
+        <div style="position: absolute; bottom: 10%; left: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(68, 255, 68, 0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none; filter: blur(60px);"></div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section" style="padding: 80px 0; background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,1) 100%);">
+        <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+            <div data-aos="fade-up" style="text-align: center; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 60px 40px;">
+                <h3 style="font-size: clamp(1.75rem, 4vw, 2.25rem); margin-bottom: 20px;">Follow Our Journey</h3>
+                <p style="color: #999; font-size: 1.1rem; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Stay updated with the latest news, behind-the-scenes content, and exclusive sneak peeks
                 </p>
                 
-                <button class="btn-primary btn-glow" id="finalCtaBtn" style="font-size: 1.1rem; padding: 18px 48px;">
-                    <span>🚀 Join Waitlist Now</span>
-                </button>
-                
-                <div class="simple-benefits" style="display: flex; gap: 40px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Early Access</div>
+                <!-- Social Links -->
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px;">
+                    <a href="https://twitter.com/reditors" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 16px 32px; background: rgba(29, 161, 242, 0.1); border: 2px solid rgba(29, 161, 242, 0.3); border-radius: 12px; color: #1da1f2; text-decoration: none; transition: all 0.3s ease; font-weight: 600;" onmouseover="this.style.background='rgba(29, 161, 242, 0.2)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(29, 161, 242, 0.1)'; this.style.transform='translateY(0)'">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+                        <span>Twitter</span>
+                    </a>
+                    <a href="https://instagram.com/reditors" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 16px 32px; background: rgba(225, 48, 108, 0.1); border: 2px solid rgba(225, 48, 108, 0.3); border-radius: 12px; color: #e1306c; text-decoration: none; transition: all 0.3s ease; font-weight: 600;" onmouseover="this.style.background='rgba(225, 48, 108, 0.2)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(225, 48, 108, 0.1)'; this.style.transform='translateY(0)'">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/><path d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://youtube.com/@reditors" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 16px 32px; background: rgba(255, 0, 0, 0.1); border: 2px solid rgba(255, 0, 0, 0.3); border-radius: 12px; color: #ff0000; text-decoration: none; transition: all 0.3s ease; font-weight: 600;" onmouseover="this.style.background='rgba(255, 0, 0, 0.2)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255, 0, 0, 0.1)'; this.style.transform='translateY(0)'">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <span>YouTube</span>
+                    </a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #44ff44; margin-bottom: 8px;" id="socialTotalUsers">0+</div>
+                        <div style="color: #999; font-size: 0.95rem;">Waitlist Members</div>
                     </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Free to Join</div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700; margin-bottom: 8px;" id="socialTotalReferrals">0+</div>
+                        <div style="color: #999; font-size: 0.95rem;">Total Referrals</div>
                     </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Launch Updates</div>
-                    </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">No Commitment</div>
+                    <div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #44ff44; margin-bottom: 8px;">100%</div>
+                        <div style="color: #999; font-size: 0.95rem;">Free to Join</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ADD YOUR OTHER SECTIONS HERE (Features, FAQ, etc.) -->
-
     <!-- ============================================ -->
-    <!-- WAITLIST MODAL - ENHANCED WITH REFERRAL -->
+    <!-- WAITLIST MODAL (SIGNUP) -->
     <!-- ============================================ -->
     <div class="modal" id="waitlistModal">
         <div class="modal-overlay" id="modalOverlay"></div>
@@ -471,9 +581,7 @@
             </div>
 
             <div class="modal-body">
-                <!-- Waitlist Form with Referral Input -->
                 <div class="waitlist-form">
-                    <!-- Email Input -->
                     <input 
                         type="email" 
                         id="waitlistEmail" 
@@ -483,7 +591,6 @@
                         style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
                     >
                     
-                    <!-- Name Input (Optional) -->
                     <input 
                         type="text" 
                         id="waitlistName" 
@@ -491,8 +598,17 @@
                         autocomplete="name"
                         style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
                     >
+
+                    <input 
+                        type="password" 
+                        id="waitlistPassword" 
+                        placeholder="Create a password (min. 6 characters) *" 
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                        style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
+                    >
                     
-                    <!-- NEW: Referral Code Input -->
                     <div style="margin-bottom: 20px;">
                         <input 
                             type="text" 
@@ -506,25 +622,80 @@
                         </p>
                     </div>
                     
-                    <!-- Submit Button -->
                     <button class="btn-primary btn-full" id="joinWaitlistSubmitBtn">
                         <span>Join Waitlist</span>
                     </button>
                 </div>
 
-                <!-- Benefits List -->
                 <div class="auth-benefits" style="margin-top: 24px;">
                     <div class="benefit-item">✓ Be first to know when we launch</div>
                     <div class="benefit-item">✓ Track your position in line</div>
                     <div class="benefit-item">✓ Get exclusive early access</div>
                     <div class="benefit-item">✓ Earn rewards through referrals</div>
                 </div>
+
+                <!-- Login Link -->
+                <div style="margin-top: 16px; text-align: center; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: #999; font-size: 14px;">
+                        Already have an account? 
+                        <a href="#" id="showLoginLink" style="color: #44ff44; text-decoration: none; font-weight: 600;">Login here</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ============================================ -->
-    <!-- SUCCESS MODAL - ENHANCED WITH REFERRAL URL -->
+    <!-- LOGIN MODAL -->
+    <!-- ============================================ -->
+    <div class="modal" id="loginModal">
+        <div class="modal-overlay" id="loginOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="loginClose">×</button>
+            
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <p>Login to view your waitlist position</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="waitlist-form">
+                    <input 
+                        type="email" 
+                        id="loginEmail" 
+                        placeholder="Enter your email" 
+                        required 
+                        autocomplete="email"
+                        style="margin-bottom: 12px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
+                    >
+                    
+                    <input 
+                        type="password" 
+                        id="loginPassword" 
+                        placeholder="Enter your password" 
+                        required
+                        autocomplete="current-password"
+                        style="margin-bottom: 20px; width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; border-radius: 8px; font-size: 16px;"
+                    >
+                    
+                    <button class="btn-primary btn-full" id="loginSubmitBtn">
+                        <span>Login</span>
+                    </button>
+                </div>
+
+                <!-- Signup Link -->
+                <div style="margin-top: 24px; text-align: center;">
+                    <p style="color: #999; font-size: 14px;">
+                        Don't have an account? 
+                        <a href="#" id="showSignupLink" style="color: #44ff44; text-decoration: none; font-weight: 600;">Join Waitlist</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUCCESS MODAL -->
     <!-- ============================================ -->
     <div class="modal" id="successModal">
         <div class="modal-overlay"></div>
@@ -534,15 +705,13 @@
             </div>
             <h2>You're on the list! 🎉</h2>
             <p class="success-message" id="successMessage">Welcome to the waitlist!</p>
-            <div class="success-details" id="successDetails">
-                <!-- Referral URL will be injected here by JavaScript -->
-            </div>
+            <div class="success-details" id="successDetails"></div>
             <button class="btn-primary" id="successCloseBtn">View My Position</button>
         </div>
     </div>
 
     <!-- ============================================ -->
-    <!-- PROFILE MODAL - ENHANCED WITH REFERRAL STATS -->
+    <!-- PROFILE MODAL -->
     <!-- ============================================ -->
     <div class="modal" id="profileModal">
         <div class="modal-overlay"></div>
@@ -557,31 +726,26 @@
             </div>
 
             <div class="profile-modal-body">
-                <!-- Email -->
                 <div class="profile-field">
                     <label class="profile-label">Email</label>
                     <div class="profile-value" id="profileEmail">loading...</div>
                 </div>
 
-                <!-- Name (if provided) -->
                 <div class="profile-field" id="profileNameField">
                     <label class="profile-label">Name</label>
                     <div class="profile-value" id="profileName">loading...</div>
                 </div>
 
-                <!-- Position -->
                 <div class="profile-field">
                     <label class="profile-label">Your Position</label>
                     <div class="profile-value profile-position" id="profilePosition">#0</div>
                 </div>
 
-                <!-- Joined Date -->
                 <div class="profile-field">
                     <label class="profile-label">Joined</label>
                     <div class="profile-value" id="profileJoined">loading...</div>
                 </div>
 
-                <!-- NEW: Referral Stats -->
                 <div class="profile-field">
                     <label class="profile-label">🎁 Referrals Made</label>
                     <div class="profile-value" style="font-size: 24px; font-weight: 700; color: #ffd700;" id="profileReferralCount">0</div>
@@ -590,13 +754,11 @@
                     </p>
                 </div>
 
-                <!-- NEW: Referral Code -->
                 <div class="profile-field">
                     <label class="profile-label">Your Referral Code</label>
                     <div class="profile-value" style="font-family: monospace; font-size: 18px; letter-spacing: 2px; color: #ffd700;" id="profileReferralCode">LOADING...</div>
                 </div>
 
-                <!-- NEW: Referral URL -->
                 <div class="profile-field">
                     <label class="profile-label">🚀 Your Referral Link</label>
                     <div style="display: flex; gap: 8px;">
@@ -621,8 +783,12 @@
             </div>
 
             <div class="profile-modal-footer">
-                <button id="signOutBtn" class="sign-out-btn">
+                <button id="logoutBtn" class="sign-out-btn" style="background: rgba(255, 165, 0, 0.1); border-color: rgba(255, 165, 0, 0.3); color: #ffa500; margin-bottom: 12px;">
                     <span>🚪</span>
+                    Logout
+                </button>
+                <button id="signOutBtn" class="sign-out-btn">
+                    <span>🗑️</span>
                     Leave Waitlist
                 </button>
             </div>
@@ -637,6 +803,7 @@
     <script src="Scripts/utils.js"></script>
     <script src="Scripts/Preorder.js"></script>
     <script src="Scripts/reditors-master.js"></script>
+    <script src="Scripts/reditors-auth.js"></script>
     
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
