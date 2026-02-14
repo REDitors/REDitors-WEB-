@@ -3,27 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <!-- Primary Meta Tags -->
     <title>REDitors - Join Waitlist | Revolutionary Adobe Plugin</title>
-    <meta name="description" content="Join the REDitors waitlist - The ultimate Adobe Premiere Pro & After Effects plugin. Get exclusive early access!">
-    <meta name="keywords" content="adobe plugin, premiere pro, after effects, video editing, ai editing, reditors, video editor, filmmaking">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://reditors.com/">
-    <meta property="og:title" content="REDitors - Revolutionary Adobe Plugin | Join Waitlist">
-    <meta property="og:description" content="Join the waitlist for exclusive early access to REDitors">
-    <meta property="og:image" content="https://reditors.com/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://reditors.com/">
-    <meta property="twitter:title" content="REDitors - Revolutionary Adobe Plugin">
-    <meta property="twitter:description" content="Join the waitlist for exclusive early access">
-    <meta property="twitter:image" content="https://reditors.com/og-image.jpg">
-    
+    <meta name="description" content="Join the REDitors waitlist for exclusive early access!">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,358 +23,98 @@
     <link rel="stylesheet" href="Styles/phantom-sections.css">
     <link rel="stylesheet" href="Styles/responsive.css">
     
-    <!-- AOS Animation Library CSS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-        /* Profile System Styles */
-        .profile-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            color: var(--text, #fff);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .profile-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent, #44ff44);
-            transform: translateY(-2px);
-        }
-        
-        .profile-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--accent, #44ff44);
-            color: var(--bg, #000);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-        }
-        
-        .guest-buttons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .btn-nav {
-            padding: 10px 20px;
-            font-size: 14px;
-        }
-        
-        /* Profile Modal */
-        .profile-modal-content {
-            max-width: 500px;
-            width: 90%;
-            background: var(--card-bg, #111);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            position: relative;
-        }
-        
-        .profile-modal-header {
-            text-align: center;
-            padding: 30px 30px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .avatar-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--accent, #44ff44);
-            color: var(--bg, #000);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0 auto 16px;
-            box-shadow: 0 0 0 4px rgba(68, 255, 68, 0.2);
-        }
-        
-        .profile-modal-body {
-            padding: 30px;
-        }
-        
-        .profile-field {
-            margin-bottom: 24px;
-        }
-        
-        .profile-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dim, #999);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        
-        .profile-value {
-            font-size: 16px;
-            color: var(--text, #fff);
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .profile-position {
-            font-weight: 700;
-            font-size: 20px;
-            color: var(--accent, #44ff44);
-        }
-        
-        .profile-modal-footer {
-            padding: 20px 30px 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .sign-out-btn {
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 8px;
-            color: #ff4444;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .sign-out-btn:hover {
-            background: rgba(255, 0, 0, 0.2);
-            border-color: #ff4444;
-        }
-        
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 16px 24px;
-            background: #22c55e;
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            transform: translateX(400px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        .toast.error {
-            background: #ef4444;
-        }
-        
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .profile-btn .profile-text {
-                display: none;
-            }
-            .profile-modal-content {
-                width: 95%;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-        }
-    </style>
 </head>
-<body class="preorder-body">
-    
+
+<body>
     <!-- Navigation -->
-    <nav class="nav" id="mainNav">
+    <nav class="main-nav" id="mainNav">
         <div class="nav-container">
-            <div class="logo-wrapper">
-                <a href="index.html" class="logo" data-text="REDitors">REDitors</a>
-                <span class="version">Beta</span>
+            <div class="nav-logo">
+                <span class="logo-text">REDitors</span>
             </div>
             
-            <!-- Navigation Right - Profile/Guest Buttons -->
-            <div class="nav-right">
-                <!-- Profile Button (Hidden by default, shown when user is in waitlist) -->
-                <button id="profileBtn" class="profile-btn" style="display: none;">
-                    <div class="profile-avatar">U</div>
-                    <span class="profile-text">Profile</span>
-                </button>
-                
-                <!-- Guest Buttons (Shown when user is NOT in waitlist) -->
-                <div id="guestButtons" class="guest-buttons" style="display: flex;">
-                    <button class="btn-secondary btn-nav" id="joinWaitlistBtnNav">
-                        Join Waitlist
-                    </button>
-                </div>
-                
-                <!-- Mobile Menu Toggle -->
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            
+            <div class="nav-actions">
+                <!-- SIMPLE: Just one Join Waitlist button -->
+                <button class="btn btn-primary" id="joinWaitlistBtnNav">
+                    Join Waitlist
                 </button>
             </div>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section with Countdown -->
-    <section class="preorder-hero">
+    <!-- Hero Section -->
+    <section class="hero-section">
         <div class="container">
-            <div class="hero-content">
-                <!-- Status Badge -->
-                <div class="status-badge" data-aos="fade-down">
-                    <span class="status-dot"></span>
-                    <span>COMING SOON</span>
-                </div>
-
-                <!-- Main Heading -->
-                <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-                    The Future of Video Editing<br>
-                    <span class="gradient-text">Starts Here</span>
-                </h1>
-
-                <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                    Revolutionary AI-powered plugin for Adobe Premiere Pro & After Effects.<br>
-                    Join the waitlist for exclusive early access.
-                </p>
-
-                <!-- Countdown Timer -->
-                <div class="countdown-container" data-aos="fade-up" data-aos-delay="300">
-                    <div class="countdown-label">LAUNCHING IN</div>
-                    <div class="countdown-timer" id="countdown">
-                        <div class="countdown-item">
-                            <div class="countdown-value" id="days">00</div>
-                            <div class="countdown-unit">Days</div>
-                        </div>
-                        <div class="countdown-separator">:</div>
-                        <div class="countdown-item">
-                            <div class="countdown-value" id="hours">00</div>
-                            <div class="countdown-unit">Hours</div>
-                        </div>
-                        <div class="countdown-separator">:</div>
-                        <div class="countdown-item">
-                            <div class="countdown-value" id="minutes">00</div>
-                            <div class="countdown-unit">Minutes</div>
-                        </div>
-                        <div class="countdown-separator">:</div>
-                        <div class="countdown-item">
-                            <div class="countdown-value" id="seconds">00</div>
-                            <div class="countdown-unit">Seconds</div>
-                        </div>
+            <h1 class="hero-title">The Future of Video Editing</h1>
+            <p class="hero-subtitle">Revolutionary Adobe plugin coming soon</p>
+            
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <div class="countdown-timer">
+                    <div class="time-unit">
+                        <span class="time-value" id="days">00</span>
+                        <span class="time-label">Days</span>
                     </div>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div class="cta-group" data-aos="fade-up" data-aos-delay="400">
-                    <button class="btn-primary btn-glow" id="joinWaitlistBtn">
-                        <span>🚀 Join Waitlist</span>
-                    </button>
-                    <button class="btn-secondary" id="learnMoreBtn">
-                        <span>Watch Teaser</span>
-                    </button>
-                </div>
-
-                <!-- Social Proof -->
-                <div class="social-proof" data-aos="fade-up" data-aos-delay="500">
-                    <div class="proof-item">
-                        <div class="proof-number" id="waitlistCount">0</div>
-                        <div class="proof-label">On Waitlist</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="hours">00</span>
+                        <span class="time-label">Hours</span>
                     </div>
-                    <div class="proof-divider"></div>
-                    <div class="proof-item">
-                        <div class="proof-number" id="todaySignups">0</div>
-                        <div class="proof-label">Joined Today</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="minutes">00</span>
+                        <span class="time-label">Minutes</span>
                     </div>
-                    <div class="proof-divider"></div>
-                    <div class="proof-item">
-                        <div class="proof-number">FREE</div>
-                        <div class="proof-label">Early Access</div>
+                    <div class="time-unit">
+                        <span class="time-value" id="seconds">00</span>
+                        <span class="time-label">Seconds</span>
                     </div>
                 </div>
             </div>
-
-            <!-- Progress Bar -->
-            <div class="waitlist-progress" data-aos="fade-up" data-aos-delay="600">
-                <div class="progress-info">
-                    <span id="progressLabel">Loading...</span>
-                    <span class="spots-left">Calculating...</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 0%"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Animated Background -->
-        <div class="hero-bg-effects">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
+            
+            <button class="btn btn-primary btn-large" id="joinWaitlistBtn">
+                Join Waitlist Now
+            </button>
         </div>
     </section>
 
-    <!-- Simple CTA Section (replaces tier/pricing) -->
-    <section class="simple-cta-section" style="padding: 80px 0; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%);">
+    <!-- Stats Section -->
+    <section class="stats-section">
         <div class="container">
-            <div class="section-header" data-aos="fade-up" style="text-align: center; max-width: 700px; margin: 0 auto;">
-                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Get Early Access</h2>
-                <p style="font-size: 1.25rem; color: #999; margin-bottom: 40px;">
-                    Join the waitlist to be among the first to experience REDitors when we launch. 
-                    No commitment, just exclusive early access.
-                </p>
-                
-                <button class="btn-primary btn-glow" id="finalCtaBtn" style="font-size: 1.1rem; padding: 18px 48px;">
-                    <span>🚀 Join Waitlist Now</span>
-                </button>
-                
-                <div class="simple-benefits" style="display: flex; gap: 40px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Early Access</div>
-                    </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Free to Join</div>
-                    </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">Launch Updates</div>
-                    </div>
-                    <div class="benefit-item" style="text-align: center;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✓</div>
-                        <div style="font-size: 0.9rem; color: #999;">No Commitment</div>
-                    </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="waitlistCount">0</span>
+                    <span class="stat-label">On Waitlist</span>
                 </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="todaySignups">0</span>
+                    <span class="stat-label">Joined Today</span>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-info">
+                <span id="progressLabel">0 joined</span>
+                <span class="spots-left">1000 spots remaining</span>
             </div>
         </div>
     </section>
 
-    <!-- ADD YOUR OTHER SECTIONS HERE (Features, FAQ, etc.) -->
-
-    <!-- Waitlist Modal -->
+    <!-- Simple Waitlist Modal -->
     <div class="modal" id="waitlistModal">
         <div class="modal-overlay" id="modalOverlay"></div>
         <div class="modal-content">
@@ -404,7 +126,6 @@
             </div>
 
             <div class="modal-body">
-                <!-- Simple Waitlist Form -->
                 <div class="waitlist-form">
                     <input 
                         type="email" 
@@ -430,8 +151,8 @@
 
                 <div class="auth-benefits" style="margin-top: 24px;">
                     <div class="benefit-item">✓ Be first to know when we launch</div>
-                    <div class="benefit-item">✓ Track your position in line</div>
                     <div class="benefit-item">✓ Get exclusive early access</div>
+                    <div class="benefit-item">✓ No spam, just launch updates</div>
                 </div>
             </div>
         </div>
@@ -447,79 +168,16 @@
             <h2>You're on the list! 🎉</h2>
             <p class="success-message" id="successMessage">Welcome to the waitlist!</p>
             <div class="success-details" id="successDetails"></div>
-            <button class="btn-primary" id="successCloseBtn">View My Position</button>
+            <button class="btn-primary" id="successCloseBtn">Got it!</button>
         </div>
     </div>
 
-    <!-- Profile Modal -->
-    <div class="modal" id="profileModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content profile-modal-content">
-            <button class="modal-close" id="profileClose" aria-label="Close">×</button>
-            
-            <div class="profile-modal-header">
-                <div class="avatar-circle">
-                    <span id="profileAvatarInitial">U</span>
-                </div>
-                <h2>Your Waitlist Status</h2>
-            </div>
-
-            <div class="profile-modal-body">
-                <!-- Email -->
-                <div class="profile-field">
-                    <label class="profile-label">Email</label>
-                    <div class="profile-value" id="profileEmail">loading...</div>
-                </div>
-
-                <!-- Name (if provided) -->
-                <div class="profile-field" id="profileNameField">
-                    <label class="profile-label">Name</label>
-                    <div class="profile-value" id="profileName">loading...</div>
-                </div>
-
-                <!-- Position -->
-                <div class="profile-field">
-                    <label class="profile-label">Your Position</label>
-                    <div class="profile-value profile-position" id="profilePosition">#0</div>
-                </div>
-
-                <!-- Joined Date -->
-                <div class="profile-field">
-                    <label class="profile-label">Joined</label>
-                    <div class="profile-value" id="profileJoined">loading...</div>
-                </div>
-            </div>
-
-            <div class="profile-modal-footer">
-                <button id="signOutBtn" class="sign-out-btn">
-                    <span>🚪</span>
-                    Leave Waitlist
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Toast -->
+    <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
     <!-- Scripts -->
     <script src="Scripts/supabase-config.js"></script>
-    <script src="Scripts/utils.js"></script>
-    <script src="Scripts/Preorder.js"></script>
-    <script src="Scripts/reditors-master.js"></script>
-    
-    <!-- AOS Animation Library -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        if (typeof AOS !== 'undefined') {
-            AOS.init({
-                duration: 800,
-                easing: 'ease-out',
-                once: true,
-                offset: 100
-            });
-        }
-    </script>
-
+    <script src="Scripts/Preorder-simple.js"></script>
+    <script src="Scripts/reditors-master-simple.js"></script>
 </body>
 </html>
